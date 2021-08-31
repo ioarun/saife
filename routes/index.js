@@ -1,13 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
-// Login Page
-router.get('/Login',(req,res,next)=>{
-    res.send('Login')
+// Wellcome Page
+router.get('/',(req,res,next)=>{
+    res.send('Welcome')
 })
-// Register Page 
-router.get('/Register',(req,res,next)=>{
-    res.send('Register')
-})
+
 
 module.exports = router
