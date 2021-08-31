@@ -19,5 +19,8 @@
   "homepage": "https://github.com/ioarun/saife#readme",
   "devDependencies": {
     "nodemon": "^2.0.12"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0"
   }
 }
