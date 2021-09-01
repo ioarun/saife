@@ -14,4 +14,6 @@ const routes = require('./routes/index')
 app.use('/', routes)
 app.use('/users', require('./routes/users'));
 
+app.use('/members',  require('./routes/members'))
+
 app.listen(PORT,console.log(`server started on port ${PORT}`))
