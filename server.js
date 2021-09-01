@@ -1,14 +1,17 @@
 require('dotenv').config()
 const express = require('express')
+const expressLayouts = require('express-ejs-layouts');
 const app = express()
-const path = require('path')
-const routes = require('./routes/index')
+
+// EJS
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 5000
 
-// app.use(express.static(__dirname + '/public'))
-
-
-app.use('/',routes)
+// Routes
+const routes = require('./routes/index')
+app.use('/', routes)
+app.use('/users', require('./routes/users'));
 
 app.listen(PORT,console.log(`server started on port ${PORT}`))
