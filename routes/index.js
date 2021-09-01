@@ -1,13 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-// Login Page
-router.get('/Login',(req,res,next)=>{
-    res.send('Login')
-})
-// Register Page 
-router.get('/Register',(req,res,next)=>{
-    res.send('Register')
-})
+// router.get('/', (req, res) => res.send('Hello again!'))
+router.get('/', (req, res) => res.render('userHome'));
+
 
 module.exports = router
