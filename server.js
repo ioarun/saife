@@ -29,6 +29,8 @@ app.post('/subscribe', (req, res) => {
     // Create payload
     const payload = JSON.stringify({title: 'Push test'});
 
+    console.log(req);
+
     // Pass object into sendNotification
     webpush.sendNotification(subscription, payload).catch(err => console.log(err));
 })
@@ -42,8 +44,9 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 5000
 
-//set the static path 
-// app.use(express.static(path.join(__dirname, "views")));
+//set the static path to push worker
+app.use(express.static('push'));
+app.use('/push', express.static('push'));
 
 // Routes
 app.use('/', require('./routes/index.js'));
