@@ -10,12 +10,15 @@ const db = require('./config/keys').MongoURI
 
 // Connect to mongo
 mongoose.connect(db, { useNewUrlParser: true })
-    .then(()=>console.log('MongoDB connected....'))
+    .then(() => console.log('MongoDB connected....'))
     .catch(err => console.log(err))
 
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
+
+// Bodyparser (can get data from form using request.body)
+app.use(express.urlencoded({ extended: true }))
 
 const PORT = process.env.PORT || 5000
 
@@ -24,6 +27,6 @@ const indexRoutes = require('./routes/index')
 const userRoutes = require('./routes/users')
 
 app.use('/', indexRoutes)
-app.use('/users', userRoutes );
+app.use('/users', userRoutes);
 
-app.listen(PORT,console.log(`server started on port ${PORT}`))
+app.listen(PORT, console.log(`server started on port ${PORT}`))
