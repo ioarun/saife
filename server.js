@@ -14,6 +14,9 @@ require('./config/passport')(passport)
 // DB config
 const db = require('./config/keys').MongoURI
 
+//Middleware for static files
+app.use(express.static('public'))
+
 // Connect to mongo
 mongoose.connect(db, { useNewUrlParser: true })
     .then(() => console.log('MongoDB connected....'))

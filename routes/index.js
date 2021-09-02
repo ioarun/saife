@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('welcome')
-})
+    res.render('welcome', {title: "Members"})
+});
+// // Wellcome Page
+// router.get('/',(req,res,next)=>{
+//     // res.send('Welcome')
+//     res.render("layout", {title: "MAIN"});
+// })
 
 module.exports = router
