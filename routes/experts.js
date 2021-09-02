@@ -1,14 +1,11 @@
-const express = require('express')
-const router = express.Router()
-
+const express = require('express');
+const router = express.Router();
 
 // Login Page
-router.get('/Login',(req,res,next)=>{
+router.get('/Login', (req, res, next) => {
     res.send('Login')
 })
 // Register Page 
-router.get('/Register',(req,res,next)=>{
+router.get('/Register', (req, res, next) => {
     res.send('Register')
 })
-
-module.exports = router
