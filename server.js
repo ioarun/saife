@@ -8,6 +8,9 @@ const expressLayouts =require('express-ejs-layouts')
 app.use(expressLayouts)
 app.set('view engine','ejs')
 
+//Middleware for static files
+app.use(express.static('public'))
+
 const indexRoutes = require('./routes/index')
 const expertRoutes = require('./routes/experts')
 

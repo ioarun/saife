@@ -1,0 +1,57 @@
+.title {
+  color: black;
+  font-weight: bold;
+  font-family: cursive;
+}
+.mainText {
+  color: black;
+}
+p{
+  color:black;
+}
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.page-footer {
+  background-color: #5b64e0;
+  padding: 15px;
+}
+main {
+  flex: 1 0 auto;
+}
+.twitter-logo {
+  max-height: 50px;
+  width: 50px;
+  margin-top: 5px;
+  margin-bottom: -15px;
+  padding: 15%;
+  overflow: hidden;
+}
+
+.navClass {
+  height: 75;
+}
+
+.profile-pic {
+  max-height: 350px;
+  max-width: 350px;
+  clip-path: circle();
+}
+
+.profile-info {
+  font-weight: bold;
+}
+
+.sidenav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 996;
+  will-change: opacity;
+}
