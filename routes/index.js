@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
 //     res.render("layout", {title: "MAIN"});
 // })
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-    res.render('dashboard', { title: "Dashboard", name: req.user.name })
+    let fullname = req.user.firstname + " " + req.user.lastname
+    res.render('dashboard', { title: "Dashboard", name: fullname })
 });
 module.exports = router
