@@ -4,8 +4,8 @@
   "description": "Safety AI For Elderly (SAIFE)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "mongoose": "^6.0.3",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "request": "^2.88.2",
     "web-push": "^3.4.5"
   }
 }
