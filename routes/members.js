@@ -6,19 +6,19 @@ router.get('/', (req, res) => {
     let members = [
         {
             name: "Gouri Nandan",
-            age: "38"
+            status: "Fallen!"
         },
         {
             name: "Arun",
-            age: "36"
+            status: "All Good!"
         },
         {
             name: "Sodi",
-            age: "35"
+            status: "All Good!"
         },
         {
             name: "Chasham",
-            age: "33"
+            status: "All Good!"
         }
     ];
     res.render('members', {title: "Members", members});
