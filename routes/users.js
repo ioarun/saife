@@ -8,21 +8,27 @@ const User = require('../models/User')
 
 // Login Page
 router.get('/login', (req, res) => {
-    res.render('login', {title: "Login"})
+    res.render('login', { title: "Login" })
 })
 // Register Page 
 router.get('/register', (req, res) => {
-    res.render('register', {title: "Register"})
+    res.render('register', { title: "Register" })
 })
 // Register handle
 router.post('/register', (req, res) => {
     // Object destructuring 
-    const { name, email, password, password2 } = req.body
+    const { firstname, lastname, email, phone, password, password2 } = req.body
+    console.log(req.body)
     let errors = [];
 
     // Check for required fields
-    if (!name || !email || !password || !password2) {
+    if (!firstname || !lastname || !email || !phone || !password || !password2) {
         errors.push({ msg: "Please fill in all the fields" })
+    }
+
+    // Phone number lenth
+    if(isNaN(phone) || phone.length !=10){
+        errors.push({msg:'Phone number is incorrect '})
     }
 
     //  Check password match
@@ -39,8 +45,10 @@ router.post('/register', (req, res) => {
     if (errors.length > 0) {
         res.render('register', {
             errors,
-            name,
+            firstname,
+            lastname,
             email,
+            phone,
             password,
             password2,
             title: "Register"
@@ -54,16 +62,20 @@ router.post('/register', (req, res) => {
                     errors.push({ msg: 'Email is already registered' })
                     res.render('register', {
                         errors,
-                        name,
+                        firstname,
+                        lastname,
                         email,
+                        phone,
                         password,
                         password2,
                         title: "Register"
                     })
                 } else {
                     const newUser = new User({
-                        name,
+                        firstname,
+                        lastname,
                         email,
+                        phone,
                         password
                     });
 
@@ -103,7 +115,7 @@ router.post('/login', (req, res, next) => {
 // Logout handle
 router.get('/logout', (req, res) => {
     req.logout()
-    req.flash('success_msg','You are logged out')
+    req.flash('success_msg', 'You are logged out')
     res.redirect('/users/login')
 })
 
