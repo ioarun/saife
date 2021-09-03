@@ -13,8 +13,7 @@ const path = require("path");
 const app = express();
 
 // // Body parser middleware
-// app.use(bodyParser.json());
-
+app.use(bodyParser.json());
 
 
 // // Push
@@ -27,14 +26,11 @@ webpush.setVapidDetails('mailto:push@saife.com', publicVapidKey, privateVapidKey
 app.post('/subscribe', (req, res) => {
     // Get pushSubscription object from client
     const subscription = req.body;
-
     // Send 201 - resource created
     res.status(201).json({});
 
     // Create payload
     const payload = JSON.stringify({title: 'Push test'});
-
-    console.log(req);
 
     // Pass object into sendNotification
     webpush.sendNotification(subscription, payload).catch(err => console.log(err));
