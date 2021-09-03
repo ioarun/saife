@@ -7,14 +7,24 @@
                 <%- include('./partials/messages') %>
                 <form action="/users/register" method="POST">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="name" id="name" name="name" class="form-control" placeholder="Enter Name"
-                            value="<%= typeof name != 'undefined' ? name : '' %>" />
+                        <label for="firstname">First Name</label>
+                        <input type="name" id="firstname" name="firstname" class="form-control" placeholder="Enter First Name"
+                            value="<%= typeof firstname != 'undefined' ? firstname : '' %>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">Last Name</label>
+                        <input type="name" id="lastname" name="lastname" class="form-control" placeholder="Enter Last Name"
+                            value="<%= typeof lastname != 'undefined' ? lastname : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
                             value="<%= typeof email != 'undefined' ? email : '' %>" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="1234536783" 
+                            value="<%= typeof phone != 'undefined' ? phone : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
