@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const expressLayouts = require('express-ejs-layouts');
-const mongoose = require('mongoose')
 const flash = require('connect-flash') // Connect flash
 const session = require('express-session') // Connect session
 const passport = require('passport')
@@ -9,6 +8,7 @@ const passport = require('passport')
 const webpush = require('web-push');
 const bodyParser = require('body-parser');
 const path = require("path");
+const mongo = require('./dbconnect')
 
 const app = express();
 
@@ -50,16 +50,12 @@ app.use(express.urlencoded({ extended: true }));
 // Passport Config
 require('./config/passport')(passport)
 
-// DB config
-const db = require('./config/keys').MongoURI
 
 //Middleware for static files
 app.use(express.static('public'))
 
 // Connect to mongo
-mongoose.connect(db, { useNewUrlParser: true })
-    .then(() => console.log('MongoDB connected....'))
-    .catch(err => console.log(err))
+mongo();
 
 // EJS
 app.use(expressLayouts);
