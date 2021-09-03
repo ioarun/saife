@@ -8,11 +8,11 @@ const User = require('../models/User')
 
 // Login Page
 router.get('/login', (req, res) => {
-    res.render('login')
+    res.render('login', {title: "Login"})
 })
 // Register Page 
 router.get('/register', (req, res) => {
-    res.render('register')
+    res.render('register', {title: "Register"})
 })
 // Register handle
 router.post('/register', (req, res) => {
@@ -42,7 +42,8 @@ router.post('/register', (req, res) => {
             name,
             email,
             password,
-            password2
+            password2,
+            title: "Register"
         })
     } else {
         // When the validation passed
@@ -56,7 +57,8 @@ router.post('/register', (req, res) => {
                         name,
                         email,
                         password,
-                        password2
+                        password2,
+                        title: "Register"
                     })
                 } else {
                     const newUser = new User({
