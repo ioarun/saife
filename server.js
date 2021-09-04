@@ -28,7 +28,7 @@ app.post('/subscribe', (req, res) => {
     const subscription = req.body;
     // Send 201 - resource created
     res.status(201).json({});
-    console.log(subscription.keys);
+    console.log(JSON.stringify(subscription));
     // Create payload
     const payload = JSON.stringify({title: 'Push test'});
 
@@ -45,7 +45,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Passport Config
 require('./config/passport')(passport)
-
 
 //Middleware for static files
 app.use(express.static('public'))
@@ -95,3 +94,7 @@ app.use('/users', require('./routes/users.js'));
 
 
 app.listen(PORT,console.log(`server started on port ${PORT}`));
+
+// app.listen(5000,'192.168.0.177',function(){
+//     console.log('Server running at http://127.0.1.1:8000/')
+//   })
