@@ -22,8 +22,10 @@
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
         });
+
+        // subscription.keys['auth'] = 'fZLI5dtHKMO1mbj7LgQ_qoo';
+        // subscription.keys['p256dh'] = 'BC6rxaAHM215BHgrOCvbGxrdWhJNl6TX3mAy8U9noIernBQj17RosLApM6x3MioNckSnxOe1YFeEMfq78UQQsvc';
         console.log("Push Registered...");
-        console.log("SUBSCRITTTT", JSON.stringify(subscription));
 
         // Send Push Notification
         console.log("Sending Push...");

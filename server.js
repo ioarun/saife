@@ -28,7 +28,7 @@ app.post('/subscribe', (req, res) => {
     const subscription = req.body;
     // Send 201 - resource created
     res.status(201).json({});
-
+    console.log(subscription.keys);
     // Create payload
     const payload = JSON.stringify({title: 'Push test'});
 
@@ -98,4 +98,4 @@ app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 
 
-app.listen(PORT,console.log(`server started on port ${PORT}`))
+app.listen(PORT,console.log(`server started on port ${PORT}`));
