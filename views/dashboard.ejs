@@ -12,11 +12,11 @@
     
         // Check for service worker
         if ("serviceWorker" in navigator) {
-            send().catch(err => console.error(err));
+            register().catch(err => console.error(err));
         }
         
-        // Register SW, Register Push, Send Push
-        async function send() {
+        // Register SW, Register Push
+        async function register() {
             // Register Service Worker
             console.log("Registering service worker...");
             const register = await navigator.serviceWorker.register("/worker.js", {
@@ -32,8 +32,7 @@
             });
             console.log("Push Registered...");
             // console.log(JSON.stringify(subscription.endpoint))
-            // Send Push Notification
-            console.log("Sending Push...");
+            
             await fetch("/subscribe", {
             method: "POST",
             body: JSON.stringify({
@@ -44,7 +43,7 @@
                 "content-type": "application/json"
             }
             });
-            console.log("Push Sent...");
+            console.log("Subscription Object sent to server successfully...");
         }
         
         function urlBase64ToUint8Array(base64String) {

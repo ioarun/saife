@@ -67,6 +67,7 @@ app.post('/send-push', (req, res) => {
                     const payload = JSON.stringify({title: 'Push test'});
 
                     console.log(user.pushSubObj);
+                    console.log("Sending Push...");
                     // Pass object into sendNotification
                     webpush.sendNotification(JSON.parse(user.pushSubObj), payload).catch(err => console.log(err));
                 } 
