@@ -71,6 +71,7 @@ router.post('/register', (req, res) => {
                         title: "Register"
                     })
                 } else {
+
                     const newUser = new User({
                         firstname,
                         lastname,
@@ -101,6 +102,8 @@ router.post('/register', (req, res) => {
     }
 
 })
+
+
 
 // Login handle
 router.post('/login', (req, res, next) => {

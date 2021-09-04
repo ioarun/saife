@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    pushSubObj: {
+        type: Object,
+        required: false
+    },
     date: {
         type: String,
         default: Date.now
@@ -30,6 +34,6 @@ const UserSchema = new mongoose.Schema({
 })
 
 
-const User = mongoose.model('User',UserSchema)
+const User = mongoose.model('User', UserSchema)
 
 module.exports = User
