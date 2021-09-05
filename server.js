@@ -48,7 +48,7 @@ app.post('/subscribe', (req, res) => {
         });
 })
 
-// Subscribe Route
+// Push Route
 app.post('/send-push', (req, res) => {
     console.log(req.body._id);
     // Get pushSubscription from the db
@@ -134,6 +134,7 @@ app.use('/push', express.static('push'));
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+app.use('/myMembers', require('./routes/members.js'));
 
 
 app.listen(PORT,console.log(`server started on port ${PORT}`));

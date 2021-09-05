@@ -1,8 +1,11 @@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- <h1 class="mt-4">Dashboard</h1> -->
 <p class="lead mb-3">Welcome user <%= name %></p>
 <!-- <a href="/users/logout" class="btn btn-secondary">Logout</a> -->
 <script>
-
+    
+    isPushSupported();
     // If userId is not empty/undefined which means we need to register a new user
     // In other words, userId is sent so that we can send it back with the subscription object
     // to save in the db.
@@ -61,6 +64,32 @@
             return outputArray;
         }
 
-        }
-    
-    </script>
+    }
+
+//To check `push notification` is supported or not
+  function isPushSupported() {
+    //To check `push notification` permission is denied by user
+    if (Notification.permission === 'denied') {
+    //   alert('User has blocked push notification.');
+      Swal.fire(
+        'Alert',
+        'User has blocked push notification.',
+        'warning'
+        )
+      return;
+    }
+
+    //Check `push notification` is supported or not
+    if (!('PushManager' in window)) {
+    //   alert('Sorry, Push notification isn\'t supported in your browser.');
+        Swal.fire(
+        'Alert',
+        'Sorry, Push notification isn\'t supported in your browser.',
+        'warning'
+        )
+      return;
+    }
+
+  }
+
+</script>
