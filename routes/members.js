@@ -1,26 +1,36 @@
 const express = require('express');
 const router = express.Router();
 
-// Members Page
+//members array
+var members = [
+    {
+        firstName: "Gouri Nandan",
+        status: "Fallen!"
+    },
+    {
+        firstName: "Arun",
+        status: "All Good!"
+    },
+    {
+        firstName: "Sodi",
+        status: "Fallen!"
+    },
+    {
+        firstName: "Chasham",
+        status: "All Good!"
+    }
+];
+
+// Get Members
 router.get('/', (req, res) => {
-    let members = [
-        {
-            name: "Gouri Nandan",
-            age: "38"
-        },
-        {
-            name: "Arun",
-            age: "36"
-        },
-        {
-            name: "Sodi",
-            age: "35"
-        },
-        {
-            name: "Chasham",
-            age: "33"
-        }
-    ];
+    res.render('members', {title: "Members", members});
+});
+
+// Add Member
+router.post('/addMember', (req, res) => {
+    let member = req.body;
+    member.status = "All Good!";
+    members.push(member);
     res.render('members', {title: "Members", members});
 });
 
