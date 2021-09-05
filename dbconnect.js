@@ -15,6 +15,6 @@ const close = () => {
     mongoose.disconnect()
 }
 
-module.exports = mongo,close
+module.exports =  mongo, close 
 
 
