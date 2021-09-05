@@ -23,7 +23,6 @@ var members = [
 
 // Get Members
 router.get('/', (req, res) => {
-    console.log(members);
     res.render('members', {title: "Members", members});
 });
 
