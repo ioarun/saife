@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const { ensureAuthenticated } = require('../config/auth');
 
 // User Model
 const User = require('../models/User')
+// Member Model
+const Member = require('../models/Member')
 
 // Login Page
 router.get('/login', (req, res) => {
@@ -27,8 +30,8 @@ router.post('/register', (req, res) => {
     }
 
     // Phone number lenth
-    if(isNaN(phone) || phone.length !=10){
-        errors.push({msg:'Phone number is incorrect '})
+    if (isNaN(phone) || phone.length != 10) {
+        errors.push({ msg: 'Phone number is incorrect ' })
     }
 
     //  Check password match
@@ -103,10 +106,102 @@ router.post('/register', (req, res) => {
 
 })
 
+// Members Page
+router.get('/myMembers', ensureAuthenticated, (req, res) => {
+    Member.find({})
+        .then(records => {
+            let members = records
+            res.render('members', { title: "Members", members });
+        })
+        .catch(err => console.log(err))
+
+});
+
+// Rgister handle for member
+router.post('/myMembers', ensureAuthenticated, (req, res) => {
+
+    Member.find({})
+        .then(records => {
+            let members = records
+
+            // Object destructuring 
+            const { firstname, lastname, email, address, age, description, phone } = req.body
+            let errors = [];
+
+            // Check for required fields
+            if (!firstname || !lastname || !email || !address || !age || !phone) {
+                errors.push({ msg: "Please fill in all the fields" })
+            }
+
+            // Phone number lenth
+            if (isNaN(phone) || phone.length != 10) {
+                errors.push({ msg: 'Phone number is incorrect ' })
+            }
+
+            // If there's an error re render the registraion page
+            if (errors.length > 0) {
+                res.render('members', {
+                    errors,
+                    members,
+                    firstname,
+                    lastname,
+                    email,
+                    address,
+                    age,
+                    phone,
+                    title: "Member Register"
+                })
+            } else {
+                // When the validation passed
+                Member.findOne({ email: email })
+                    .then(member => {
+                        if (member) {
+                            // if there's a user rerender the register form
+                            errors.push({ msg: 'Email is already registered' })
+                            res.render('members', {
+                                errors,
+                                members,
+                                firstname,
+                                lastname,
+                                email,
+                                address,
+                                age,
+                                email,
+                                phone,
+                                title: "Member Register"
+                            })
+                        } else {
+                            const newMember = new Member({
+                                firstname,
+                                lastname,
+                                email,
+                                email,
+                                address,
+                                age,
+                                description,
+                                phone
+                            });
+                            newMember.save()
+                                .then(member => {
+                                    req.flash('success_msg', 'New user saved successfully')
+                                    res.render('members', { title: "Dashboard", members })
+                                })
+                                .catch(err => console.log(err))
+
+
+                        }
+                    })
+
+            }
+        }).catch(err => console.log(err))
+
+
+})
+
 // Login handle
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/dashboard',
+        successRedirect: '/',
         failureRedirect: '/users/login',
         failureFlash: true
     })(req, res, next);

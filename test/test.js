@@ -1,23 +1,23 @@
-const { expect } = require('chai');
-const request = require('supertest');
-const router = require('../routes/users')
+const { expect } = require('chai')
+const request = require('supertest')
+const passport = require('passport')
+// const app = require('../server')
 
-const app = require('../server')
-const db = require('../dbconnect');
-//const { connect } = require('../routes');
+const server = request.agent('http://localhost:5000')
 
-describe('POST /users/login',()=>{
-    // DB connection established
-    before((done)=>{
-        db.connect()
-        .then(()=>done())
-        .catch((err)=>done(err))
+describe('GET /users/login',()=>{
+    it('login',(done)=>{
+        server
+            .post('/users/login')
+            .send({email:'izuru775@gmail.com',password:'123456'})
+            .expect(302)
+            .expect('Location','/')
+            .end((err,res)=>{
+                if(err){
+                  return done(err)
+                }
+                return done()
+            })
     })
-    // DB connection closed
-    after((done)=>{
-        db.close()
-        .then(()=>done())
-        .catch((err)=>done(err))
-    })
-    it()
 })
+
