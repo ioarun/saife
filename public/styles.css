@@ -55,3 +55,25 @@ main {
   z-index: 996;
   will-change: opacity;
 }
+
+.circle {
+  width: 10px;
+  height: 10px;
+  line-height: 200px;
+  border-radius: 50%; /* the magic */
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 auto 40px;
+}
+
+.status-indicator-good {
+  background-color: #16a085;
+}
+.status-indicator-fall {
+  background-color: #e74c3c;
+}

@@ -9,12 +9,15 @@ const webpush = require('web-push');
 const bodyParser = require('body-parser');
 const path = require("path");
 const mongo = require('./dbconnect')
+var mongoose = require('mongoose');
+
+// User Model
+const User = require('./models/User')
 
 const app = express();
 
 // // Body parser middleware
-// app.use(bodyParser.json());
-
+app.use(bodyParser.json());
 
 
 // // Push
@@ -27,17 +30,53 @@ webpush.setVapidDetails('mailto:push@saife.com', publicVapidKey, privateVapidKey
 app.post('/subscribe', (req, res) => {
     // Get pushSubscription object from client
     const subscription = req.body;
-
     // Send 201 - resource created
     res.status(201).json({});
+    // console.log(JSON.stringify(subscription));
 
-    // Create payload
-    const payload = JSON.stringify({title: 'Push test'});
+    // Save the subscription object in the database
+    userId = new mongoose.mongo.ObjectId(subscription.id);
+    User.findByIdAndUpdate(userId, 
+        {pushSubObj: subscription.pushSubObj}, function(err, data) {
+            if(err){
+                console.log(err);
+            }
+            else{
+                // res.send(data);
+                console.log("pushSubObj updated! id : ", userId);
+            }
+        });
+})
 
-    console.log(req);
+// Push Route
+app.post('/send-push', (req, res) => {
+    console.log(req.body._id);
+    // Get pushSubscription from the db
+    User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+            .then(user => {
+                // Check if push subscription object is undefined (push is not registered)
+                // console.log(user._id.toString());
+                if (user.pushSubObj){
+                    
+                    // const subscription = req.body;
+                    // Send 201 - resource created
+                    res.status(201).json({});
+                
 
-    // Pass object into sendNotification
-    webpush.sendNotification(subscription, payload).catch(err => console.log(err));
+                    // Create payload
+                    const payload = JSON.stringify({title: 'Push test'});
+
+                    console.log(user.pushSubObj);
+                    console.log("Sending Push...");
+                    // Pass object into sendNotification
+                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload).catch(err => console.log(err));
+                } 
+                else {
+                    console.log("No Push Subscription Object Found!")
+                }  
+            })
+            .catch(err => console.log(err));
+    
 })
 
 // EJS
@@ -49,7 +88,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Passport Config
 require('./config/passport')(passport)
-
 
 //Middleware for static files
 app.use(express.static('public'))
@@ -96,8 +134,11 @@ app.use('/push', express.static('push'));
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
-// app.use('/member',require('./routes/members.js'))
+app.use('/myMembers', require('./routes/members.js'));
 
-app.listen(PORT,console.log(`server started on port ${PORT}`))
 
-module.exports = app
+app.listen(PORT,console.log(`server started on port ${PORT}`));
+
+// app.listen(5000,'192.168.0.177',function(){
+//     console.log('Server running at http://127.0.1.1:8000/')
+//   })

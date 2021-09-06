@@ -1,3 +1,95 @@
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- <h1 class="mt-4">Dashboard</h1> -->
 <p class="lead mb-3">Welcome user <%= name %></p>
 <!-- <a href="/users/logout" class="btn btn-secondary">Logout</a> -->
+<script>
+    
+    isPushSupported();
+    // If userId is not empty/undefined which means we need to register a new user
+    // In other words, userId is sent so that we can send it back with the subscription object
+    // to save in the db.
+    if ('<%=id%>'){
+        var userId = '<%=id%>';
+        const publicVapidKey = "BOHjA_8rowVAwIEwllMoc5ha_NJEYepUvXAyArv4886enG1hzvIxGSn-v3Lr3koyDlvYxmU1M8HKgbvcHhTc95Y";
+    
+        // Check for service worker
+        if ("serviceWorker" in navigator) {
+            register().catch(err => console.error(err));
+        }
+        
+        // Register SW, Register Push
+        async function register() {
+            // Register Service Worker
+            console.log("Registering service worker...");
+            const register = await navigator.serviceWorker.register("/worker.js", {
+            scope: "/"
+            });
+            console.log("Service Worker Registered...");
+        
+            // Register Push
+            console.log("Registering Push...");
+            const subscription = await register.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+            });
+            console.log("Push Registered...");
+            // console.log(JSON.stringify(subscription.endpoint))
+            
+            await fetch("/subscribe", {
+            method: "POST",
+            body: JSON.stringify({
+                id: userId,
+                pushSubObj: JSON.stringify(subscription)
+            }),
+            headers: {
+                "content-type": "application/json"
+            }
+            });
+            console.log("Subscription Object sent to server successfully...");
+        }
+        
+        function urlBase64ToUint8Array(base64String) {
+            const padding = "=".repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+            .replace(/\-/g, "+")
+            .replace(/_/g, "/");
+        
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+        
+            for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+
+    }
+
+//To check `push notification` is supported or not
+  function isPushSupported() {
+    //To check `push notification` permission is denied by user
+    if (Notification.permission === 'denied') {
+    //   alert('User has blocked push notification.');
+      Swal.fire(
+        'Alert',
+        'User has blocked push notification.',
+        'warning'
+        )
+      return;
+    }
+
+    //Check `push notification` is supported or not
+    if (!('PushManager' in window)) {
+    //   alert('Sorry, Push notification isn\'t supported in your browser.');
+        Swal.fire(
+        'Alert',
+        'Sorry, Push notification isn\'t supported in your browser.',
+        'warning'
+        )
+      return;
+    }
+
+  }
+
+</script>
