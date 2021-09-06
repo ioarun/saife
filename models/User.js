@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 
 // Create Schema
 const UserSchema = new mongoose.Schema({
-    firstname: {
+    firstName: {
         type: String,
         required: true
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true
     },

@@ -20,12 +20,12 @@ router.get('/register', (req, res) => {
 // Register handle
 router.post('/register', (req, res) => {
     // Object destructuring 
-    const { firstname, lastname, email, phone, password, password2 } = req.body
+    const { firstName, lastName, email, phone, password, password2 } = req.body
     console.log(req.body)
     let errors = [];
 
     // Check for required fields
-    if (!firstname || !lastname || !email || !phone || !password || !password2) {
+    if (!firstName || !lastName || !email || !phone || !password || !password2) {
         errors.push({ msg: "Please fill in all the fields" })
     }
 
@@ -48,8 +48,8 @@ router.post('/register', (req, res) => {
     if (errors.length > 0) {
         res.render('register', {
             errors,
-            firstname,
-            lastname,
+            firstName,
+            lastName,
             email,
             phone,
             password,
@@ -65,8 +65,8 @@ router.post('/register', (req, res) => {
                     errors.push({ msg: 'Email is already registered' })
                     res.render('register', {
                         errors,
-                        firstname,
-                        lastname,
+                        firstName,
+                        lastName,
                         email,
                         phone,
                         password,
@@ -76,8 +76,8 @@ router.post('/register', (req, res) => {
                 } else {
 
                     const newUser = new User({
-                        firstname,
-                        lastname,
+                        firstName,
+                        lastName,
                         email,
                         phone,
                         password
@@ -125,11 +125,11 @@ router.post('/myMembers', ensureAuthenticated, (req, res) => {
             let members = records
 
             // Object destructuring 
-            const { firstname, lastname, email, address, age, description, phone } = req.body
+            //const { firstName, lastName,gender, email, address, age, description, phone } = req.body
             let errors = [];
 
             // Check for required fields
-            if (!firstname || !lastname || !email || !address || !age || !phone) {
+            if (!firstName || !lastName || !gender || !email || !address || !age || !phone) {
                 errors.push({ msg: "Please fill in all the fields" })
             }
 
@@ -143,8 +143,9 @@ router.post('/myMembers', ensureAuthenticated, (req, res) => {
                 res.render('members', {
                     errors,
                     members,
-                    firstname,
-                    lastname,
+                    firstName,
+                    lastName,
+                    gender,
                     email,
                     address,
                     age,
@@ -161,20 +162,21 @@ router.post('/myMembers', ensureAuthenticated, (req, res) => {
                             res.render('members', {
                                 errors,
                                 members,
-                                firstname,
-                                lastname,
+                                firstName,
+                                lastName,
+                                gender,
                                 email,
                                 address,
                                 age,
-                                email,
+                                description,
                                 phone,
                                 title: "Member Register"
                             })
                         } else {
                             const newMember = new Member({
-                                firstname,
-                                lastname,
-                                email,
+                                firstName,
+                                lastName,
+                                gender,
                                 email,
                                 address,
                                 age,
@@ -216,14 +218,14 @@ router.get('/logout', (req, res) => {
 })
 
 // User Accounts Page
-router.get('/userAccountSettings', (req, res) => {
-    console.log(req);
-    // User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+router.get('/userAccountSettings',ensureAuthenticated, (req, res) => {
+    console.log(req.user);
+    // User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })›
     //         .then(user => {});
     res.render('userAccountSettings', { title: "Account Settings",   
                                         id: req.user._id.toString(), 
-                                        firstname: req.user.firstname,
-                                        lastname: req.user.lastname,
+                                        firstName: req.user.firstName,
+                                        lastName: req.user.lastName,
                                         email: req.user.email,
                                         phone: req.user.phone,
                                         })

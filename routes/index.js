@@ -18,7 +18,7 @@ const { ensureAuthenticated } = require('../config/auth');
 //     res.render("layout", {title: "MAIN"});
 // })
 router.get('/', ensureAuthenticated, (req, res) => {
-    let fullname = req.user.firstname + " " + req.user.lastname
+    let fullname = req.user.firstName + " " + req.user.lastName
     // res.render('dashboard', { title: "Dashboard", name: fullname })
    
     User.findOne({ _id: req.user._id })
