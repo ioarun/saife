@@ -217,7 +217,6 @@ router.get('/logout', (req, res) => {
 
 // User Accounts Page
 router.get('/userAccountSettings', (req, res) => {
-    console.log(req);
     // User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
     //         .then(user => {});
     res.render('userAccountSettings', { title: "Account Settings",   
