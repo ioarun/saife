@@ -71,6 +71,7 @@ router.post('/register', (req, res) => {
                         title: "Register"
                     })
                 } else {
+
                     const newUser = new User({
                         firstname,
                         lastname,
@@ -117,6 +118,20 @@ router.get('/logout', (req, res) => {
     req.logout()
     req.flash('success_msg', 'You are logged out')
     res.redirect('/users/login')
+})
+
+// User Accounts Page
+router.get('/userAccountSettings', (req, res) => {
+    console.log(req);
+    // User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+    //         .then(user => {});
+    res.render('userAccountSettings', { title: "Account Settings",   
+                                        id: req.user._id.toString(), 
+                                        firstname: req.user.firstname,
+                                        lastname: req.user.lastname,
+                                        email: req.user.email,
+                                        phone: req.user.phone,
+                                        })
 })
 
 module.exports = router;
