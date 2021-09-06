@@ -6,23 +6,21 @@ const mongoose = require('mongoose')
 
 const Member = require('../models/Member')
 // Members Page
-router.get('/memberRegister', (req, res) => {
+router.get('/myMembers',ensureAuthenticated, (req, res) => {
     let members = [
     ];
     res.render('members', {title: "Members", members});
 });
 
 // Rgister handle for member
-router.post('/memberRegister',(req,res)=>{
+router.post('/myMembers',ensureAuthenticated,(req,res)=>{
         
         Member.find({})
         .then(records=>{
             let members = records
             
-            console.log(members)
             // Object destructuring 
             const { firstname, lastname, email, phone } = req.body
-            console.log(req.body)
             let errors = [];
      
             // Check for required fields
