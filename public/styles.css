@@ -77,3 +77,7 @@ main {
 .status-indicator-fall {
   background-color: #e74c3c;
 }
+
+nav>div>ul>li :hover{
+  color: black;
+}
