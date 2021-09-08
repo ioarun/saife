@@ -1,28 +1,30 @@
 <html>
+
 <head>
-<link href="../public/styles.css" rel="stylesheet" type="text/css">
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="../public/styles.css" rel="stylesheet" type="text/css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
-<div class="row mt-5">
-    <div class="col-md-6 m-auto">
-        <div class="card card-body">
+    <div class="row mt-5">
+        <div class="col-md-6 m-auto">
+            <div class="card card-body form-round">
                 <%- include('./partials/messages') %>
                 <form action="/users/register" method="POST">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="name" id="firstName" name="firstName" class="form-control" placeholder="<%= typeof firstname != 'undefined' ? firstname : '' %>"
+                        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="<%= typeof firstname != 'undefined' ? firstname : '' %>"
                             value="<%= typeof firstName != 'undefined' ? firstName : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input type="name" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
+                        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
                             value="<%= typeof lastName != 'undefined' ? lastName : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
-                            value="<%= typeof email != 'undefined' ? email : '' %>" readonly/>
+                            value="<%= typeof email != 'undefined' ? email : '' %>" disabled/>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
@@ -31,9 +33,9 @@
                     </div>
                     <div class="form-group">
                         <label for="userId">User ID</label>
-                        <input id="userId" name="userId" class="form-control"
+                        <input type="text" id="userId" name="userId" class="form-control"
                             placeholder="User ID"
-                            value="<%= typeof id != 'undefined' ? id : '' %>" readonly />
+                            value="<%= typeof id != 'undefined' ? id : '' %>" disabled />
                     </div>
                     <div class="form-group">
                         <label for="subscriptionButton">Notification</label>
@@ -47,137 +49,138 @@
                             </label>
                         </div>
                     </div>
+                    <br>
                     <div class="form-group">
-                    <button type="submit" disabled class="btn btn-primary btn-block">
+                    <button type="submit" class="btn btn-primary btn-block">
                         Save
                     </button>
                     </div>
                 </form>
         </div>
     </div>
-</div>
-<script>
-    isPushSupported();
+    <script>
+        isPushSupported();
 
-    const userId = '<%= id %>';
+        const userId = '<%= id %>';
 
-    var subscriptionButton = document.getElementById('subscriptionButton');
+        var subscriptionButton = document.getElementById('subscriptionButton');
 
-    function setSubscribeButton() {
-        subscriptionButton.onclick = subscribe;
-        subscriptionButton.checked = false;
-    }
-
-    function setUnsubscribeButton() {
-        subscriptionButton.onclick = unsubscribe;
-        subscriptionButton.checked = true;
-    }
-    navigator.serviceWorker.register('/worker.js');
-    navigator.serviceWorker.ready
-    .then(function(registration) {
-    console.log('service worker registered');
-    subscriptionButton.removeAttribute('disabled');
-
-    return registration.pushManager.getSubscription();
-    }).then(function(subscription) {
-    if (subscription) {
-        console.log('Already subscribed', subscription.endpoint);
-        setUnsubscribeButton();
-    } else {
-        setSubscribeButton();
-    }
-    });
-
-    function subscribe() {
-        navigator.serviceWorker.ready
-        .then(async function(registration) {
-        const publicVapidKey = "BOHjA_8rowVAwIEwllMoc5ha_NJEYepUvXAyArv4886enG1hzvIxGSn-v3Lr3koyDlvYxmU1M8HKgbvcHhTc95Y";
-    
-        const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
-
-        return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: convertedVapidKey
-        });
-    }).then(function(subscription) {
-        console.log('Subscribed', subscription.endpoint);
-        return fetch("/subscribe", {
-        method: "POST",
-        body: JSON.stringify({
-            id: userId,
-            pushSubObj: JSON.stringify(subscription)
-        }),
-        headers: {
-            "content-type": "application/json"
+        function setSubscribeButton() {
+            subscriptionButton.onclick = subscribe;
+            subscriptionButton.checked = false;
         }
-        });
-        console.log("Subscription Object sent to server successfully...");
-    }).then(setUnsubscribeButton);
-    }
 
-    function unsubscribe() {
+        function setUnsubscribeButton() {
+            subscriptionButton.onclick = unsubscribe;
+            subscriptionButton.checked = true;
+        }
+        navigator.serviceWorker.register('/worker.js');
         navigator.serviceWorker.ready
-        .then(function(registration) {
-            return registration.pushManager.getSubscription();
-        }).then(function(subscription) {
-            return subscription.unsubscribe()
-            .then(function() {
-                console.log('Unsubscribed', subscription.endpoint);
-                // return fetch('unregister', {
-                // method: 'post',
-                // headers: {
-                //     'Content-type': 'application/json'
-                // },
-                // body: JSON.stringify({
-                //     subscription: subscription
-                // })
-                // });
+            .then(function (registration) {
+                console.log('service worker registered');
+                subscriptionButton.removeAttribute('disabled');
+
+                return registration.pushManager.getSubscription();
+            }).then(function (subscription) {
+                if (subscription) {
+                    console.log('Already subscribed', subscription.endpoint);
+                    setUnsubscribeButton();
+                } else {
+                    setSubscribeButton();
+                }
             });
-        }).then(setSubscribeButton);
+
+        function subscribe() {
+            navigator.serviceWorker.ready
+                .then(async function (registration) {
+                    const publicVapidKey = "BOHjA_8rowVAwIEwllMoc5ha_NJEYepUvXAyArv4886enG1hzvIxGSn-v3Lr3koyDlvYxmU1M8HKgbvcHhTc95Y";
+
+                    const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
+
+                    return registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: convertedVapidKey
+                    });
+                }).then(function (subscription) {
+                    console.log('Subscribed', subscription.endpoint);
+                    return fetch("/subscribe", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            id: userId,
+                            pushSubObj: JSON.stringify(subscription)
+                        }),
+                        headers: {
+                            "content-type": "application/json"
+                        }
+                    });
+                    console.log("Subscription Object sent to server successfully...");
+                }).then(setUnsubscribeButton);
+        }
+
+        function unsubscribe() {
+            navigator.serviceWorker.ready
+                .then(function (registration) {
+                    return registration.pushManager.getSubscription();
+                }).then(function (subscription) {
+                    return subscription.unsubscribe()
+                        .then(function () {
+                            console.log('Unsubscribed', subscription.endpoint);
+                            // return fetch('unregister', {
+                            // method: 'post',
+                            // headers: {
+                            //     'Content-type': 'application/json'
+                            // },
+                            // body: JSON.stringify({
+                            //     subscription: subscription
+                            // })
+                            // });
+                        });
+                }).then(setSubscribeButton);
         }
 
 
 
-    function urlBase64ToUint8Array(base64String) {
+        function urlBase64ToUint8Array(base64String) {
             const padding = "=".repeat((4 - base64String.length % 4) % 4);
             const base64 = (base64String + padding)
-            .replace(/\-/g, "+")
-            .replace(/_/g, "/");
-        
+                .replace(/\-/g, "+")
+                .replace(/_/g, "/");
+
             const rawData = window.atob(base64);
             const outputArray = new Uint8Array(rawData.length);
-        
+
             for (let i = 0; i < rawData.length; ++i) {
-            outputArray[i] = rawData.charCodeAt(i);
+                outputArray[i] = rawData.charCodeAt(i);
             }
             return outputArray;
         }
 
-    //To check `push notification` is supported or not
-    function isPushSupported() {
-        //To check `push notification` permission is denied by user
-        if (Notification.permission === 'denied') {
-        //   alert('User has blocked push notification.');
-        Swal.fire(
-            'Alert',
-            'You have blocked the push notification.',
-            'warning'
-            )
-        return;
-        }
+        //To check `push notification` is supported or not
+        function isPushSupported() {
+            //To check `push notification` permission is denied by user
+            if (Notification.permission === 'denied') {
+                //   alert('User has blocked push notification.');
+                Swal.fire(
+                    'Alert',
+                    'You have blocked the push notification.',
+                    'warning'
+                )
+                return;
+            }
 
-        //Check `push notification` is supported or not
-        if (!('PushManager' in window)) {
-        //   alert('Sorry, Push notification isn\'t supported in your browser.');
-            Swal.fire(
-            'Alert',
-            'Sorry, Push notification isn\'t supported in your browser.',
-            'warning'
-            )
-        return;
-        }
+            //Check `push notification` is supported or not
+            if (!('PushManager' in window)) {
+                //   alert('Sorry, Push notification isn\'t supported in your browser.');
+                Swal.fire(
+                    'Alert',
+                    'Sorry, Push notification isn\'t supported in your browser.',
+                    'warning'
+                )
+                return;
+            }
 
-    }
-</script>
+        }
+    </script>
 </body>
+
 </html>

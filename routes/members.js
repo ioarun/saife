@@ -7,29 +7,53 @@ const mongoose = require('mongoose')
 var members = [
     {
         firstName: "Gouri Nandan",
-        status: "Fallen!"
+        lastName: "Gangavaram!",
+        memberID: "G - ID",
+        gender: "M",
+        address: "G Test Address",
+        description: "G Test Description",
+        status: "Fallen!",
+        age:33
     },
     {
         firstName: "Arun",
-        status: "All Good!"
+        lastName: "A!",
+        memberID: "A - ID",
+        gender: "M",
+        address: "A Test Address",
+        description: "A Test Description",
+        status: "All Good!",
+        age:32
     },
     {
         firstName: "Sodi",
-        status: "Fallen!"
+        lastName: "S!",
+        memberID: "S - ID",
+        gender: "M",
+        address: "S Test Address",
+        description: "S Test Description",
+        status: "Fallen!",
+        age:31
     },
     {
         firstName: "Chasham",
-        status: "All Good!"
+        lastName: "C!",
+        memberID: "C - ID",
+        gender: "F",
+        address: "C Test Address",
+        description: "C Test Description",
+        status: "All Good!",
+        age:34
     }
 ];
 
 // Get Members
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
     res.render('members', {title: "Members", members});
 });
 
 // Add Member
-router.post('/addMember', (req, res) => {
+router.post('/addMember', ensureAuthenticated, (req, res) => {
     let member = req.body;
     member.status = "All Good!";
     members.push(member);
@@ -37,7 +61,7 @@ router.post('/addMember', (req, res) => {
 });
 
 // Rgister handle for member
-router.post('/myMembers',ensureAuthenticated,(req,res)=>{
+router.get('/myMembers',ensureAuthenticated,(req,res)=>{
         
         Member.find({})
         .then(records=>{

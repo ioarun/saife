@@ -78,4 +78,28 @@ main {
   background-color: #e74c3c;
 }
 
+nav>div>ul>li :hover{
+  color: black;
+}
 
+#addMemberModal {
+  border-radius: 20px;
+}
+#addMemberModal::-webkit-scrollbar {
+  display: none;
+}
+
+#viewMemberDetailsModal {
+  border-radius: 20px;
+}
+#viewMemberDetailsModal::-webkit-scrollbar {
+  display: none;
+}
+
+.form-round {
+border-radius: 20px;
+}
+
+.body-bg {
+  background-color: #e9ebee;
+}

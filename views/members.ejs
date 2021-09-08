@@ -10,9 +10,9 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (members.length!= 0) { %>
+                <% if (members.length!=0) { %>
                     <% members.forEach((member, index)=> { %>
-                        <tr>
+                        <tr id=<%=index %>>
                             <th class="text-center" scope="row">
                                 <%= index+1 %>
                             </th>
@@ -28,7 +28,7 @@
                                             <% } %>
                             </td>
                             <td class="text-center">
-                                <a href="#">View Details</a>
+                                <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View Details</a>
                             </td>
                             <td class="text-center">
                                 <% if(member.status==="Fallen!" ) { %>
@@ -37,15 +37,15 @@
                             </td>
                         </tr>
                         <% }) %>
-                <% } %>
+                            <% } %>
             </tbody>
         </table>
         <div class="fixed-action-btn"> -
-            <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addItemModal"><i
+            <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
                     class="material-icons">add</i></a>
         </div>
-        <!-- Modal Structure -->
-        <div id="addItemModal" class="modal">
+        <!-- Add Member Modal Structure -->
+        <div id="addMemberModal" class="modal addMemberModal">
             <div class="modal-content">
                 <h4>Add Member</h4>
             </div>
@@ -93,7 +93,81 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 center-align">
-                            <a class="waves-effect waves-light btn" id="formSubmit">Add</a>
+                            <a class="waves-effect waves-light btn" id="addMember">Add</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- View Member Details Modal Structure -->
+        <div id="viewMemberDetailsModal" class="modal viewMemberDetailsModal">
+            <div class="modal-content">
+                <h4>Member Details</h4>
+            </div>
+            <div class="row modal-content">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <script>
+                                $('.viewDetails').click(function () {
+                                    event.preventDefault();
+                                    var rowID = event.target.parentNode.parentNode.id;
+                                    var mems = '<%- JSON.stringify(members) %>';
+                                    mems = JSON.parse(mems);
+
+                                    var data = $("tr[id=" + event.target.parentNode.parentNode.id + " ]")[0].cells;
+
+                                    $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
+                                    $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
+                                    $("#viewMemberDetailsGender").attr("value", mems[rowID].gender);
+                                    $("#viewMemberDetailsAge").attr("value", mems[rowID].age);
+                                    $("#viewMemberDetailsEmail").attr("value", mems[rowID].emailID);
+                                    $("#viewMemberDetailsAddress").val(mems[rowID].address);
+                                    $("#viewMemberDetailsDescription").val(mems[rowID].description);
+                                    $("#viewMemberDetailsMemberID").attr("value", mems[rowID].memberID);
+                                });
+                            </script>
+                            <input placeholder="FirstName" id="viewMemberDetailsFirstName" type="text">
+                            <label for="viewMemberDetailsFirstName">FirstName</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input placeholder="LastName" id="viewMemberDetailsLastName" type="text">
+                            <label for="viewMemberDetailsLastName">LastName</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="Gender" id="viewMemberDetailsGender" type="text">
+                            <label for="viewMemberDetailsGender">Gender</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input placeholder="Age" id="viewMemberDetailsAge" type="text">
+                            <label for="viewMemberDetailsAge">Age</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea placeholder="Address" id="viewMemberDetailsAddress" rows="3"
+                                class="materialize-textarea"></textarea>
+                            <label for="viewMemberDetailsAddress">Address</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea placeholder="Description" id="viewMemberDetailsDescription" rows="3"
+                                class="materialize-textarea"></textarea>
+                            <label for="viewMemberDetailsDescription">Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="Member ID" id="viewMemberDetailsMemberID" type="text" disabled>
+                            <label for="viewMemberDetailsMemberID">ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 center-align">
+                            <a class="waves-effect waves-light btn" id="updateMemberDetails">Update</a>
                         </div>
                     </div>
                 </form>
@@ -101,26 +175,39 @@
         </div>
     </div>
     <script>
-        $('.modal').modal();
+        $('#addMemberModal').modal();
+        $('#viewMemberDetailsModal').modal();
         $('select').formSelect();
 
-        $('#formSubmit').click(() => {
+        $('#addMember').click(() => {
             addMemberSubmit();
         });
 
-        const addMemberSubmit = () => {
-            let memberData = {};
-            memberData.firstName = $('#firstName').val();
-            memberData.lastName = $('#lastName').val();
-            memberData.gender = $('#gender').val();
-            memberData.age = $('#age').val();
-            memberData.address = $('#address').val();
-            memberData.description = $('#description').val();
+        $('#updateMemberDetails').click(() => {
+            updateMemberDetailsSubmit();
+        });
 
-            $('.modal').modal('close');
+        const addMemberSubmit = () => {
+            let firstName = $('#firstName').val();
+            let lastName = $('#lastName').val();
+            let gender = $('#gender').val();
+            let age = $('#age').val();
+            let address = $('#address').val();
+            let description = $('#description').val();
+
+            let memberData = {};
+            memberData.firstName = firstName;
+            memberData.lastName = lastName;
+            memberData.gender = gender;
+            memberData.age = age;
+            memberData.address = address;
+            memberData.description = description;
+
+            let modalInstance = M.Modal.getInstance($("#addMemberModal"));
+            modalInstance.close();
 
             $.ajax({
-                url: "/myMembers",
+                url: "/users/myMembers",
                 data: memberData,
                 type: "POST",
                 success: (result) => {
@@ -128,5 +215,20 @@
                 }
             });
         }
+        const updateMemberDetailsSubmit = () => {
+            let memberData = {};
+            memberData.firstName = $('#viewMemberDetailsFirstName').val();
+            memberData.lastName = $('#viewMemberDetailsLastName').val();
+            memberData.gender = $('#viewMemberDetailsGender').val();
+            memberData.age = $('#viewMemberDetailsAge').val();
+            memberData.address = $('#viewMemberDetailsAddress').val();
+            memberData.description = $('#viewMemberDetailsDescription').val();
+
+            let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
+            modalInstance.close();
+
+            console.log(memberData);
+        }
+
     </script>
 </body>
