@@ -30,17 +30,58 @@
                                 </div>
                             </form>
                             <p class="lead mt-2">
-                                No Account? <a href="/users/register">Register</a>
+                                <!-- No Account? <a href="/users/register">Register</a> -->
+                                No Account? <a class="waves-effect waves-light modal-trigger" href="#registerModal">Register</a>
                             </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Register modal -->
+            <%- include('register') %>
+
         </div>
         
         <script>
             // $("nav>div>ul").toggleClass("hide");
             // $("nav>div>div").toggleClass("hide");
             $(".navbar-fixed").toggleClass("hide");
+            
+            $('#registerModal').modal();
+            $('select').formSelect();
+
+            $('#register').click(() => {
+                registerSubmit();
+            });
+
+            const registerSubmit = () => {
+                let firstName = $('#firstName').val();
+                let lastName = $('#lastName').val();
+                let phone = $('#phone').val();
+                let email = $('#email-register').val();
+                let password = $('#password-register').val();
+                let password2 = $('#password2').val();
+
+                let userData = {};
+                userData.firstName = firstName;
+                userData.lastName = lastName;
+                userData.phone = phone;
+                userData.email = email;
+                userData.password = password;
+                userData.password2 = password2;
+
+                let modalInstance = M.Modal.getInstance($("#registerModal"));
+                modalInstance.close();
+
+                $.ajax({
+                    url: "/users/register",
+                    data: userData,
+                    type: "POST",
+                    success: (result) => {
+                        window.location.reload();
+                    }
+                });
+            }
         </script>
     </body>
     
