@@ -120,7 +120,7 @@
             $('.modal').modal('close');
 
             $.ajax({
-                url: "/myMembers/addMember",
+                url: "/myMembers",
                 data: memberData,
                 type: "POST",
                 success: (result) => {
