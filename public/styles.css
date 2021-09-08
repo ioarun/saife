@@ -97,9 +97,28 @@ nav>div>ul>li :hover{
 }
 
 .form-round {
-border-radius: 20px;
+border-radius: 10px;
 }
 
 .body-bg {
   background-color: #e9ebee;
+}
+
+.body-bg-login {
+  background-image: url(/assets/bg2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-body-container{
+  height: calc(100vh - 53px);
+}
+
+.btn-saife {
+  background-color: #5b64e0;
+}
+
+.fixed-action-btn-saife {
+  bottom: 80px;
 }
