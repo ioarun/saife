@@ -8,7 +8,6 @@ var members = [
     {
         firstName: "Gouri Nandan",
         lastName: "Gangavaram!",
-        emailID: "G@gmail.com",
         memberID: "G - ID",
         gender: "M",
         address: "G Test Address",
@@ -19,7 +18,6 @@ var members = [
     {
         firstName: "Arun",
         lastName: "A!",
-        emailID: "A@gmail.com",
         memberID: "A - ID",
         gender: "M",
         address: "A Test Address",
@@ -30,7 +28,6 @@ var members = [
     {
         firstName: "Sodi",
         lastName: "S!",
-        emailID: "S@gmail.com",
         memberID: "S - ID",
         gender: "M",
         address: "S Test Address",
@@ -41,7 +38,6 @@ var members = [
     {
         firstName: "Chasham",
         lastName: "C!",
-        emailID: "C@gmail.com",
         memberID: "C - ID",
         gender: "F",
         address: "C Test Address",

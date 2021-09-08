@@ -147,12 +147,6 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input placeholder="Email" id="viewMemberDetailsEmail" type="text" disabled>
-                            <label for="viewMemberDetailsEmail">Email</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s6">
                             <textarea placeholder="Address" id="viewMemberDetailsAddress" rows="3"
                                 class="materialize-textarea"></textarea>
                             <label for="viewMemberDetailsAddress">Address</label>
@@ -181,27 +175,39 @@
         </div>
     </div>
     <script>
-        $('.addMemberModal').modal();
-        $('.viewMemberDetailsModal').modal();
+        $('#addMemberModal').modal();
+        $('#viewMemberDetailsModal').modal();
         $('select').formSelect();
 
         $('#addMember').click(() => {
             addMemberSubmit();
         });
 
-        const addMemberSubmit = () => {
-            let memberData = {};
-            memberData.firstName = $('#firstName').val();
-            memberData.lastName = $('#lastName').val();
-            memberData.gender = $('#gender').val();
-            memberData.age = $('#age').val();
-            memberData.address = $('#address').val();
-            memberData.description = $('#description').val();
+        $('#updateMemberDetails').click(() => {
+            updateMemberDetailsSubmit();
+        });
 
-            $(".modal[id=addItemModal]").modal('close');
+        const addMemberSubmit = () => {
+            let firstName = $('#firstName').val();
+            let lastName = $('#lastName').val();
+            let gender = $('#gender').val();
+            let age = $('#age').val();
+            let address = $('#address').val();
+            let description = $('#description').val();
+
+            let memberData = {};
+            memberData.firstName = firstName;
+            memberData.lastName = lastName;
+            memberData.gender = gender;
+            memberData.age = age;
+            memberData.address = address;
+            memberData.description = description;
+
+            let modalInstance = M.Modal.getInstance($("#addMemberModal"));
+            modalInstance.close();
 
             $.ajax({
-                url: "/myMembers/addMember",
+                url: "/users/myMembers",
                 data: memberData,
                 type: "POST",
                 success: (result) => {
@@ -209,5 +215,20 @@
                 }
             });
         }
+        const updateMemberDetailsSubmit = () => {
+            let memberData = {};
+            memberData.firstName = $('#viewMemberDetailsFirstName').val();
+            memberData.lastName = $('#viewMemberDetailsLastName').val();
+            memberData.gender = $('#viewMemberDetailsGender').val();
+            memberData.age = $('#viewMemberDetailsAge').val();
+            memberData.address = $('#viewMemberDetailsAddress').val();
+            memberData.description = $('#viewMemberDetailsDescription').val();
+
+            let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
+            modalInstance.close();
+
+            console.log(memberData);
+        }
+
     </script>
 </body>
