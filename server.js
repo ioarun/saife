@@ -28,12 +28,13 @@ webpush.setVapidDetails('mailto:push@saife.com', publicVapidKey, privateVapidKey
 
 // Subscribe Route
 app.post('/subscribe', (req, res) => {
+    console.log(res.statusCode);
+    
     // Get pushSubscription object from client
     const subscription = req.body;
     // Send 201 - resource created
-    res.status(201).json({});
+    // res.status(201).json({});
     // console.log(JSON.stringify(subscription));
-
     // Save the subscription object in the database
     userId = new mongoose.mongo.ObjectId(subscription.id);
     User.findByIdAndUpdate(userId, 
@@ -44,8 +45,10 @@ app.post('/subscribe', (req, res) => {
             else{
                 // res.send(data);
                 console.log("pushSubObj updated! id : ", userId);
+                
             }
         });
+    res.status(201).json({statusMessage: "Subscribed"}); 
 })
 
 // Push Route
@@ -59,9 +62,8 @@ app.post('/send-push', (req, res) => {
                 if (user.pushSubObj){
                     
                     // const subscription = req.body;
-                    // Send 201 - resource created
-                    res.status(201).json({});
-                
+                    // Send 200
+                    // res.status(200).json({});
 
                     // Create payload
                     const payload = JSON.stringify({title: 'Push test'});
@@ -70,12 +72,18 @@ app.post('/send-push', (req, res) => {
                     console.log("Sending Push...");
                     // Pass object into sendNotification
                     webpush.sendNotification(JSON.parse(user.pushSubObj), payload).catch(err => console.log(err));
+                    // res.status(200).json({statusMessage: "Notification sent"}); 
                 } 
                 else {
                     console.log("No Push Subscription Object Found!")
+                    // res.status(410).json({statusMessage: "Gone"}); 
                 }  
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                // res.status(410).json({statusMessage: "Gone"}); 
+            });
+        
     
 })
 
@@ -142,3 +150,4 @@ app.listen(PORT,console.log(`server started on port ${PORT}`));
 // app.listen(5000,'192.168.0.177',function(){
 //     console.log('Server running at http://127.0.1.1:8000/')
 //   })
+module.exports = app;
