@@ -21,7 +21,6 @@ router.get('/register', (req, res) => {
 
 // Register handle
 router.post('/register', (req, res) => {
-    console.log(req);
     Controllers.projectController.registerUser(req, res)
 })
 

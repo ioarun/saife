@@ -33,7 +33,7 @@ const registerUser = (req, res) => {
     }
 
     // If there's an error re render the registraion page
-    if (errors.length > 0) {
+    if (errors.length > 0) { 
         res.render('register', {
             errors,
             firstName,

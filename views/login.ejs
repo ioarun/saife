@@ -54,7 +54,7 @@
             $('#registerModal').modal();
             $('select').formSelect();
 
-            $('#register').click(() => {
+            $('#register-btn').click(() => {
                 registerSubmit();
             });
 
@@ -82,9 +82,11 @@
                     data: userData,
                     type: "POST",
                     success: (result) => {
-                        window.location.reload();
+                        console.log(result);
+                        // window.location.reload();
                     }
                 });
+                
             }
         </script>
     </body>
