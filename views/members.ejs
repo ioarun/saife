@@ -1,242 +1,272 @@
-<body>
-    <%- include('./partials/messages') %>
-        <div class="container d-flex align-items-center overflow-auto">
-            <table class="table table-striped table-hover m-3">
-                <thead>
-                    <tr>
-                        <th class="col text-center" id="#">#</th>
-                        <th class="col text-center" id="Name">firstName</th>
-                        <th class="col text-center" id="Status">Status</th>
-                        <th class="col text-center" id="Details">Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (members.length!=0) { %>
-                        <% members.forEach((member, index)=> { %>
-                            <tr id=<%=index %>>
-                                <th class="text-center" scope="row">
-                                    <%= index+1 %>
-                                </th>
-                                <td class="text-center">
-                                    <%= member.firstName %>
-                                </td>
-                                <td class="text-center status">
-                                    <%= member.status %>
-                                        <% if(member.status==="Fallen!" ) { %>
-                                            <span class='d-inline-flex mb-0 circle status-indicator-fall'></span>
-                                            <% } else if(member.status==="All Good!" ) { %>
-                                                <span class='d-inline-flex mb-0 circle status-indicator-good'></span>
-                                                <% } %>
-                                </td>
-                                <td class="text-center">
-                                    <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View Details</a>
-                                </td>
-                                <td class="text-center">
-                                    <% if(member.status==="Fallen!" ) { %>
-                                        <a href="viewVideo"><i class="small material-icons">ondemand_video</i></a>
+<div id="alert_placeholder_success"></div>
+<div class="container d-flex align-items-center overflow-auto">
+    <table class="table table-striped table-hover m-3">
+        <thead>
+            <tr>
+                <th class="col text-center" id="#">#</th>
+                <th class="col text-center" id="Name">firstName</th>
+                <th class="col text-center" id="Status">Status</th>
+                <th class="col text-center" id="Details">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (members.length!=0) { %>
+                <% members.forEach((member, index)=> { %>
+                    <tr id=<%=index %>>
+                        <th class="text-center" scope="row">
+                            <%= index+1 %>
+                        </th>
+                        <td class="text-center">
+                            <%= member.firstName %>
+                        </td>
+                        <td class="text-center status">
+                            <%= member.status %>
+                                <% if(member.status==="Fallen!" ) { %>
+                                    <span class='d-inline-flex mb-0 circle status-indicator-fall'></span>
+                                    <% } else if(member.status==="All Good!" ) { %>
+                                        <span class='d-inline-flex mb-0 circle status-indicator-good'></span>
                                         <% } %>
-                                </td>
-                            </tr>
-                            <% }) %>
+                        </td>
+                        <td class="text-center">
+                            <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View Details</a>
+                        </td>
+                        <td class="text-center">
+                            <% if(member.status==="Fallen!" ) { %>
+                                <a href="viewVideo"><i class="small material-icons">ondemand_video</i></a>
                                 <% } %>
-                </tbody>
-            </table>
-            <div class="fixed-action-btn"> -
-                <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
-                        class="material-icons">add</i></a>
-            </div>
-            <!-- Add Member Modal Structure -->
-            <div id="addMemberModal" class="modal addMemberModal">
-                <div class="modal-content">
-                    <h4>Add Member</h4>
-                </div>
-                <div class="row modal-content">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input placeholder="FirstName" id="firstName" type="text" class="validate">
-                                <label for="firstName">FirstName</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="LastName" id="lastName" type="text" class="validate">
-                                <label for="lastName">LastName</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <select id="gender">
-                                    <option value="" disabled selected>
-                                    </option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <label for="gender">Gender</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="Age" id="age" type="text" class="validate">
-                                <label for="age">Age</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <textarea placeholder="Address" id="address" rows="3"
-                                    class="materialize-textarea"></textarea>
-                                <label for="address">Address</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <textarea placeholder="Description" id="description" rows="3"
-                                    class="materialize-textarea"></textarea>
-                                <label for="description">Description</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 center-align">
-                                <a class="waves-effect waves-light btn" id="addMember">Add</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- View Member Details Modal Structure -->
-            <div id="viewMemberDetailsModal" class="modal viewMemberDetailsModal">
-                <div class="modal-content">
-                    <h4>Member Details</h4>
-                </div>
-                <div class="row modal-content">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <script>
-                                    $('.viewDetails').click(function () {
-                                        event.preventDefault();
-                                        var rowID = event.target.parentNode.parentNode.id;
-                                        var mems = '<%- JSON.stringify(members) %>';
-                                        mems = JSON.parse(mems);
-
-                                        var data = $("tr[id=" + event.target.parentNode.parentNode.id + " ]")[0].cells;
-
-                                        $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
-                                        $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
-                                        $("#viewMemberDetailsGender").attr("value", mems[rowID].gender);
-                                        $("#viewMemberDetailsAge").attr("value", mems[rowID].age);
-                                        $("#viewMemberDetailsEmail").attr("value", mems[rowID].emailID);
-                                        $("#viewMemberDetailsAddress").val(mems[rowID].address);
-                                        $("#viewMemberDetailsDescription").val(mems[rowID].description);
-                                        $("#viewMemberDetailsMemberID").attr("value", mems[rowID].memberID);
-                                    });
-                                </script>
-                                <input placeholder="FirstName" id="viewMemberDetailsFirstName" type="text">
-                                <label for="viewMemberDetailsFirstName">FirstName</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="LastName" id="viewMemberDetailsLastName" type="text">
-                                <label for="viewMemberDetailsLastName">LastName</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input placeholder="Gender" id="viewMemberDetailsGender" type="text">
-                                <label for="viewMemberDetailsGender">Gender</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="Age" id="viewMemberDetailsAge" type="text">
-                                <label for="viewMemberDetailsAge">Age</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <textarea placeholder="Address" id="viewMemberDetailsAddress" rows="3"
-                                    class="materialize-textarea"></textarea>
-                                <label for="viewMemberDetailsAddress">Address</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <textarea placeholder="Description" id="viewMemberDetailsDescription" rows="3"
-                                    class="materialize-textarea"></textarea>
-                                <label for="viewMemberDetailsDescription">Description</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input placeholder="Member ID" id="viewMemberDetailsMemberID" type="text" disabled>
-                                <label for="viewMemberDetailsMemberID">ID</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 center-align">
-                                <a class="waves-effect waves-light btn" id="updateMemberDetails">Update</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                        <% } %>
+        </tbody>
+    </table>
+    <div class="fixed-action-btn"> -
+        <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
+                class="material-icons">add</i></a>
+    </div>
+    <!-- Add Member Modal Structure -->
+    <div id="addMemberModal" class="modal addMemberModal">
+        <div class="modal-content">
+            <h4>Add Member</h4>
         </div>
-        <script>
+        <div class="row modal-content">
+            <div id="alert_placeholder"></div>
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="FirstName" id="firstName" type="text" class="validate">
+                        <label for="firstName">FirstName</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="LastName" id="lastName" type="text" class="validate">
+                        <label for="lastName">LastName</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select id="gender">
+                            <option value="" disabled selected>
+                            </option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <label for="gender">Gender</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="Age" id="age" type="text" class="validate">
+                        <label for="age">Age</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea placeholder="Address" id="address" rows="3" class="materialize-textarea"></textarea>
+                        <label for="address">Address</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea placeholder="Description" id="description" rows="3"
+                            class="materialize-textarea"></textarea>
+                        <label for="description">Description</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 center-align">
+                        <a class="waves-effect waves-light btn" id="addMember">Add</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- View Member Details Modal Structure -->
+    <div id="viewMemberDetailsModal" class="modal viewMemberDetailsModal">
+        <div class="modal-content">
+            <h4>Member Details</h4>
+        </div>
+        <div class="row modal-content">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <script>
+                            $('.viewDetails').click(function () {
+                                event.preventDefault();
+                                var rowID = event.target.parentNode.parentNode.id;
+                                var mems = '<%- JSON.stringify(members) %>';
+                                mems = JSON.parse(mems);
 
-            
-            $('#addMemberModal').modal();
-            $('#viewMemberDetailsModal').modal();
-            $('select').formSelect();
+                                var data = $("tr[id=" + event.target.parentNode.parentNode.id + " ]")[0].cells;
 
-            $('#addMember').click(() => {
-                addMemberSubmit();
-            });
+                                $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
+                                $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
+                                $("#viewMemberDetailsGender").attr("value", mems[rowID].gender);
+                                $("#viewMemberDetailsAge").attr("value", mems[rowID].age);
+                                $("#viewMemberDetailsEmail").attr("value", mems[rowID].emailID);
+                                $("#viewMemberDetailsAddress").val(mems[rowID].address);
+                                $("#viewMemberDetailsDescription").val(mems[rowID].description);
+                                $("#viewMemberDetailsMemberID").attr("value", mems[rowID].memberID);
+                            });
+                        </script>
+                        <input placeholder="FirstName" id="viewMemberDetailsFirstName" type="text">
+                        <label for="viewMemberDetailsFirstName">FirstName</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="LastName" id="viewMemberDetailsLastName" type="text">
+                        <label for="viewMemberDetailsLastName">LastName</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="Gender" id="viewMemberDetailsGender" type="text">
+                        <label for="viewMemberDetailsGender">Gender</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="Age" id="viewMemberDetailsAge" type="text">
+                        <label for="viewMemberDetailsAge">Age</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea placeholder="Address" id="viewMemberDetailsAddress" rows="3"
+                            class="materialize-textarea"></textarea>
+                        <label for="viewMemberDetailsAddress">Address</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea placeholder="Description" id="viewMemberDetailsDescription" rows="3"
+                            class="materialize-textarea"></textarea>
+                        <label for="viewMemberDetailsDescription">Description</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="Member ID" id="viewMemberDetailsMemberID" type="text" disabled>
+                        <label for="viewMemberDetailsMemberID">ID</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 center-align">
+                        <a class="waves-effect waves-light btn" id="updateMemberDetails">Update</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
 
-            $('#updateMemberDetails').click(() => {
-                updateMemberDetailsSubmit();
-            });
+    $('#addMemberModal').modal();
+    $('#viewMemberDetailsModal').modal();
+    $('select').formSelect();
 
-            const addMemberSubmit = () => {
-                let firstName = $('#firstName').val();
-                let lastName = $('#lastName').val();
-                let gender = $('#gender').val();
-                let age = $('#age').val();
-                let address = $('#address').val();
-                let description = $('#description').val();
+    $(document).ready(() => {
 
-                let memberData = {};
-                memberData.firstName = firstName;
-                memberData.lastName = lastName;
-                memberData.gender = gender;
-                memberData.age = age;
-                memberData.address = address;
-                memberData.description = description;
 
-                let modalInstance = M.Modal.getInstance($("#addMemberModal"));
-                modalInstance.close();
+        $('#addMember').click(() => {
+            addMemberSubmit();
+        });
 
-                $.ajax({
-                    url: "/users/myMembers",
-                    data: memberData,
-                    type: "POST",
-                    success: (result) => {
-                        
-                        document.write(result)
-                        
-                        
+        $('#updateMemberDetails').click(() => {
+            updateMemberDetailsSubmit();
+        });
+
+        $("#addMember").on('hide', () => {
+            location.reload()
+        })
+    })
+
+
+    const addMemberSubmit = () => {
+        let firstName = $('#firstName').val();
+        let lastName = $('#lastName').val();
+        let gender = $('#gender').val();
+        let age = $('#age').val();
+        let address = $('#address').val();
+        let description = $('#description').val();
+
+        let memberData = {};
+        memberData.firstName = firstName;
+        memberData.lastName = lastName;
+        memberData.gender = gender;
+        memberData.age = age;
+        memberData.address = address;
+        memberData.description = description;
+
+        let modalInstance = M.Modal.getInstance($("#addMemberModal"));
+
+
+        $.ajax({
+            url: "/users/myMembers",
+            data: memberData,
+            type: "POST",
+            success: (result) => {
+                // To check if the server response contains error messages
+                if (typeof result.errors != 'undefined') {
+                    console.log((result.errors[0].msg));
+
+                    (result.errors).forEach(element => {
+                        $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    });
+
+                }
+                // To check if the server response contains any success messages 
+                else if (typeof result.success != 'undefined') {
+                    console.log((result.success[0].msg));
+
+                    (result.success).forEach(element => {
+                        $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    });
+                    // Wait 3 seconds before reload the page so the success message get time to display 
+                    function myFunction() {
+                        setTimeout(function () { location.reload() }, 3000);
                     }
-                });
+                    myFunction();
+
+
+                }
+
+
             }
-            const updateMemberDetailsSubmit = () => {
-                let memberData = {};
-                memberData.firstName = $('#viewMemberDetailsFirstName').val();
-                memberData.lastName = $('#viewMemberDetailsLastName').val();
-                memberData.gender = $('#viewMemberDetailsGender').val();
-                memberData.age = $('#viewMemberDetailsAge').val();
-                memberData.address = $('#viewMemberDetailsAddress').val();
-                memberData.description = $('#viewMemberDetailsDescription').val();
+        });
+    }
+    const updateMemberDetailsSubmit = () => {
+        let memberData = {};
+        memberData.firstName = $('#viewMemberDetailsFirstName').val();
+        memberData.lastName = $('#viewMemberDetailsLastName').val();
+        memberData.gender = $('#viewMemberDetailsGender').val();
+        memberData.age = $('#viewMemberDetailsAge').val();
+        memberData.address = $('#viewMemberDetailsAddress').val();
+        memberData.description = $('#viewMemberDetailsDescription').val();
 
-                let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
-                modalInstance.close();
-
-                
-            }
-           
+        let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
+        modalInstance.close();
 
 
-        </script>
-</body>
+    }
+
+
+
+</script>
