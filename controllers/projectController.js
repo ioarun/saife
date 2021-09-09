@@ -100,18 +100,19 @@ const registerMember = (req, res) => {
             let members = records
 
             // Object destructuring 
-            //const { firstName, lastName,gender, email, address, age, description, phone } = req.body
+            const { firstName, lastName,gender, address, age, description } = req.body
+            //console.log(req.body)
             let errors = [];
 
             // Check for required fields
-            if (!firstName || !lastName || !gender || !email || !address || !age || !phone) {
+            if (!firstName || !lastName || !gender || !address || !age ) {
                 errors.push({ msg: "Please fill in all the fields" })
             }
 
             // Phone number lenth
-            if (isNaN(phone) || phone.length != 10) {
-                errors.push({ msg: 'Phone number is incorrect ' })
-            }
+            // if (isNaN(phone) || phone.length != 10) {
+            //     errors.push({ msg: 'Phone number is incorrect ' })
+            // }
 
             // If there's an error re render the registraion page
             if (errors.length > 0) {
@@ -120,31 +121,27 @@ const registerMember = (req, res) => {
                     members,
                     firstName,
                     lastName,
-                    gender,
-                    email,
+                    gender,                    
                     address,
                     age,
-                    phone,
                     title: "Member Register"
                 })
             } else {
                 // When the validation passed
-                Member.findOne({ email: email })
+                Member.findOne({ firstName: firstName })
                     .then(member => {
                         if (member) {
                             // if there's a user rerender the register form
-                            errors.push({ msg: 'Email is already registered' })
+                            errors.push({ msg: 'name is already registered' })
                             res.render('members', {
                                 errors,
                                 members,
                                 firstName,
                                 lastName,
                                 gender,
-                                email,
                                 address,
                                 age,
                                 description,
-                                phone,
                                 title: "Member Register"
                             })
                         } else {
@@ -152,16 +149,14 @@ const registerMember = (req, res) => {
                                 firstName,
                                 lastName,
                                 gender,
-                                email,
                                 address,
                                 age,
-                                description,
-                                phone
+                                description
                             });
                             newMember.save()
                                 .then(member => {
                                     req.flash('success_msg', 'New user saved successfully')
-                                    res.render('members', { title: "Dashboard", members })
+                                    res.redirect('/users/myMembers')
                                 })
                                 .catch(err => console.log(err))
 
