@@ -51,6 +51,7 @@ const registerUser = (req, res) => {
                 if (user) {
                     // if there's a user rerender the register form
                     errors.push({ msg: 'Email is already registered' })
+                    res.status(400)
                     res.render('register', {
                         errors,
                         firstName,
