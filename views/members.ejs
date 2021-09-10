@@ -235,15 +235,16 @@
                 else if (typeof result.success != 'undefined') {
                     console.log((result.success[0].msg));
 
-                    (result.success).forEach(element => {
-                        $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
-                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
-                    });
+                    // (result.success).forEach(element => {
+                    //     $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                    //         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    // });
                     // Wait 3 seconds before reload the page so the success message get time to display 
-                    function myFunction() {
-                        setTimeout(function () { location.reload() }, 3000);
-                    }
-                    myFunction();
+                    // function myFunction() {
+                    //     setTimeout(function () { location.reload() },1000);
+                    // }
+                    // myFunction();
+                    location.reload()
 
 
                 }
