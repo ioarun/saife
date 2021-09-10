@@ -109,7 +109,6 @@ const registerMember = (req, res) => {
             // Check for required fields
             if (!firstName || !lastName || !gender || !address || !age) {
                 errors.push({ msg: "Please fill in all the fields" })
-                console.log("ERRORS: ", errors);
             }
 
             // If there's an error re render the registraion page
