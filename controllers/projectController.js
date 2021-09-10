@@ -9,7 +9,6 @@ const registerUser = (req, res) => {
 
     // Object destructuring 
     const { firstName, lastName, email, phone, password, password2 } = req.body
-    console.log(req.body)
     let errors = [];
 
     // Check for required fields
@@ -95,23 +94,26 @@ const registerUser = (req, res) => {
 
 // Register member handle 
 const registerMember = (req, res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+     Member.find({userID:currUserID})
         .then(records => {
             let members = records
 
             // Object destructuring 
-            //const { firstName, lastName,gender, email, address, age, description, phone } = req.body
+            const { firstName, lastName,gender, email, address, age, description, phone } = req.body
             let errors = [];
 
             // Check for required fields
-            if (!firstName || !lastName || !gender || !email || !address || !age || !phone) {
+            // if (!firstName || !lastName || !gender || !email || !address || !age || !phone) {
+            if (!firstName || !lastName || !gender || !address || !age) {
                 errors.push({ msg: "Please fill in all the fields" })
+                console.log("ERRORS: ", errors);
             }
 
-            // Phone number lenth
-            if (isNaN(phone) || phone.length != 10) {
-                errors.push({ msg: 'Phone number is incorrect ' })
-            }
+            // // Phone number lenth
+            // if (isNaN(phone) || phone.length != 10) {
+            //     errors.push({ msg: 'Phone number is incorrect ' })
+            // }
 
             // If there's an error re render the registraion page
             if (errors.length > 0) {
@@ -129,11 +131,11 @@ const registerMember = (req, res) => {
                 })
             } else {
                 // When the validation passed
-                Member.findOne({ email: email })
+                Member.findOne({ firstName:firstName, lastName:lastName, user: currUserID})
                     .then(member => {
                         if (member) {
                             // if there's a user rerender the register form
-                            errors.push({ msg: 'Email is already registered' })
+                            errors.push({ msg: 'Member is already registered' })
                             res.render('members', {
                                 errors,
                                 members,
@@ -146,7 +148,7 @@ const registerMember = (req, res) => {
                                 description,
                                 phone,
                                 title: "Member Register"
-                            })
+                            });
                         } else {
                             const newMember = new Member({
                                 firstName,
@@ -156,7 +158,10 @@ const registerMember = (req, res) => {
                                 address,
                                 age,
                                 description,
-                                phone
+                                phone,
+                                status: false,
+                                videoURL: "",
+                                userID: currUserID
                             });
                             newMember.save()
                                 .then(member => {
@@ -175,9 +180,10 @@ const registerMember = (req, res) => {
 
 // Members page
 const loadMembers = (req,res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+    Member.find({userID:currUserID})
         .then(records => {
-            let members = records
+            let members = records;
             res.render('members', { title: "Members", members });
         })
         .catch(err => console.log(err))
