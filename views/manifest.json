@@ -1,8 +1,0 @@
-{
-    "short_name": "Weather",
-    "name": "Weather: Do I need an umbrella?",
-    "start_url": "/users/login",
-    "background_color": "#3367D6",
-    "display": "standalone",
-    "scope": "/"
-}
