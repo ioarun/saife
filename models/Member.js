@@ -14,10 +14,6 @@ const MemberSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String,
-        required: true
-    },
     address: {
         type: String,
         required: true
@@ -29,10 +25,6 @@ const MemberSchema = new mongoose.Schema({
     description: {
         type: String,
         required: false
-    },
-    phone: {
-        type: Number,
-        required: true
     },
     date: {
         type: String,
