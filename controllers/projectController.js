@@ -9,7 +9,6 @@ const registerUser = (req, res) => {
 
     // Object destructuring 
     const { firstName, lastName, email, phone, password, password2 } = req.body
-    console.log(req.body)
     let errors = [];
 
     // Check for required fields
@@ -96,7 +95,8 @@ const registerUser = (req, res) => {
 
 // Register member handle 
 const registerMember = (req, res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+     Member.find({userID:currUserID})
         .then(records => {
             let members = records
 
@@ -109,6 +109,7 @@ const registerMember = (req, res) => {
             // Check for required fields
             if (!firstName || !lastName || !gender || !address || !age) {
                 errors.push({ msg: "Please fill in all the fields" })
+                console.log("ERRORS: ", errors);
             }
 
             // If there's an error re render the registraion page
@@ -125,7 +126,7 @@ const registerMember = (req, res) => {
                 })
             } else {
                 // When the validation passed
-                Member.findOne({ firstName: firstName })
+                Member.findOne({ firstName:firstName, lastName:lastName, user: currUserID })
                     .then(member => {
                         if (member) {
                             // if there's a user rerender the register form
@@ -140,7 +141,7 @@ const registerMember = (req, res) => {
                                 age,
                                 description,
                                 title: "Member Register"
-                            })
+                            });
                         } else {
                             const newMember = new Member({
                                 firstName,
@@ -148,7 +149,10 @@ const registerMember = (req, res) => {
                                 gender,
                                 address,
                                 age,
-                                description
+                                description,
+                                status: false,
+                                videoURL: "",
+                                userID: currUserID
                             });
                             newMember.save()
                                 .then(member => {
@@ -177,10 +181,11 @@ const registerMember = (req, res) => {
 }
 
 // Members page
-const loadMembers = (req, res) => {
-    Member.find({})
+const loadMembers = (req,res) => {
+    let currUserID = req.user._id;
+    Member.find({userID:currUserID})
         .then(records => {
-            let members = records
+            let members = records;
             res.render('members', { title: "Members", members });
         })
         .catch(err => console.log(err))

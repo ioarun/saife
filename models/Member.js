@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 // Create Schema
 const MemberSchema = new mongoose.Schema({
@@ -29,9 +31,19 @@ const MemberSchema = new mongoose.Schema({
     date: {
         type: String,
         default: Date.now
+    },
+    status: {
+        type: Boolean,
+        default: 0
+    },
+    videoURL: {
+        type: String,
+        required: false
+    },
+    userID: {
+        type: ObjectId,
+        required: true
     }
-    
-
 })
 
 
