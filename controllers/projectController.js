@@ -84,7 +84,7 @@ const registerUser = (req, res) => {
                             newUser.save()
                                 .then(user => {
                                     req.flash('success_msg', 'You are now registered and can log in')
-                                    res.redirect('/users/login')
+                                    res.status(200).redirect('/users/login')
                                 })
                                 .catch(err => console.log(err))
                         }))
@@ -188,10 +188,26 @@ const loadMembers = (req, res) => {
 
 // Login handle
 const userLogin = (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/users/login',
-        failureFlash: true
+    // passport.authenticate('local', {
+    //     successRedirect: '/',
+    //     failureRedirect: '/users/login',
+    //     failureFlash: true
+    // })(req, res, next);
+    passport.authenticate('local', function (err, user, info) {
+        console.log(info)
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/users/login');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/');
+        });
+        
     })(req, res, next);
 }
 
