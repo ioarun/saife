@@ -42,7 +42,8 @@
             </div>
 
             <!-- Register modal -->
-            <%- include('register') %>
+            <%- include("register.ejs") %>
+            
         </div>
         
         <script>
@@ -54,8 +55,8 @@
             $('select').formSelect();
 
             $(document).ready(() =>{
-                $('#register-btn').click(() => {
-                // event.preventDefault();
+                $('#register-btn').click((event) => {
+                event.preventDefault();
                 registerSubmit();
             });
             });
@@ -85,7 +86,7 @@
                 data: userData,
                 type: "POST",
                 success: (result) => {
-                    console.log(result.errors);
+                    console.log(result.success);
                     // To check if the server response contains error messages
                     if (typeof result.errors != 'undefined') {
                         console.log((result.errors[0].msg));
@@ -98,7 +99,8 @@
                     // To check if the server response contains any success messages 
                     else if (typeof result.success != 'undefined') {
                         console.log((result.success[0].msg));
-                        // location.reload()
+                        modalInstance.close();
+                        location.reload()
                     }
                 }
             });

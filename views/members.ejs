@@ -4,7 +4,7 @@
             <thead>
                 <tr>
                     <th class="col text-center" id="#">#</th>
-                    <th class="col text-center" id="Name">firstName</th>
+                    <th class="col text-center" id="Name">Name </th>
                     <th class="col text-center" id="Status">Status</th>
                     <th class="col text-center" id="Details">Details</th>
                 </tr>
@@ -18,20 +18,28 @@
                             </th>
                             <td class="text-center">
                                 <%= member.firstName %>
+                                    <span> </span>
+                                    <%= member.lastName %>
                             </td>
                             <td class="text-center status">
-                                <%= member.status %>
-                                    <% if(member.status==="Fallen!" ) { %>
-                                        <span class='d-inline-flex mb-0 circle status-indicator-fall'></span>
-                                        <% } else if(member.status==="All Good!" ) { %>
-                                            <span class='d-inline-flex mb-0 circle status-indicator-good'></span>
-                                            <% } %>
+                                <% if(member.status===true) {%>
+                                    <span id="status">Fallen!</span>
+
+                                    <% } else if(member.status===false) { %>
+                                        <span id="status">All Good!</span>
+                                        <% } %>
+                                            <% if(member.status===true ) { %>
+                                                <span class='d-inline-flex mb-0 circle status-indicator-fall'></span>
+                                                <% } else if(member.status===false ) { %>
+                                                    <span
+                                                        class='d-inline-flex mb-0 circle status-indicator-good'></span>
+                                                    <% } %>
                             </td>
                             <td class="text-center">
                                 <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View Details</a>
                             </td>
                             <td class="text-center">
-                                <% if(member.status==="Fallen!" ) { %>
+                                <% if(member.status===true) { %>
                                     <a href="viewVideo"><i class="small material-icons">ondemand_video</i></a>
                                     <% } %>
                             </td>
@@ -40,7 +48,7 @@
                             <% } %>
             </tbody>
         </table>
-        <div class="fixed-action-btn fixed-action-btn-saife"> -
+        <div class="fixed-action-btn"> -
             <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
                     class="material-icons">add</i></a>
         </div>
@@ -50,6 +58,7 @@
                 <h4>Add Member</h4>
             </div>
             <div class="row modal-content">
+                <div id="alert_placeholder"></div>
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s6">
@@ -124,7 +133,7 @@
                                     $("#viewMemberDetailsEmail").attr("value", mems[rowID].emailID);
                                     $("#viewMemberDetailsAddress").val(mems[rowID].address);
                                     $("#viewMemberDetailsDescription").val(mems[rowID].description);
-                                    $("#viewMemberDetailsMemberID").attr("value", mems[rowID].memberID);
+                                    $("#viewMemberDetailsMemberID").attr("value", mems[rowID]._id);
                                 });
                             </script>
                             <input placeholder="FirstName" id="viewMemberDetailsFirstName" type="text">
@@ -175,17 +184,27 @@
         </div>
     </div>
     <script>
+
         $('#addMemberModal').modal();
         $('#viewMemberDetailsModal').modal();
         $('select').formSelect();
 
-        $('#addMember').click(() => {
-            addMemberSubmit();
-        });
+        $(document).ready(() => {
 
-        $('#updateMemberDetails').click(() => {
-            updateMemberDetailsSubmit();
-        });
+
+            $('#addMember').click(() => {
+                addMemberSubmit();
+            });
+
+            $('#updateMemberDetails').click(() => {
+                updateMemberDetailsSubmit();
+            });
+
+            $("#addMember").on('hide', () => {
+                location.reload()
+            })
+        })
+
 
         const addMemberSubmit = () => {
             let firstName = $('#firstName').val();
@@ -204,14 +223,42 @@
             memberData.description = description;
 
             let modalInstance = M.Modal.getInstance($("#addMemberModal"));
-            modalInstance.close();
+
 
             $.ajax({
                 url: "/users/myMembers",
                 data: memberData,
                 type: "POST",
                 success: (result) => {
-                    window.location.reload();
+                    // To check if the server response contains error messages
+                    if (typeof result.errors != 'undefined') {
+                        console.log((result.errors[0].msg));
+
+                        (result.errors).forEach(element => {
+                            $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+
+                    }
+                    // To check if the server response contains any success messages 
+                    else if (typeof result.success != 'undefined') {
+                        console.log((result.success[0].msg));
+
+                        // (result.success).forEach(element => {
+                        //     $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                        //         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        // });
+                        // Wait 3 seconds before reload the page so the success message get time to display 
+                        // function myFunction() {
+                        //     setTimeout(function () { location.reload() },1000);
+                        // }
+                        // myFunction();
+                        location.reload()
+
+
+                    }
+
+
                 }
             });
         }
@@ -227,8 +274,8 @@
             let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
             modalInstance.close();
 
-            console.log(memberData);
         }
+
 
     </script>
 </body>

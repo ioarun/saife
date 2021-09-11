@@ -80,10 +80,22 @@ const registerUser = (req, res) => {
                             // Set password to hashed
                             newUser.password = hash
                             // Save user
+                            
                             newUser.save()
                                 .then(user => {
-                                    req.flash('success_msg', 'You are now registered and can log in')
-                                    res.redirect('/users/login')
+                                    let success = [];
+                                    success.push({ msg: 'Registered' })
+                                    // req.flash('success_msg', 'You are now registered and can log in')
+                                    // res.redirect('/users/login')
+                                    res.json({
+                                        firstName,
+                                        lastName,
+                                        email,
+                                        phone,
+                                        password,
+                                        password2,
+                                        success
+                                    })
                                 })
                                 .catch(err => console.log(err))
                         }))
@@ -95,73 +107,79 @@ const registerUser = (req, res) => {
 
 // Register member handle 
 const registerMember = (req, res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+     Member.find({userID:currUserID})
         .then(records => {
             let members = records
 
+
             // Object destructuring 
-            //const { firstName, lastName,gender, email, address, age, description, phone } = req.body
+            const { firstName, lastName, gender, address, age, description } = req.body
+            //console.log(req.body)
             let errors = [];
 
             // Check for required fields
-            if (!firstName || !lastName || !gender || !email || !address || !age || !phone) {
+            if (!firstName || !lastName || !gender || !address || !age) {
                 errors.push({ msg: "Please fill in all the fields" })
-            }
-
-            // Phone number lenth
-            if (isNaN(phone) || phone.length != 10) {
-                errors.push({ msg: 'Phone number is incorrect ' })
             }
 
             // If there's an error re render the registraion page
             if (errors.length > 0) {
-                res.render('members', {
+                res.json({
                     errors,
                     members,
                     firstName,
                     lastName,
                     gender,
-                    email,
                     address,
                     age,
-                    phone,
                     title: "Member Register"
                 })
             } else {
                 // When the validation passed
-                Member.findOne({ email: email })
+                Member.findOne({ firstName:firstName, lastName:lastName, user: currUserID })
                     .then(member => {
                         if (member) {
                             // if there's a user rerender the register form
-                            errors.push({ msg: 'Email is already registered' })
-                            res.render('members', {
+                            errors.push({ msg: 'name is already registered' })
+                            res.json({
                                 errors,
                                 members,
                                 firstName,
                                 lastName,
                                 gender,
-                                email,
                                 address,
                                 age,
                                 description,
-                                phone,
                                 title: "Member Register"
-                            })
+                            });
                         } else {
                             const newMember = new Member({
                                 firstName,
                                 lastName,
                                 gender,
-                                email,
                                 address,
                                 age,
                                 description,
-                                phone
+                                status: false,
+                                videoURL: "",
+                                userID: currUserID
                             });
                             newMember.save()
                                 .then(member => {
-                                    req.flash('success_msg', 'New user saved successfully')
-                                    res.render('members', { title: "Dashboard", members })
+                                    let success = [];
+                                    success.push({ msg: 'Registered' })
+                                    if (success.length > 0) {
+                                        res.json({
+                                            firstName,
+                                            lastName,
+                                            gender,
+                                            address,
+                                            age,
+                                            description,
+                                            success
+                                        })
+                                    }
                                 })
                                 .catch(err => console.log(err))
 
@@ -175,16 +193,17 @@ const registerMember = (req, res) => {
 
 // Members page
 const loadMembers = (req,res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+    Member.find({userID:currUserID})
         .then(records => {
-            let members = records
+            let members = records;
             res.render('members', { title: "Members", members });
         })
         .catch(err => console.log(err))
 }
 
 // Login handle
-const userLogin = (req,res,next) => {
+const userLogin = (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/users/login',
@@ -193,14 +212,14 @@ const userLogin = (req,res,next) => {
 }
 
 // Logout handle
-const userLogout = (req,res)=>{
+const userLogout = (req, res) => {
     req.logout()
     req.flash('success_msg', 'You are logged out')
     res.redirect('/users/login')
 }
 
 // User account page
-const userAccountSettings =(req,res)=>{
+const userAccountSettings = (req, res) => {
     res.render('userAccountSettings', {
         title: "Account Settings",
         id: req.user._id.toString(),
@@ -209,7 +228,7 @@ const userAccountSettings =(req,res)=>{
         email: req.user.email,
         phone: req.user.phone,
     })
-} 
+}
 module.exports = {
     registerUser,
     registerMember,
