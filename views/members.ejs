@@ -124,7 +124,7 @@
                                     var mems = '<%- JSON.stringify(members) %>';
                                     mems = JSON.parse(mems);
 
-                                    var data = $("tr[id=" + event.target.parentNode.parentNode.id + " ]")[0].cells;
+                                    var data = $("tr[id=" + rowID + " ]")[0].cells;
 
                                     $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
                                     $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
