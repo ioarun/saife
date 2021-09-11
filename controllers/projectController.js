@@ -9,7 +9,6 @@ const registerUser = (req, res) => {
 
     // Object destructuring 
     const { firstName, lastName, email, phone, password, password2 } = req.body
-    console.log(req.body)
     let errors = [];
 
     // Check for required fields
@@ -34,7 +33,7 @@ const registerUser = (req, res) => {
 
     // If there's an error re render the registraion page
     if (errors.length > 0) { 
-        res.render('register', {
+        res.json({
             errors,
             firstName,
             lastName,
@@ -44,6 +43,7 @@ const registerUser = (req, res) => {
             password2,
             title: "Register"
         })
+
     } else {
         // When the validation passed
         User.findOne({ email: email })
@@ -51,7 +51,7 @@ const registerUser = (req, res) => {
                 if (user) {
                     // if there's a user rerender the register form
                     errors.push({ msg: 'Email is already registered' })
-                    res.render('register', {
+                    res.json({
                         errors,
                         firstName,
                         lastName,
