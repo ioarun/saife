@@ -33,7 +33,7 @@ const registerUser = (req, res) => {
     }
 
     // If there's an error re render the registraion page
-    if (errors.length > 0) { 
+    if (errors.length > 0) {
         res.render('register', {
             errors,
             firstName,
@@ -188,11 +188,27 @@ const loadMembers = (req, res) => {
 
 // Login handle
 const userLogin = (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/users/login',
-        failureFlash: true
+    // passport.authenticate('local',{
+    //     successRedirect: '/',
+    //     failureRedirect: '/users/login',
+    //     failureFlash: true
+    // })(req, res, next);
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(401).redirect('/users/login')
+            
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/');
+        });
     })(req, res, next);
+
 }
 
 // Logout handle
