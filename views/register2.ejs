@@ -6,28 +6,28 @@
                 <%- include('./partials/messages') %>
                 <form>
                 <div class="row justify-content-center">
-                    <div class="form-group col-12 col-md-6">
-                       
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter First Name"
                             value="<%= typeof firstName != 'undefined' ? firstName : '' %>" />
                     </div>
-                    <div class="form-group col-12 col-md-6">
-                   
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">account_circle</i>
                         <label for="lastName">Last Name</label>
                         <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
                             value="<%= typeof lastName != 'undefined' ? lastName : '' %>" />
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-12 col-md-6">
-                       
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">email</i>
                         <label for="email">Email</label>
                         <input type="email" id="email-register" name="email" class="form-control" placeholder="Enter Email"
                             value="<%= typeof email != 'undefined' ? email : '' %>" />
                     </div>
-                    <div class="form-group col-12 col-md-6">
-                       
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">call</i>
                         <label for="phone">Phone Number</label>
                         <input type="tel" id="phone" name="phone" class="form-control" placeholder="1234536783"
                             value="<%= typeof phone != 'undefined' ? phone : '' %>" />
@@ -35,15 +35,15 @@
                 </div>
                 
                 <div class="row">
-                    <div class="form-group col-12 col-md-6">
-                      
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">password</i>
                         <label for="password">Password</label>
                         <input type="password" id="password-register" name="password" class="form-control"
                             placeholder="Create Password"
                             value="<%= typeof password != 'undefined' ? password : '' %>" />
                     </div>
-                    <div class="form-group col-12 col-md-6">
-                       
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">lock</i>
                         <label for="password2">Confirm Password</label>
                         <input type="password" id="password2" name="password2" class="form-control"
                             placeholder="Confirm Password"
