@@ -48,10 +48,6 @@
                             <% } %>
             </tbody>
         </table>
-        <div class="fixed-action-btn"> -
-            <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
-                    class="material-icons">add</i></a>
-        </div>
         <!-- Add Member Modal Structure -->
         <div id="addMemberModal" class="modal addMemberModal">
             <div class="modal-content">
@@ -100,9 +96,9 @@
                             <label for="description">Description</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col s12 center-align">
-                            <a class="waves-effect waves-light btn" id="addMember">Add</a>
+                    <div class="row ">
+                        <div class="input-field col s12 center-align ">
+                            <a class="waves-effect waves-light btn " id="addMember">Add</a>
                         </div>
                     </div>
                 </form>
@@ -183,6 +179,13 @@
             </div>
         </div>
     </div>
+
+     <!---->
+     <div class="fixed-action-btn fixed-action-btn-saife"> -
+        <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addMemberModal"><i
+                class="material-icons">add</i></a>
+    </div>
+
     <script>
 
         $('#addMemberModal').modal();
