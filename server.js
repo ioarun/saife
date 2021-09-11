@@ -132,7 +132,7 @@ app.use((req,res,next)=>{
     next()
 })
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 
 
 //set the static path to push worker
