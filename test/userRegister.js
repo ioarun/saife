@@ -48,7 +48,7 @@ describe('App', () => {
                 })
                 .end((err, res) => {
                     
-                    console.log(res)
+                    // console.log(res)
                     res.should.have.status(400) // register failure with 400
                     done();
                 })
