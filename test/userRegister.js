@@ -9,6 +9,9 @@ let server = require('../server');
 let should = chai.should();
 const bcrypt = require('bcryptjs');
 const { json } = require("body-parser");
+const sinon = require('sinon')
+const supertest =require('supertest')
+const ejs = require('ejs');
 
 const expect = chai.expect
 
@@ -32,40 +35,40 @@ describe('App', () => {
     describe('/POST User register', function () {
 
         this.timeout(15000)
-        it('user should be able to register', function (done) {
+        it('Exisiting users should not be able to register', function (done) {
             chai.request(server)
                 .post('/users/register')
                 .send({
-                    firstName: 'mytestmail2@gmail.com',
-                    lastName: '123456',
-                    email:'775@gmail.com',
-                    phone:1234567890,
-                    password:123456,
-                    password2:123456
+                    firstName: 'test',
+                    lastName: 'subjec',
+                    email:'man@gmail3.com',
+                    phone:'1234567890',
+                    password:'123456',
+                    password2:'123456'
                 })
                 .end((err, res) => {
                     
                     console.log(res)
-                    res.header.location.should.include('/users/login') // Success on sumbit redirect to the login page
+                    res.should.have.status(400) // register failure with 400
                     done();
                 })
         })
 
 
 
-        it('user should be directed back to login page, on loging faliure', function (done) {
+        it('user with incomplete data cannot register', function (done) {
             chai.request(server)
                 .post('/users/register')
-                .redirects(0)
                 .send({                         // Incomplete details
                     email: 'izuru775@gmail.com',  
                     password: '123456'
                 })
                 .end((err, res) => {
-                   console.log(res)
-                    res.should.have.status(200) // faliure on submit should rerender the registration page
+                   //console.log(res)
+                    res.should.have.status(400) // faliure on submit, should set the status 400
                     done();
                 })
         })
+        
     })
 })
