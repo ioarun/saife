@@ -1,43 +1,53 @@
-<html>
-    <head>
-    </head>
-    <body class="body-bg">
-        <div class="row mt-5" style=" height: 100%;">
-            <div class="col-md-6 mt-5 hide-on-med-and-down" style="height: 100%; display: flex; align-items: center; justify-content: center; text-align: center;">
-                <img class="center" src="/assets/bg3-transparent.png" style="height: 300px;">
+<div class="row mt-5" style=" height: 100%;">
+    <div class="col-md-6 mt-5 hide-on-med-and-down"
+        style="height: 100%; display: flex; align-items: center; justify-content: center; text-align: center;">
+        <img class="center" src="/assets/bg3-transparent.png" style="height: 300px;">
 
-            </div>
-            <div class="col-md-6">
-                <div class="card card-body" style="border-radius: 20px;">
-                    <h2 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h2>
-                    <%- include('./partials/messages') %>
-                        <form action="/users/login" method="POST">
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" />
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" id="password" name="password" class="form-control"
-                                    placeholder="Enter Password" />
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
-                        </form>
-                        <p class="lead mt-4">
-                             <a href="/users/reset/password"> Forgot Password?</a>
-                        </p>
-                        <p class="lead mt-4">
-                            No Account? <a href="/users/register">Register</a>
-                        </p>
-                </div>
-            </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-body" style="border-radius: 20px;">
+            <h2 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <%- include('./partials/messages') %>
+                <form action="/users/login" method="POST">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Enter Password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <p class="lead mt-4 ">
+                    <a href="#mail" class=" modal-trigger"> Forgot Password?</a>
+                </p>
+                <p class="lead mt-4">
+                    No Account? <a href="/users/register">Register</a>
+                </p>
         </div>
-        <script>
-            $("nav>div>ul").toggleClass("hide");
-            // $("nav").toggleClass("hide");
-        </script>
-    </body>
-    
-</html>
+    </div>
+</div>
+<!-- Modal Structure Fogot Password-->
+<div id="mail" class="modal">
+    <div class="modal-content">
+        <h4>Reset Your Password</h4>
+        <p>To reset your password, enter your email below and submit. An email will be sent to you with instructions
+            about how to complete the process.
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
 
+<script>
+    //$("nav>div>ul").toggleClass("hide");
+    // $("nav").toggleClass("hide");
+    $('#mail').modal();
 
+    $(document).ready(function () {
+        $('.email').modal();
+    });
+</script>
