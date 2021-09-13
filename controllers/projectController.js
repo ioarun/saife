@@ -76,11 +76,16 @@ const userLogout = (req, res) => {
 const userAccountSettings = (req, res) => {
     Services.projectServices.userAccountSettingsService(req,res)
 }
+// Reset password handle
+const resetPassword = (req,res)=>{
+    Services.projectServices.userPasswordRestService(req,res)
+}
 module.exports = {
     registerUser,
     registerMember,
     loadMembers,
     userLogin,
     userLogout,
-    userAccountSettings
+    userAccountSettings,
+    resetPassword
 };
