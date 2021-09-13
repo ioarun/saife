@@ -2,6 +2,7 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 const Member = require('../models/Member')
+const nodemailer = require("nodemailer");
 
 // Create user account if user is not already registered
 const registerUserService = (req, res, errors) => {
@@ -183,11 +184,81 @@ const userAccountSettingsService = (req, res) => {
         phone: req.user.phone,
     })
 }
+
+const userPasswordRestService = (req, res) => {
+    const { email } = req.body
+    console.log(email)
+
+    let errors = [];
+    if (!email) {
+        errors.push({ msg: 'Please fill in the field' })
+    }
+    if (errors.length > 0) {
+        res.json({
+            errors,
+            email
+        })
+    } else {
+        User.findOne({ email: email })
+            .then(member => {
+                if (member) {
+                    let success = []
+                    success.push({ msg: 'Please check your email in box for a link to complete the reset' })
+                    const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>`
+
+
+                    // create reusable transporter object using the default SMTP transport
+                    let transporter = nodemailer.createTransport({
+                        host: "smtp.gmail.com",
+                        port: 587,
+                        secure: false, // true for 465, false for other ports
+                        auth: {
+                            user: 'izuru775@gmail.com', // generated ethereal user
+                            pass: 'g7rPA5zP1991', // generated ethereal password
+                        },
+                        tls: {
+                            rejectUnauthorized: false
+                        }
+                    });
+
+                    // send mail with defined transport object
+                    let mailOptions ={
+                        from: '"Fred Foo 👻" <izuru775@gmail.com', // sender address
+                        to: "izuru775@gmail.com", // list of receivers
+                        subject: "SAIFE App password reset", // Subject line
+                        text: "Hello world?", // plain text body
+                        html: output, // html body
+                    }
+
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            console.log(err)
+                        }
+                        console.log("Message sent: %s", info.messageId);
+                        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                    });
+
+                    res.json({
+                        success,
+                        email
+                    })
+                } else {
+                    errors.push({ msg: 'This email is not registered' })
+                    res.status(400).json({
+                        errors,
+                        email
+                    })
+                }
+            })
+    }
+
+}
 module.exports = {
     registerUserService,
     registerMemberService,
     loadMembersService,
     userLoginService,
     userLogoutService,
-    userAccountSettingsService
+    userAccountSettingsService,
+    userPasswordRestService
 }
