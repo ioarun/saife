@@ -112,7 +112,6 @@ const registerMember = (req, res) => {
         .then(records => {
             let members = records
 
-
             // Object destructuring 
             const { firstName, lastName, gender, address, age, description } = req.body
             //console.log(req.body)
@@ -182,11 +181,8 @@ const registerMember = (req, res) => {
                                     }
                                 })
                                 .catch(err => console.log(err))
-
-
                         }
                     })
-
             }
         }).catch(err => console.log(err))
 }
@@ -201,6 +197,52 @@ const loadMembers = (req,res) => {
         })
         .catch(err => console.log(err))
 }
+
+// Update Member Details
+const updateMember = (req,res) => {
+    let currUserID = req.user._id;
+    
+    // Object destructuring 
+    const { firstName, lastName, gender, address, age, description, id} = req.body;
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !gender || !address || !age) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+    // If there's an error re render the registraion page
+    if (errors.length > 0) {
+        res.status(400);
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            gender,
+            address,
+            age
+        })
+    } else {
+        Member.findOneAndUpdate({_id: id, userID: currUserID}, {$set: {firstName, lastName, gender, address, age, description}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated Member Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+// Delete Member
+const deleteMember = (req,res) => {
+    let currUserID = req.user._id;
+    let id = req.body.id;
+
+    Member.deleteOne({_id: id, userID: currUserID},)
+        .then(records => {
+            res.json({success: "Deleted Member!"});
+        })
+        .catch(err => console.log(err))
+}
+
 
 // Login handle
 const userLogin = (req, res, next) => {
@@ -233,6 +275,8 @@ module.exports = {
     registerUser,
     registerMember,
     loadMembers,
+    updateMember,
+    deleteMember,
     userLogin,
     userLogout,
     userAccountSettings

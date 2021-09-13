@@ -1,3 +1,9 @@
+<head>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
 <body>
     <div class="container d-flex align-items-center overflow-auto">
         <table class="table table-striped table-hover m-3">
@@ -54,7 +60,7 @@
                 <h4>Add Member</h4>
             </div>
             <div class="row modal-content">
-                <div id="alert_placeholder"></div>
+                <div class="alert_placeholder"></div>
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s6">
@@ -110,6 +116,7 @@
                 <h4>Member Details</h4>
             </div>
             <div class="row modal-content">
+                <div class="alert_placeholder"></div>
                 <form class="col s12">
                     <div class="row">
                         <div class="input-field col s6">
@@ -120,7 +127,7 @@
                                     var mems = '<%- JSON.stringify(members) %>';
                                     mems = JSON.parse(mems);
 
-                                    var data = $("tr[id=" + event.target.parentNode.parentNode.id + " ]")[0].cells;
+                                    var data = $("tr[id=" + rowID + " ]")[0].cells;
 
                                     $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
                                     $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
@@ -171,8 +178,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12 center-align">
+                        <div class="input-field col s6 right-align">
                             <a class="waves-effect waves-light btn" id="updateMemberDetails">Update</a>
+                        </div>
+                        <div class="input-field col s6">
+                            <a class="waves-effect waves-light btn" id="deleteMember">Delete</a>
                         </div>
                     </div>
                 </form>
@@ -187,14 +197,14 @@
     </div>
 
     <script>
-
+        // Initialize Modals
         $('#addMemberModal').modal();
         $('#viewMemberDetailsModal').modal();
         $('select').formSelect();
 
         $(document).ready(() => {
 
-
+            //Initializing OnClick Events on Document Load
             $('#addMember').click(() => {
                 addMemberSubmit();
             });
@@ -203,12 +213,16 @@
                 updateMemberDetailsSubmit();
             });
 
+            $('#deleteMember').click(() => {
+                deleteMember();
+            });
+
             $("#addMember").on('hide', () => {
                 location.reload()
             })
         })
 
-
+        // Add Member Details
         const addMemberSubmit = () => {
             let firstName = $('#firstName').val();
             let lastName = $('#lastName').val();
@@ -227,7 +241,7 @@
 
             let modalInstance = M.Modal.getInstance($("#addMemberModal"));
 
-
+            //Ajax call Add Member route
             $.ajax({
                 url: "/users/myMembers",
                 data: memberData,
@@ -238,34 +252,23 @@
                         console.log((result.errors[0].msg));
 
                         (result.errors).forEach(element => {
-                            $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                            $('.alert_placeholder').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                         });
 
                     }
                     // To check if the server response contains any success messages 
                     else if (typeof result.success != 'undefined') {
-                        console.log((result.success[0].msg));
-
-                        // (result.success).forEach(element => {
-                        //     $('#alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
-                        //         '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
-                        // });
-                        // Wait 3 seconds before reload the page so the success message get time to display 
-                        // function myFunction() {
-                        //     setTimeout(function () { location.reload() },1000);
-                        // }
-                        // myFunction();
-                        location.reload()
-
-
+                        location.reload();
                     }
-
-
                 }
             });
         }
+
+        // Update Member Details
         const updateMemberDetailsSubmit = () => {
+
+            //Getting Member Details from the form
             let memberData = {};
             memberData.firstName = $('#viewMemberDetailsFirstName').val();
             memberData.lastName = $('#viewMemberDetailsLastName').val();
@@ -273,12 +276,62 @@
             memberData.age = $('#viewMemberDetailsAge').val();
             memberData.address = $('#viewMemberDetailsAddress').val();
             memberData.description = $('#viewMemberDetailsDescription').val();
+            memberData.id = $('#viewMemberDetailsMemberID').val();
 
             let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
-            modalInstance.close();
 
+            //Ajax call Update Member route
+            $.ajax({
+                url: "/users/myMembers",
+                data: memberData,
+                type: "PUT",
+                success: (result) => {
+                    console.log("RESULT: ", result);
+                    location.reload();
+                },
+                error: (result) => {
+                    let errorBody = result.responseJSON;
+                    if (typeof errorBody.errors != 'undefined') {
+                        (errorBody.errors).forEach(element => {
+                            $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                }
+            });
         }
 
+        // Delete Member
+        const deleteMember = () => {
+            let memberData = {};
+            memberData.id = $('#viewMemberDetailsMemberID').val();
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this Member!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    swal("Member deleted successfully!", {
+                        icon: "success",
+                    });
+                    let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
+                    modalInstance.close();
 
+                    //Ajax call Delete Member route
+                    $.ajax({
+                        url: "/users/myMembers",
+                        data: memberData,
+                        type: "DELETE",
+                        success: (result) => {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    swal("Member not deleted!");
+                }
+            });
+        }
     </script>
 </body>
