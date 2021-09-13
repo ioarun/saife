@@ -52,7 +52,7 @@ app.post('/subscribe', (req, res) => {
 })
 
 // Push Route
-app.post('/send-push', (req, res) => {
+app.post('/sendPush', (req, res) => {
     console.log(req.body._id);
     // Get pushSubscription from the db
     User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
