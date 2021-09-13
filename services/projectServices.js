@@ -1,8 +1,11 @@
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const _ =require('lodash')
 const User = require('../models/User')
+
 const Member = require('../models/Member')
 const nodemailer = require("nodemailer");
+const jwt = require('jsonwebtoken')
 
 // Create user account if user is not already registered
 const registerUserService = (req, res, errors) => {
@@ -185,7 +188,8 @@ const userAccountSettingsService = (req, res) => {
     })
 }
 
-const userPasswordRestService = (req, res) => {
+// Forgot Password handle
+const userFogotPasswordService = (req, res) => {
     const { email } = req.body
     console.log(email)
 
@@ -204,17 +208,21 @@ const userPasswordRestService = (req, res) => {
                 if (member) {
                     let success = []
                     success.push({ msg: 'Please check your email in box for a link to complete the reset' })
-                    const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>`
+                    const token = jwt.sign({ _id: member._id }, process.env.RESET_PASSWORD_KEY, { expiresIn: '20m' })
+                    // Export the token
+                    exports.token=token;
+                    const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>
+                    <a href="http://localhost:5000/users/passwordReset/${token}">Click Here</a>`
 
 
                     // create reusable transporter object using the default SMTP transport
                     let transporter = nodemailer.createTransport({
-                        host: "smtp.gmail.com",
-                        port: 587,
-                        secure: false, // true for 465, false for other ports
+                        host: "smtpout.secureserver.net",
+                        port: 465,
+                        secure: true, // true for 465, false for other ports
                         auth: {
-                            user: 'izuru775@gmail.com', // generated ethereal user
-                            pass: 'g7rPA5zP1991', // generated ethereal password
+                            user: 'official@saife.app', // generated ethereal user
+                            pass: 'official123', // generated ethereal password
                         },
                         tls: {
                             rejectUnauthorized: false
@@ -222,8 +230,8 @@ const userPasswordRestService = (req, res) => {
                     });
 
                     // send mail with defined transport object
-                    let mailOptions ={
-                        from: '"Fred Foo 👻" <izuru775@gmail.com', // sender address
+                    let mailOptions = {
+                        from: '"SAIFE App" <official@saife.app>', // sender address
                         to: "izuru775@gmail.com", // list of receivers
                         subject: "SAIFE App password reset", // Subject line
                         text: "Hello world?", // plain text body
@@ -238,10 +246,21 @@ const userPasswordRestService = (req, res) => {
                         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                     });
 
-                    res.json({
-                        success,
-                        email
+                    // after sending email update resetLink in db
+                    member.updateOne({ resetLink: token }, (err, success) => {
+                        if (err) {
+                            errors.push({ msg: "Reset password link error" })
+                            res.status(400).json({ errors })
+                        } else {
+                            let success = []
+                            success.push({ msg: 'Please check your email in box for a link to complete the reset' })
+                            res.json({
+                                success,
+                                email
+                            })
+                        }
                     })
+
                 } else {
                     errors.push({ msg: 'This email is not registered' })
                     res.status(400).json({
@@ -253,6 +272,55 @@ const userPasswordRestService = (req, res) => {
     }
 
 }
+
+// Email password handle
+const userEmailPasswordService = (req,res,routeToken) =>{
+    const resetlink = routeToken;
+    console.log(resetlink)
+    res.render('passwordReset',{title:"Reset Password",resetlink})
+
+}
+
+// Password reset services 
+const userResetPasswordService = (req, res) => {
+    const { resetLink, newPassword } = req.body
+    // Verify if the resetLink is the same 
+    console.log(req.body)
+    if (resetLink) {
+        jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, function (error, decodedData) {
+            if (error) {
+                return res.status(401).json({
+                    error: "Incorrect token or it is expired"
+                })
+            }
+            User.findOne({ resetLink }, (err, user) => {
+                if (err || !user) {
+                    return res.status(400).json({ error: "User with this token does not exist" })
+                }
+                const obj = {
+                    password: newPassword,
+                    resetLink:''
+                }
+                // use loash extend property to update password within the user
+                user = _.extend(user,obj)
+
+                user.save((err,result)=>{
+                    if(err){
+                        return res.status(400).json({error:"Reset password error"})
+                    }
+                    else{
+                        return res.status(200).json({msg:"Your password has been changed"})
+                    }
+                })
+
+            })
+        })
+    } else {
+        return res.status(200).json({error:"Authentication errror!!!"})
+    }
+}
+
+
 module.exports = {
     registerUserService,
     registerMemberService,
@@ -260,5 +328,8 @@ module.exports = {
     userLoginService,
     userLogoutService,
     userAccountSettingsService,
-    userPasswordRestService
+    userFogotPasswordService,
+    userEmailPasswordService,
+    userResetPasswordService,
+    
 }
