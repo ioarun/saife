@@ -76,9 +76,20 @@ const userLogout = (req, res) => {
 const userAccountSettings = (req, res) => {
     Services.projectServices.userAccountSettingsService(req,res)
 }
-// Reset password handle
-const resetPassword = (req,res)=>{
-    Services.projectServices.userPasswordRestService(req,res)
+
+// Fogot password handle
+const fogotPassword = (req,res)=>{
+    Services.projectServices.userFogotPasswordService(req,res)
+}
+
+// Handle for email link 
+const emailPassword =(req,res,routeToken)=>{
+    Services.projectServices.userEmailPasswordService(req,res,routeToken)
+}
+
+// Password reset handle
+const resetPassword =(req,res)=>{
+    Services.projectServices.userResetPasswordService(req,res)
 }
 module.exports = {
     registerUser,
@@ -87,5 +98,7 @@ module.exports = {
     userLogin,
     userLogout,
     userAccountSettings,
+    fogotPassword,
+    emailPassword,
     resetPassword
 };
