@@ -49,4 +49,9 @@ router.get('/userAccountSettings', ensureAuthenticated, (req, res) => {
     Controllers.projectController.userAccountSettings(req, res)
 })
 
+// Reset password handle
+router.post('/password',(req,res)=>{
+    Controllers.projectController.resetPassword(req,res)
+})
+
 module.exports = router;
