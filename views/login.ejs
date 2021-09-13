@@ -30,15 +30,29 @@
     </div>
 </div>
 <!-- Modal Structure Fogot Password-->
+<!-- Modal Structure -->
 <div id="mail" class="modal">
     <div class="modal-content">
         <h4>Reset Your Password</h4>
         <p>To reset your password, enter your email below and submit. An email will be sent to you with instructions
-            about how to complete the process.
-        </p>
+            about how to complete the process</p>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    <div class="row modal-content">
+        <div id="alert_placeholder"></div>
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s6">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="rEmail" name="email" class="form-control" placeholder="Enter Email"  />
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6 center-align">
+                    <a class="waves-effect waves-light btn" id="reset">Reset Password</a>
+                </div>
+            </div>
+            
+        </form>
     </div>
 </div>
 
@@ -46,6 +60,48 @@
     //$("nav>div>ul").toggleClass("hide");
     // $("nav").toggleClass("hide");
     $('#mail').modal();
+
+    $('#reset').click(() => {
+        resetPassword();
+    })
+
+    const resetPassword = () => {
+        // Retrive the value from email field
+        let email = $('#rEmail').val();
+        // Create an object to store value
+        let emailData = {}
+        // Insert value in to the data object
+        emailData.email = email;
+        // Use the ajax call to send value to the server
+        
+        $.ajax({
+            url:"/users/password",
+            data:emailData,
+            type:"POST",
+            success:(result)=>{
+                console.log(result)
+
+                if (typeof result.errors != 'undefined') {
+                    console.log((result.errors[0].msg));
+
+                    (result.errors).forEach(element => {
+                        $('#alert_placeholder').append().html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    });
+
+                }
+                // To check if the server response contains any success messages 
+                else if (typeof result.success != 'undefined') {
+                    console.log((result.success[0].msg));
+
+                    (result.success).forEach(element => {
+                        $('#alert_placeholder').append().html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + element.msg +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    });
+                }
+            }
+        });
+    }
 
     $(document).ready(function () {
         $('.email').modal();
