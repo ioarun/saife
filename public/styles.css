@@ -3,12 +3,15 @@
   font-weight: bold;
   font-family: cursive;
 }
+
 .mainText {
   color: black;
 }
-p{
-  color:black;
+
+p {
+  color: black;
 }
+
 body {
   display: flex;
   min-height: 100vh;
@@ -19,9 +22,11 @@ body {
   background-color: #5b64e0;
   padding: 15px;
 }
+
 main {
   flex: 1 0 auto;
 }
+
 .twitter-logo {
   max-height: 50px;
   width: 50px;
@@ -60,7 +65,8 @@ main {
   width: 10px;
   height: 10px;
   line-height: 200px;
-  border-radius: 50%; /* the magic */
+  border-radius: 50%;
+  /* the magic */
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   text-align: center;
@@ -74,17 +80,19 @@ main {
 .status-indicator-good {
   background-color: #16a085;
 }
+
 .status-indicator-fall {
   background-color: #e74c3c;
 }
 
-nav>div>ul>li :hover{
+nav>div>ul>li :hover {
   color: black;
 }
 
 #addMemberModal {
   border-radius: 20px;
 }
+
 #addMemberModal::-webkit-scrollbar {
   display: none;
 }
@@ -92,14 +100,24 @@ nav>div>ul>li :hover{
 #viewMemberDetailsModal {
   border-radius: 20px;
 }
+
 #viewMemberDetailsModal::-webkit-scrollbar {
   display: none;
 }
 
 .form-round {
-border-radius: 20px;
+  border-radius: 20px;
 }
 
 .body-bg {
   background-color: #e9ebee;
+}
+
+#mail {
+  width: 25% !important;
+  height: 60% !important;
+  border-radius: 20px;
+}
+#mail::-webkit-scrollbar {
+  display: none;
 }
