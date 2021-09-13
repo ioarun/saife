@@ -41,7 +41,8 @@ describe('App', () => {
                     .redirects(0)
                     .end((err, res) => {
                         // res.should.have.status(200)
-                        res.header.location.should.include('/users/login') // Success on logout should redirect to login page
+                        console.log(res.header)
+                        res.header.location.should.include('/') // Success on logout should redirect to login page
                         done();
                     })
             })
