@@ -236,23 +236,18 @@ const fallDetected = (req, res) => {
     // Object destructuring 
     const { userId, memberId} = req.body
 
-    Member.find({_id: new mongoose.mongo.ObjectId(memberId)})
-        .then(records => {
-            let members = records;
-            res.render('members', { title: "Members", members });
-        })
-        .catch(err => console.log(err))
-
         Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
             {status: true}, function(err, data) {
                 if(err){
                     console.log(err);
+                    res.status(400);
                 }
                 else{
                     console.log("fall status saved! ");
-                    
+                    res.status(200);
                 }
             });
+    
 }
 
 module.exports = {
