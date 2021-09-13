@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 const User = require('../models/User')
 const Member = require('../models/Member')
@@ -229,11 +230,37 @@ const userAccountSettings = (req, res) => {
         phone: req.user.phone,
     })
 }
+
+// Fall detected
+const fallDetected = (req, res) => {
+    // Object destructuring 
+    const { userId, memberId} = req.body
+
+    Member.find({_id: new mongoose.mongo.ObjectId(memberId)})
+        .then(records => {
+            let members = records;
+            res.render('members', { title: "Members", members });
+        })
+        .catch(err => console.log(err))
+
+        Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
+            {status: true}, function(err, data) {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    console.log("fall status saved! ");
+                    
+                }
+            });
+}
+
 module.exports = {
     registerUser,
     registerMember,
     loadMembers,
     userLogin,
     userLogout,
-    userAccountSettings
+    userAccountSettings,
+    fallDetected
 };

@@ -49,4 +49,9 @@ router.get('/userAccountSettings', ensureAuthenticated, (req, res) => {
     Controllers.projectController.userAccountSettings(req, res)
 })
 
+// Fall detected
+router.post('/fallDetected', (req, res, next) => {
+    Controllers.projectController.fallDetected(req, res, next)
+})
+
 module.exports = router;
