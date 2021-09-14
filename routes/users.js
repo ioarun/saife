@@ -62,11 +62,10 @@ router.put('/password',(req,res)=>{
     Controllers.projectController.fogotPassword(req,res)
 })
 router.get('/passwordReset/:id',(req,res)=>{
-    Controllers.projectController.emailPassword(req,res,req.params.id)
+    Controllers.projectController.emailPassword(req,res)
     
 })
 router.put('/passwordReset/',(req,res)=>{
-    console.log(req)
     Controllers.projectController.resetPassword(req,res)
     
 })
