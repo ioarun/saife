@@ -263,7 +263,9 @@ const userFogotPasswordService = (req, res) => {
 
                 } else {
                     errors.push({ msg: 'This email is not registered' })
-                    res.status(400).json({
+
+                    res.json({
+                        statusCode:400,
                         errors,
                         email
                     })
@@ -274,18 +276,9 @@ const userFogotPasswordService = (req, res) => {
 }
 
 // Email password handle
-const userEmailPasswordService = (req,res,routeToken) =>{
-    const resetlink = routeToken;
-    console.log(resetlink)
-    res.render('passwordReset',{title:"Reset Password",resetlink})
-
-}
-
-// Password reset services 
-const userResetPasswordService = (req, res) => {
-    const { resetLink, newPassword } = req.body
-    // Verify if the resetLink is the same 
-    console.log(req.body)
+const userEmailPasswordService = (req,res) =>{
+    const resetLink =req.params.id;
+    
     if (resetLink) {
         jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, function (error, decodedData) {
             if (error) {
@@ -296,6 +289,32 @@ const userResetPasswordService = (req, res) => {
             User.findOne({ resetLink }, (err, user) => {
                 if (err || !user) {
                     return res.status(400).json({ error: "User with this token does not exist" })
+                }else{
+                    return res.render('passwordReset',{title:"Reset Password",resetLink:resetLink})
+                }
+            })
+        })
+    } 
+    
+
+}
+
+// Password reset services 
+const userResetPasswordService = (req, res) => {
+    const { resetLink, newPassword } = req.body
+    // Verify if the resetLink is the same 
+    console.log(resetLink)
+    console.log(newPassword)
+    if (resetLink) {
+        jwt.verify(resetLink, process.env.RESET_PASSWORD_KEY, function (error, decodedData) {
+            if (error) {
+                return res.status(401).json({
+                    error: "Incorrect token or it is expired"
+                })
+            }
+            User.findOne({ resetLink }, (err, user) => {
+                if (err || !user) {
+                    return res.json({ error: "User with this token does not exist" })
                 }
                 const obj = {
                     password: newPassword,
@@ -306,10 +325,11 @@ const userResetPasswordService = (req, res) => {
 
                 user.save((err,result)=>{
                     if(err){
-                        return res.status(400).json({error:"Reset password error"})
+                        return res.json({error:"Reset password error"})
                     }
                     else{
                         return res.status(200).json({msg:"Your password has been changed"})
+                        
                     }
                 })
 
