@@ -83,8 +83,8 @@ const fogotPassword = (req,res)=>{
 }
 
 // Handle for email link 
-const emailPassword =(req,res,routeToken)=>{
-    Services.projectServices.userEmailPasswordService(req,res,routeToken)
+const emailPassword =(req,res)=>{
+    Services.projectServices.userEmailPasswordService(req,res)
 }
 
 // Password reset handle
