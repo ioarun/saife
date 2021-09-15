@@ -88,6 +88,12 @@ const userAccountSettings = (req, res) => {
     Services.projectServices.userAccountSettingsService(req,res)
 }
 
+// Update user's account details
+const updateAccountDetails = (req, res) => {
+    Services.projectServices.updateAccountDetailsService(req,res)
+}
+
+
 // Fogot password handle
 const fogotPassword = (req,res)=>{
     Services.projectServices.userFogotPasswordService(req,res)
@@ -131,6 +137,7 @@ module.exports = {
     userLogin,
     userLogout,
     userAccountSettings,
+    updateAccountDetails,
     fallDetected,
     fogotPassword,
     emailPassword,

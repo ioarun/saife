@@ -235,6 +235,7 @@ const userLogoutService = (req, res) => {
 
 // User Acccount service
 const userAccountSettingsService = (req, res) => {
+
     res.render('userAccountSettings', {
         title: "Account Settings",
         id: req.user._id.toString(),
@@ -244,6 +245,39 @@ const userAccountSettingsService = (req, res) => {
         phone: req.user.phone,
     })
 }
+
+// Update Account details service
+const updateAccountDetailsService = (req, res) => {
+    let currUserID = req.user._id;
+    
+    // Object destructuring 
+    const { firstName, lastName, phone} = req.body;
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !phone ) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+    // If there's an error re render the registraion page
+    if (errors.length > 0) {
+        res.status(400);
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            phone
+        })
+    } else {
+        User.findOneAndUpdate({_id: currUserID}, {$set: {firstName, lastName, phone}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated Account Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+
 
 // Forgot Password handle
 const userFogotPasswordService = (req, res) => {
@@ -412,6 +446,7 @@ module.exports = {
     userLoginService,
     userLogoutService,
     userAccountSettingsService,
+    updateAccountDetailsService,
     userFogotPasswordService,
     userEmailPasswordService,
     userResetPasswordService,

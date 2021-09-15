@@ -9,7 +9,7 @@ self.addEventListener('install', e => {
 })
 
 self.addEventListener('fetch', e => {
-  console.log('e ==> ', e)
+  // console.log('e ==> ', e)
   // e.responseWith(
   //   caches.match(e.request).then(response => {
   //     return response || fetch(e.request);
