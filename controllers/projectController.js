@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const mongoose = require('mongoose')
 
 const User = require('../models/User')
 const Member = require('../models/Member')
@@ -9,7 +10,6 @@ const registerUser = (req, res) => {
 
     // Object destructuring 
     const { firstName, lastName, email, phone, password, password2 } = req.body
-    console.log(req.body)
     let errors = [];
 
     // Check for required fields
@@ -33,8 +33,8 @@ const registerUser = (req, res) => {
     }
 
     // If there's an error re render the registraion page
-    if (errors.length > 0) {
-        res.render('register', {
+    if (errors.length > 0) { 
+        res.json({
             errors,
             firstName,
             lastName,
@@ -44,6 +44,7 @@ const registerUser = (req, res) => {
             password2,
             title: "Register"
         })
+
     } else {
         // When the validation passed
         User.findOne({ email: email })
@@ -51,8 +52,7 @@ const registerUser = (req, res) => {
                 if (user) {
                     // if there's a user rerender the register form
                     errors.push({ msg: 'Email is already registered' })
-                    res.status(400)
-                    res.render('register', {
+                    res.json({
                         errors,
                         firstName,
                         lastName,
@@ -81,10 +81,22 @@ const registerUser = (req, res) => {
                             // Set password to hashed
                             newUser.password = hash
                             // Save user
+                            
                             newUser.save()
                                 .then(user => {
-                                    req.flash('success_msg', 'You are now registered and can log in')
-                                    res.redirect('/users/login')
+                                    let success = [];
+                                    success.push({ msg: 'Registered' })
+                                    // req.flash('success_msg', 'You are now registered and can log in')
+                                    // res.redirect('/users/login')
+                                    res.json({
+                                        firstName,
+                                        lastName,
+                                        email,
+                                        phone,
+                                        password,
+                                        password2,
+                                        success
+                                    })
                                 })
                                 .catch(err => console.log(err))
                         }))
@@ -96,10 +108,10 @@ const registerUser = (req, res) => {
 
 // Register member handle 
 const registerMember = (req, res) => {
-    Member.find({})
+    let currUserID = req.user._id;
+     Member.find({userID:currUserID})
         .then(records => {
             let members = records
-
 
             // Object destructuring 
             const { firstName, lastName, gender, address, age, description } = req.body
@@ -125,7 +137,7 @@ const registerMember = (req, res) => {
                 })
             } else {
                 // When the validation passed
-                Member.findOne({ firstName: firstName })
+                Member.findOne({ firstName:firstName, lastName:lastName, user: currUserID })
                     .then(member => {
                         if (member) {
                             // if there's a user rerender the register form
@@ -140,7 +152,7 @@ const registerMember = (req, res) => {
                                 age,
                                 description,
                                 title: "Member Register"
-                            })
+                            });
                         } else {
                             const newMember = new Member({
                                 firstName,
@@ -148,7 +160,10 @@ const registerMember = (req, res) => {
                                 gender,
                                 address,
                                 age,
-                                description
+                                description,
+                                status: false,
+                                videoURL: "",
+                                userID: currUserID
                             });
                             newMember.save()
                                 .then(member => {
@@ -167,24 +182,68 @@ const registerMember = (req, res) => {
                                     }
                                 })
                                 .catch(err => console.log(err))
-
-
                         }
                     })
-
             }
         }).catch(err => console.log(err))
 }
 
 // Members page
-const loadMembers = (req, res) => {
-    Member.find({})
+const loadMembers = (req,res) => {
+    let currUserID = req.user._id;
+    Member.find({userID:currUserID})
         .then(records => {
-            let members = records
+            let members = records;
             res.render('members', { title: "Members", members });
         })
         .catch(err => console.log(err))
 }
+
+// Update Member Details
+const updateMember = (req,res) => {
+    let currUserID = req.user._id;
+    
+    // Object destructuring 
+    const { firstName, lastName, gender, address, age, description, id} = req.body;
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !gender || !address || !age) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+    // If there's an error re render the registraion page
+    if (errors.length > 0) {
+        res.status(400);
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            gender,
+            address,
+            age
+        })
+    } else {
+        Member.findOneAndUpdate({_id: id, userID: currUserID}, {$set: {firstName, lastName, gender, address, age, description}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated Member Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+// Delete Member
+const deleteMember = (req,res) => {
+    let currUserID = req.user._id;
+    let id = req.body.id;
+
+    Member.deleteOne({_id: id, userID: currUserID},)
+        .then(records => {
+            res.json({success: "Deleted Member!"});
+        })
+        .catch(err => console.log(err))
+}
+
 
 // Login handle
 const userLogin = (req, res, next) => {
@@ -229,11 +288,34 @@ const userAccountSettings = (req, res) => {
         phone: req.user.phone,
     })
 }
+
+// Fall detected
+const fallDetected = (req, res) => {
+    // Object destructuring 
+    const { userId, memberId} = req.body
+
+        Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
+            {status: true}, function(err, data) {
+                if(err){
+                    console.log(err);
+                    res.status(400);
+                }
+                else{
+                    console.log("fall status saved! ");
+                    res.status(200);
+                }
+            });
+    
+}
+
 module.exports = {
     registerUser,
     registerMember,
     loadMembers,
+    updateMember,
+    deleteMember,
     userLogin,
     userLogout,
-    userAccountSettings
+    userAccountSettings,
+    fallDetected
 };

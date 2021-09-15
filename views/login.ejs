@@ -42,8 +42,8 @@
             </div>
 
             <!-- Register modal -->
-            <%- include('register') %>
-
+            <%- include("register.ejs") %>
+            
         </div>
         
         <script>
@@ -54,9 +54,13 @@
             $('#registerModal').modal();
             $('select').formSelect();
 
-            $('#register-btn').click(() => {
+            $(document).ready(() =>{
+                $('#register-btn').click((event) => {
+                event.preventDefault();
                 registerSubmit();
             });
+            });
+            
 
             const registerSubmit = () => {
                 let firstName = $('#firstName').val();
@@ -75,17 +79,31 @@
                 userData.password2 = password2;
 
                 let modalInstance = M.Modal.getInstance($("#registerModal"));
-                modalInstance.close();
-
+                // modalInstance.close();
+                
                 $.ajax({
-                    url: "/users/register",
-                    data: userData,
-                    type: "POST",
-                    success: (result) => {
-                        console.log(result);
-                        // window.location.reload();
+                url: "/users/register",
+                data: userData,
+                type: "POST",
+                success: (result) => {
+                    console.log(result.success);
+                    // To check if the server response contains error messages
+                    if (typeof result.errors != 'undefined') {
+                        console.log((result.errors[0].msg));
+                        (result.errors).forEach(element => {
+                            $('#alert_placeholder_register').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+
                     }
-                });
+                    // To check if the server response contains any success messages 
+                    else if (typeof result.success != 'undefined') {
+                        console.log((result.success[0].msg));
+                        modalInstance.close();
+                        location.reload()
+                    }
+                }
+            });
                 
             }
         </script>

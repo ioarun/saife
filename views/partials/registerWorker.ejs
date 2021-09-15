@@ -1,0 +1,14 @@
+<script>
+    navigator.serviceWorker.register('/worker.js');
+    navigator.serviceWorker.ready
+        .then(function (registration) {
+            console.log('service worker registered');
+            return registration.pushManager.getSubscription();
+        }).then(function (subscription) {
+            if (subscription) {
+                console.log('Already subscribed', subscription.endpoint);
+                
+            }
+        });
+
+</script>

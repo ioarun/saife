@@ -1,5 +1,21 @@
 console.log("Service Worker Loaded...");
 
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open('static').then(cache => {
+      return cache.addAll(['./', 'styles.css', 'assets/saife-logo.png', 'assets/splash-screen.png']);
+    })
+  )
+})
+
+self.addEventListener('fetch', e => {
+  e.responseWith(
+    caches.match(e.request).then(response => {
+      return response || fetch(e.request);
+    })
+  );
+})
+
 self.addEventListener("push", e => {
   const data = e.data.json();
   console.log("Push Recieved...");

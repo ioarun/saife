@@ -1,0 +1,27 @@
+{
+    "short_name": "SAIFE",
+    "name": "Safety AI For Elderly",
+    "start_url": "/",
+    "background_color": "#5b64e0",
+    "display": "standalone",
+    "scope": "/",
+    "icons": [
+        {
+          "src": "assets/splash-screen.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        },
+        {
+            "src": "assets/saife-logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/saife-logo-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+
+      ],
+    "theme_color": "#5b64e0"
+}

@@ -52,7 +52,7 @@ app.post('/subscribe', (req, res) => {
 })
 
 // Push Route
-app.post('/send-push', (req, res) => {
+app.post('/sendPush', (req, res) => {
     console.log(req.body._id);
     // Get pushSubscription from the db
     User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
@@ -97,8 +97,6 @@ app.use(express.urlencoded({ extended: true }));
 // Passport Config
 require('./config/passport')(passport)
 
-//Middleware for static files
-app.use(express.static('public'))
 
 // Connect to mongo
 mongo();
@@ -135,9 +133,9 @@ app.use((req,res,next)=>{
 const PORT = process.env.PORT || 3000
 
 
-//set the static path to push worker
-app.use(express.static('push'));
-app.use('/push', express.static('push'));
+// Static files access
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'views')))
 
 // Routes
 app.use('/', require('./routes/index.js'));
