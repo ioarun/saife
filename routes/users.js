@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Controllers = require('../controllers')
 const { ensureAuthenticated } = require('../config/auth');
+const Services = require('../services')
+const token = Services.token
 
 // User Model
 const User = require('../models/User')
 
 // Member Model
-const Member = require('../models/Member')
+const Member = require('../models/Member');
+const services = require('../services');
 
 // Login Page
 router.get('/login', (req, res) => {
@@ -63,5 +66,23 @@ router.get('/userAccountSettings', ensureAuthenticated, (req, res) => {
 router.post('/fallDetected', (req, res, next) => {
     Controllers.projectController.fallDetected(req, res, next)
 })
+// Reset password handle
+// router.post('/password',(req,res)=>{
+//     Controllers.projectController.resetPassword(req,res)
+// })
+
+// Password reset email link
+router.put('/password',(req,res)=>{
+    Controllers.projectController.fogotPassword(req,res)
+})
+router.get('/passwordReset/:id',(req,res)=>{
+    Controllers.projectController.emailPassword(req,res)
+    
+})
+router.put('/passwordReset/',(req,res)=>{
+    Controllers.projectController.resetPassword(req,res)
+    
+})
+
 
 module.exports = router;

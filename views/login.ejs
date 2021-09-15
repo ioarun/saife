@@ -1,22 +1,26 @@
 <html>
-    <head>
-    </head>
-    <body class="body-bg body-bg-login">
-        <div class="container login-body-container">
-            <div class="row justify-content-center align-items-center h-100">
-                <div class="col-12 col-md-6">
-                    <img class="text-center img-fluid d-none d-md-block" src="/assets/bg3-transparent.png">
-                    <img class="d-block mx-auto d-md-none" src="/assets/saife-logo.png" style="height: 64px; width: 64px; border-radius: 5px;">
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-body form-round">
-                        <h5 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h4>
+
+<head>
+</head>
+
+<body class="body-bg body-bg-login">
+    <div class="container login-body-container">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-6">
+                <img class="text-center img-fluid d-none d-md-block" src="/assets/bg3-transparent.png">
+                <img class="d-block mx-auto d-md-none" src="/assets/saife-logo.png"
+                    style="height: 64px; width: 64px; border-radius: 5px;">
+            </div>
+            <div class="col-md-6">
+                <div class="card card-body form-round">
+                    <h5 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login</h4>
                         <%- include('./partials/messages') %>
                             <form action="/users/login" method="POST">
                                 <div class="row justify-content-center">
                                     <div class="form-group col-12">
                                         <label for="email">Email</label>
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" />
+                                        <input type="email" id="email" name="email" class="form-control"
+                                            placeholder="Enter Email" />
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="password">Password</label>
@@ -31,57 +35,101 @@
                             </form>
 
                             <div class="row">
+                                <p class="lead mt-4 ">
+                                    <a href="#mail" class=" modal-trigger"> Forgot Password?</a>
+                                </p>
                                 <p class="lead mt-2">
                                     <!-- No Account? <a href="/users/register">Register</a> -->
-                                    No Account? <a class="waves-effect waves-light modal-trigger" href="#registerModal">Register</a>
+                                    No Account? <a class="waves-effect waves-light modal-trigger"
+                                        href="#registerModal">Register</a>
                                 </p>
                             </div>
-                            
-                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Register modal -->
+        <%- include("register.ejs") %>
+
+            <!-- Modal Structure -->
+            <div id="mail" class="modal">
+                <div class="modal-content">
+                    <h4>Reset Your Password</h4>
+                    <p>To reset your password, enter your email below and submit. An email will be sent to you with
+                        instructions
+                        about how to complete the process</p>
+                </div>
+                <div class="row modal-content">
+                    <div id="alert_placeholder"></div>
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="rEmail" name="email" class="form-control"
+                                    placeholder="Enter Email" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6 center-align">
+                                <a class="waves-effect waves-light btn" id="reset">Reset Password</a>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
 
-            <!-- Register modal -->
-            <%- include("register.ejs") %>
-            
-        </div>
-        
-        <script>
-            // $("nav>div>ul").toggleClass("hide");
-            // $("nav>div>div").toggleClass("hide");
-            $(".navbar-fixed").toggleClass("hide");
-            
-            $('#registerModal').modal();
-            $('select').formSelect();
+    </div>
 
-            $(document).ready(() =>{
-                $('#register-btn').click((event) => {
+    <script>
+        // $("nav>div>ul").toggleClass("hide");
+        // $("nav>div>div").toggleClass("hide");
+
+        // Modal for reset password
+        $('#mail').modal();
+
+        // Reset password click event
+        $('#reset').click(() => {
+            resetPassword();
+        })
+
+        $(".navbar-fixed").toggleClass("hide");
+
+        $('#registerModal').modal();
+        $('select').formSelect();
+
+        $(document).ready(() => {
+            // Modal initialization 
+            $('.email').modal();
+            
+            $('#register-btn').click((event) => {
                 event.preventDefault();
                 registerSubmit();
             });
-            });
-            
+        });
 
-            const registerSubmit = () => {
-                let firstName = $('#firstName').val();
-                let lastName = $('#lastName').val();
-                let phone = $('#phone').val();
-                let email = $('#email-register').val();
-                let password = $('#password-register').val();
-                let password2 = $('#password2').val();
 
-                let userData = {};
-                userData.firstName = firstName;
-                userData.lastName = lastName;
-                userData.phone = phone;
-                userData.email = email;
-                userData.password = password;
-                userData.password2 = password2;
+        const registerSubmit = () => {
+            let firstName = $('#firstName').val();
+            let lastName = $('#lastName').val();
+            let phone = $('#phone').val();
+            let email = $('#email-register').val();
+            let password = $('#password-register').val();
+            let password2 = $('#password2').val();
 
-                let modalInstance = M.Modal.getInstance($("#registerModal"));
-                // modalInstance.close();
-                
-                $.ajax({
+            let userData = {};
+            userData.firstName = firstName;
+            userData.lastName = lastName;
+            userData.phone = phone;
+            userData.email = email;
+            userData.password = password;
+            userData.password2 = password2;
+
+            let modalInstance = M.Modal.getInstance($("#registerModal"));
+            // modalInstance.close();
+
+            $.ajax({
                 url: "/users/register",
                 data: userData,
                 type: "POST",
@@ -104,11 +152,47 @@
                     }
                 }
             });
-                
-            }
-        </script>
-    </body>
-    
+
+        }
+
+        // Function for reset password
+
+        const resetPassword = () => {
+            // Retrive the value from email field
+            let email = $('#rEmail').val();
+            // Create an object to store value
+            let emailData = {}
+            // Insert value in to the data object
+            emailData.email = email;
+            // Use the ajax call to send value to the server
+
+            $.ajax({
+                url: "/users/password",
+                data: emailData,
+                type: "PUT",
+                success: (result) => {
+                    console.log(result)
+                    if (typeof result.errors != 'undefined') {
+                        console.log((result.errors[0].msg));
+                        (result.errors).forEach(element => {
+                            $('#alert_placeholder').append().html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                    // To check if the server response contains any success messages 
+                    else if (typeof result.success != 'undefined') {
+                        console.log((result.success[0].msg));
+                        (result.success).forEach(element => {
+                            $('#alert_placeholder').append().html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                }
+            });
+        }
+
+
+    </script>
+</body>
+
 </html>
-
-
