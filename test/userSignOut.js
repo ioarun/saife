@@ -45,9 +45,7 @@ describe('App', () => {
                         res.header.location.should.include('/') // Success on logout should redirect to login page
                         done();
                     })
-            })
-       
-        
+            })  
     })
     
 })

@@ -9,8 +9,8 @@
     <div class="row mt-3">
         <div class="col-md-6 m-auto">
             <div class="card card-body form-round">
-                <%- include('./partials/messages') %>
-                <form action="/users/register" method="POST">
+                <div class="alert_placeholder"></div>
+                <form>
                     <div class="form-group">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" class="form-control" placeholder="<%= typeof firstname != 'undefined' ? firstname : '' %>"
@@ -51,9 +51,7 @@
                     </div>
                     <br>
                     <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Save
-                    </button>
+                        <a class="waves-effect waves-light btn" id="updateAccountDetails">Update</a>
                     </div>
                 </form>
         </div>
@@ -180,6 +178,42 @@
             }
 
         }
+
+        $('#updateAccountDetails').click(() => {
+                updateAccountDetailsSubmit();
+            });
+
+        // Update Account Details
+        const updateAccountDetailsSubmit = () => {
+
+            //Getting Account Details from the form
+            let accountData = {};
+            accountData.firstName = $('#firstName').val();
+            accountData.lastName = $('#lastName').val();
+            accountData.phone = $('#phone').val();
+
+            //Ajax call Update Account Details route
+            $.ajax({
+                url: "/users/userAccountSettings",
+                data: accountData,
+                type: "PUT",
+                success: (result) => {
+                    console.log("RESULT: ", result);
+                    $('.alert_placeholder').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + result.success +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                },
+                error: (result) => {
+                    let errorBody = result.responseJSON;
+                    if (typeof errorBody.errors != 'undefined') {
+                        (errorBody.errors).forEach(element => {
+                            $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                }
+            });
+            }
+
     </script>
 </body>
 

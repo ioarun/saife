@@ -71,17 +71,19 @@ app.post('/sendPush', (req, res) => {
                     console.log(user.pushSubObj);
                     console.log("Sending Push...");
                     // Pass object into sendNotification
-                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload).catch(err => console.log(err));
-                    // res.status(200).json({statusMessage: "Notification sent"}); 
+                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
+                    .catch(err => {
+                        console.log(err);
+                        res.status(410).json({statusMessage: "Expired"}); 
+                    });
+                    
                 } 
                 else {
                     console.log("No Push Subscription Object Found!")
-                    // res.status(410).json({statusMessage: "Gone"}); 
                 }  
             })
             .catch(err => {
                 console.log(err);
-                // res.status(410).json({statusMessage: "Gone"}); 
             });
         
     

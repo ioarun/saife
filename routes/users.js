@@ -62,6 +62,12 @@ router.get('/userAccountSettings', ensureAuthenticated, (req, res) => {
     Controllers.projectController.userAccountSettings(req, res)
 })
 
+// update handle for member
+router.put('/userAccountSettings', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.updateAccountDetails(req, res)
+})
+
+
 // Fall detected
 router.post('/fallDetected', (req, res, next) => {
     Controllers.projectController.fallDetected(req, res, next)
