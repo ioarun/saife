@@ -64,7 +64,7 @@ describe('App', () => {
                     password: '123456'
                 })
                 .end((err, res) => {
-                   //console.log(res)
+                //    console.log(res)
                     res.should.have.status(400) // faliure on submit, should set the status 400
                     done();
                 })
