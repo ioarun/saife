@@ -35,7 +35,7 @@ const registerUser = (req, res) => {
 
     // If there's an error re render the registraion page
     if (errors.length > 0) { 
-        res.json({
+        res.status(400).json({
             errors,
             firstName,
             lastName,
