@@ -128,6 +128,12 @@ const fallDetected = (req, res) => {
     
 }
 
+// View video handle
+const viewVideo = (req, res) => {
+    Services.projectServices.viewVideoService(req,res)
+}
+
+
 module.exports = {
     registerUser,
     registerMember,
@@ -141,5 +147,6 @@ module.exports = {
     fallDetected,
     fogotPassword,
     emailPassword,
-    resetPassword
+    resetPassword,
+    viewVideo
 };

@@ -247,7 +247,6 @@ const userAccountSettingsService = (req, res) => {
 
 // Update Account details service
 const updateAccountDetailsService = (req, res) => {
-
     let currUserID = req.user._id;
     // Object destructuring 
     const { firstName, lastName, phone} = req.body
@@ -446,6 +445,13 @@ const userResetPasswordService = (req, res) => {
     }
 }
 
+// View Video service
+const viewVideoService = (req, res) => {
+    res.render('viewVideo', {
+        title: "View Video"
+    })
+}
+
 
 module.exports = {
     registerUserService,
@@ -459,7 +465,8 @@ module.exports = {
     userEmailPasswordService,
     userResetPasswordService,
     updateMemberService,
-    deleteMemberService
+    deleteMemberService,
+    viewVideoService
 
 
 }

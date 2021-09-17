@@ -15,17 +15,53 @@ chai.use(chaiHttp);
 
 
 describe('App', () => {
-  
+    describe('/POST User login', function () {
+
+        this.timeout(15000)
+        it('user should be able to login & logout', function (done) {
+            chai.request(server)
+                .post('/users/login')
+                .redirects(0)
+                .send({
+                    email: 'arun@gmail.com',
+                    password: '123456'
+                })
+                .end((err, res) => {
+                    
+                    //res.should.have.status(302)
+                    res.header.location.should.include('/') // Success on login redirect to the root page
+                    done();
+                })
+        })
+    });
     
     describe('/GET User Account Settings', () => {
+
+            
+            // it('user should be able to login', function (done) {
+            //     chai.request(server)
+            //         .post('/users/login')
+            //         // .redirects(0)
+            //         .send({
+            //             email: 'arun@gmail.com',
+            //             password: '123456'
+            //         })
+            //         .end((err, res) => {
+                        
+            //             //res.should.have.status(302)
+            //             res.header.location.should.include('/') // Success on login redirect to the root page
+            //             done();
+            //         })
+            // })
+    
         
         it('user should be able to access account settings page', (done) => {
-            let user = {
-                        _id: new mongoose.mongo.ObjectId('6136258ca0ba3101c927dc11'),
-                        firstName: 'Zohan',
-                        lastName: 'Dont Mess',
-                        phone:'1234567890'
-                    }
+            // let user = {
+            //             _id: new mongoose.mongo.ObjectId('6136258ca0ba3101c927dc11'),
+            //             firstName: 'Zohan',
+            //             lastName: 'Dont Mess',
+            //             phone:'1234567890'
+            //         }
             chai.request(server)
                 .get('/users/userAccountSettings')
                 .end((err, res) => {
@@ -64,13 +100,13 @@ describe('App', () => {
         it('User should not be allowed to keep any field empty.', function(done){
             // this.timeout(15000)
 
-        	chai.request("server")
+        	chai.request(server)
                 .put('/users/userAccountSettings')
                 .set('content-type', 'application/json')
                 .send(user2)
                 .end((err, res) => {
-                    console.log(res.status)
-                    // res.should.have.status(200) // update success with 200
+                    console.log(res)
+                    // res.should.have.status(400) // update success with 200
                     done();
                 })
             // expect(res.status).to.equal(200)

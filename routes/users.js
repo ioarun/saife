@@ -90,5 +90,9 @@ router.put('/passwordReset/',(req,res)=>{
     
 })
 
+router.get('/viewVideo',(req,res)=>{
+    Controllers.projectController.viewVideo(req,res)
+    
+})
 
 module.exports = router;

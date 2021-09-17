@@ -64,4 +64,26 @@ describe('App', () => {
                 })
         })
     })
+
+    let user2 = {
+        _id: new mongoose.mongo.ObjectId('6136258ca0ba3101c927dc11'),
+        firstName: '',
+        lastName: '',
+        phone:''
+    }
+
+    it('User should not be allowed to keep any field empty.', function(done){
+        // this.timeout(15000)
+
+        chai.request("server")
+            .put('/users/userAccountSettings')
+            .set('content-type', 'application/json')
+            .send(user2)
+            .end((err, res) => {
+                // console.log(res)
+                res.should.have.status(400) // update success with 200
+                done();
+            })
+        // expect(res.status).to.equal(200)
+    })
 })
