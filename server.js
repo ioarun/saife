@@ -66,7 +66,7 @@ app.post('/sendPush', (req, res) => {
                     // res.status(200).json({});
 
                     // Create payload
-                    const payload = JSON.stringify({title: 'Push test'});
+                    const payload = JSON.stringify({title: 'Notification from SAIFE'});
 
                     console.log(user.pushSubObj);
                     console.log("Sending Push...");
@@ -76,7 +76,6 @@ app.post('/sendPush', (req, res) => {
                         console.log(err);
                         res.status(410).json({statusMessage: "Expired"}); 
                     });
-                    
                 } 
                 else {
                     console.log("No Push Subscription Object Found!")

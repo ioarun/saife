@@ -21,9 +21,24 @@ self.addEventListener("push", e => {
   const data = e.data.json();
   console.log("Push Recieved...");
   self.registration.showNotification(data.title, {
-    body: "Notified by SAIFE!",
+    body: "Member Fallen!",
+    actions: [
+      {
+          action: "/users/myMembers",
+          title: "Go to the app"
+      }
+  ],
     icon: "/assets/saife-logo.png"
   });
+});
+
+self.addEventListener("notificationclick", e => {
+  const uri = e.action;
+  const notification = e.notification;
+  console.log(`${self.location.origin}${e.action}`)
+  notification.close();
+  
+  clients.openWindow(`${self.location.origin}${e.action}`);
 });
 
 self.addEventListener('pushsubscriptionchange', function(event) {
