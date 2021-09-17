@@ -67,7 +67,6 @@ app.post('/sendPush', (req, res) => {
 
                     // Create payload
                     const payload = JSON.stringify({title: 'Notification from SAIFE'});
-
                     console.log(user.pushSubObj);
                     console.log("Sending Push...");
                     // Pass object into sendNotification
