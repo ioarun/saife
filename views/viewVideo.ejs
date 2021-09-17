@@ -6,10 +6,13 @@
    </head>
     <body class="body-bg">
         <div class="container-video">
-            <div class="c-video">
-                <!-- <video class="video" src='https://drive.google.com/uc?id=1NaoZ1422z-2L7I_T4KzOxiKfOYvQyz6X'>
-                </video> -->
-                <video class="video">
+            <div id="c-video" class="c-video">
+                <div class="share" style="text-align: center;">
+                    <div class="buttons">
+                        <button class="fas fa-share-square" id="share"></button>
+                    </div>
+                </div>
+                <video id='video' class="video" muted="muted" autoplay="true" poster="data:image/gif,AAAA">
                     <source src="https://drive.google.com/uc?id=0ByuvNaTkATl-RzlzNXVTMVd5V00" type="video/mp4">
                     </source>
                 </video>
@@ -20,13 +23,13 @@
                         </div>
                     </div>
                     <div class="buttons">
-                        <button id="play-pause">
-
-                        </button>
-                    </div>
+                            <button class="fa fa-pause-circle" id="play-pause"></button>
+                            <button class='fa fa-redo' id='replay'></button>
+                            <button class='fas fa-expand' id='fullscreen'></button>
+                    </div>         
                 </div>
             </div>
         </div>
-        <script src='/media-player.js'></script>
+        <script src='/js/media-player.js'></script>
    </body>
 </html>
