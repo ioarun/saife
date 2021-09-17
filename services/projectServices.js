@@ -235,7 +235,6 @@ const userLogoutService = (req, res) => {
 
 // User Acccount service
 const userAccountSettingsService = (req, res) => {
-
     res.render('userAccountSettings', {
         title: "Account Settings",
         id: req.user._id.toString(),
@@ -248,25 +247,34 @@ const userAccountSettingsService = (req, res) => {
 
 // Update Account details service
 const updateAccountDetailsService = (req, res) => {
+
     let currUserID = req.user._id;
-    
     // Object destructuring 
-    const { firstName, lastName, phone} = req.body;
+    const { firstName, lastName, phone} = req.body
     let errors = [];
 
     // Check for required fields
     if (!firstName || !lastName || !phone ) {
         errors.push({ msg: "Please fill in all the fields" })
     }
-    // If there's an error re render the registraion page
-    if (errors.length > 0) {
-        res.status(400);
+
+    // Phone number lenth
+    if (isNaN(phone) || phone.length != 10) {
+        errors.push({ msg: 'Phone number is incorrect ' })
+    }
+
+    // If there's an error re-render the registraion page
+    if (errors.length > 0) { 
+        
+        res.status(400)
         res.json({
+            'statusMessage': "Fail",
             errors,
             firstName,
             lastName,
             phone
         })
+
     } else {
         User.findOneAndUpdate({_id: currUserID}, {$set: {firstName, lastName, phone}})
             .then(records => {

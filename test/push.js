@@ -38,28 +38,28 @@ describe('Push', () => {
 
 // Check expired push subscription
 
-describe('/POST send push', () => {
-    it('it should return expired status', (done) => {
+// describe('/POST send push', () => {
+//     it('it should return expired status', (done) => {
     
-    let userId = {
-        _id: "6136258ca0ba3101c927dc11"
-        }
-      chai.request(server)
-          .post('/sendPush')
-          .send(userId)
-          .end((err, res) => {
-                if (!err){
-                    res.should.have.status(410);
-                    // res.body.should.be.a('object');
-                    // res.body.should.have.property('statusMessage').eql('Expired');
-                }
-                else{
-                    done(err);
-                }  
-            done();
-          });
+//     let userId = {
+//         _id: "6136258ca0ba3101c927dc11"
+//         }
+//       chai.request(server)
+//           .post('/sendPush')
+//           .send(userId)
+//           .end((err, res) => {
+//                 if (!err){
+//                     res.should.have.status(410);
+//                     // res.body.should.be.a('object');
+//                     // res.body.should.have.property('statusMessage').eql('Expired');
+//                 }
+//                 else{
+//                     done(err);
+//                 }  
+//             done();
+//           });
       
-    });
-});
+//     });
+// });
 
 });

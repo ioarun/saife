@@ -33,7 +33,7 @@ const registerUser = (req, res) => {
         errors.push({ msg: 'Password should be at least 6 characters' })
     }
 
-    // If there's an error re render the registraion page
+    // If there's an error re-render the registraion page
     if (errors.length > 0) { 
         res.status(400).json({
             errors,

@@ -44,7 +44,7 @@ app.post('/subscribe', (req, res) => {
             }
             else{
                 // res.send(data);
-                console.log("pushSubObj updated! id : ", userId);
+                // console.log("pushSubObj updated! id : ", userId);
                 
             }
         });
@@ -145,7 +145,14 @@ app.use('/users', require('./routes/users.js'));
 // app.use('/myMembers', require('./routes/members.js'));
 
 
-app.listen(PORT,console.log(`server started on port ${PORT}`));
+// https://stackoverflow.com/questions/56308581/uncaught-error-listen-eaddrinuse-address-already-in-use-3000-when-mocha-uni
+if(!module.parent){
+    app.listen(PORT, () =>
+      console.log(`server listening on port ${PORT}!`),
+    );
+  }
+
+// app.listen(PORT,console.log(`server started on port ${PORT}`));
 
 // app.listen(5000,'192.168.0.177',function(){
 //     console.log('Server running at http://127.0.1.1:8000/')
