@@ -5,6 +5,14 @@ var btnReplay = document.getElementById('replay')
 var btnFullScreen = document.getElementById('fullscreen')
 var videoScreen = document.getElementsByClassName('c-video')
 
+$('#video').on('loadstart', function (event) {
+    $(this).addClass('loading');
+  });
+  $('#video').on('canplay', function (event) {
+    $(this).removeClass('loading');
+    $(this).attr('poster', '');
+  });
+  
 function togglePlayPause(){
 	if(video.paused){
 		btnPlayPause.className = 'fa fa-pause-circle';
@@ -60,10 +68,3 @@ video.addEventListener('timeupdate', function(){
 	juice.style.width = juicePos * 100 + "%";
 })
 
-$('#video').on('loadstart', function (event) {
-    $(this).addClass('loading');
-  });
-  $('#video').on('canplay', function (event) {
-    $(this).removeClass('loading');
-    $(this).attr('poster', '');
-  });
