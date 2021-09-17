@@ -91,8 +91,8 @@ router.put('/passwordReset/',(req,res)=>{
 })
 
 //Update Member video URL from Ground Station
-router.put('/updateMemberVideo',(req,res)=>{
-    Controllers.projectController.updateMemberVideo(req,res)
+router.put('/updateMemberVideoURL',(req,res)=>{
+    Controllers.projectController.updateMemberVideoURL(req,res)
 });
 
 module.exports = router;

@@ -128,18 +128,9 @@ const fallDetected = (req, res) => {
     
 }
 
-// updateMemberVideo File
-const updateMemberVideo = (req, res) => {
-    const { userId, memberId, Location } = req.body;
-    Member.findOneAndUpdate({_id: memberId, userID: userId}, {$set: {videoURL: Location}})
-        .then(record => {
-            console.log(record);
-            res.status(200).send("Success!");
-        })
-        .catch(err => {
-            res.status(400).send("Failed!");
-            console.log(err)
-        })
+// updateMemberVideoURL
+const updateMemberVideoURL = (req, res) => {
+    Services.projectServices.updateMemberVideoURLService(req,res)    
 }
 
 module.exports = {
@@ -156,5 +147,5 @@ module.exports = {
     fogotPassword,
     emailPassword,
     resetPassword,
-    updateMemberVideo
+    updateMemberVideoURL
 };
