@@ -77,8 +77,16 @@ main {
   margin: 0 auto 40px;
 }
 
+.welcome {
+  font-size: large;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-font-smoothing: antialiased;
+}
 .status-indicator-good {
-  background-color: #16a085;
+  background-color: #42504d;
 }
 
 .status-indicator-fall {
@@ -139,3 +147,4 @@ border-radius: 10px;
 #mail::-webkit-scrollbar {
   display: none;
 }
+

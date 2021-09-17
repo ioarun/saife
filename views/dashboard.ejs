@@ -3,10 +3,18 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   </head>
-  <body>
+  <body class="body-bg">
       <!-- <h1 class="mt-4">Dashboard</h1> -->
-  <p class="lead mb-3">Welcome user <%= name %></p>
-  <!-- <a href="/users/logout" class="btn btn-secondary">Logout</a> -->
+
+  <div class="container login-body-container">
+    <p class="welcome">Welcome <%= name %></p>
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-12">
+            <img class="text-center img-fluid" src="/assets/dashboard-desktop-transparent.png" style="width: 100%; height: 100%;">
+        </div>
+  </div>
+
+
   <script>
     
     isPushSupported();
