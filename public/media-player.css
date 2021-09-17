@@ -39,6 +39,7 @@
 .share {
 	opacity: 0.0;
 	display: flex;
+	/* position: absolute; */
 	justify-content: flex-end;
 	bottom: 0;
 	width: 100%;
@@ -75,7 +76,7 @@
 
 .orange-juice {
 	height: 10px;
-	background-color: orangered;
+	background-color:#e9ebee;
 	width: 0px;
 }
 

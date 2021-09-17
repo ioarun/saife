@@ -23,7 +23,6 @@ function togglePlayPause(){
 		video.pause();
 	}
 }
-
 function Replay(){
 	video.pause();
     video.currentTime = '0';
