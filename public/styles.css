@@ -85,6 +85,11 @@ main {
   transform: translate(-50%, -50%);
   -webkit-font-smoothing: antialiased;
 }
+
+.container-center {
+  height: calc(100vh - 115px);
+  }
+
 .status-indicator-good {
   background-color: #42504d;
 }

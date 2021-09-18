@@ -6,31 +6,39 @@
     <body class="body-bg">
         <!-- Register modal -->
         <%- include("forwardVideo.ejs") %>
-        <div class="container-video">
-            <div id="c-video" class="c-video">
-                <!-- <div class="share" style="text-align: center;">
-                    <div class="buttons">
-                        <button class="fas fa-share-square" id="forward"></button>
-                    </div>
-                </div> -->
-                <button class="buttons fas fa-share-square waves-effect waves-light modal-trigger"
-                href="#forwardVideoModal" id="forward"></button>
-                <video id='video' class="video" muted="muted" autoplay="true"  poster="data:image/gif,AAAA">
-                    <source src="https://drive.google.com/uc?id=0ByuvNaTkATl-RzlzNXVTMVd5V00" type="video/mp4">
-                    </source>
-                </video>
-                <div class="controls">
-                    <div class="orange-bar">
-                        <div class="orange-juice">
+        <div class="container container-center">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div id="c-video" class="c-video shadow-lg border">
+                        <div class="share" style="text-align: center;">
+                            <div class="buttons">
+                                <button class="buttons fas fa-share-square modal-trigger" id="forward" href="#forwardVideoModal"></button>
+                            </div>
+                        </div>
+                        <!-- <button class="buttons fas fa-share-square waves-effect waves-light modal-trigger"
+                        href="#forwardVideoModal" id="forward"></button> -->
+                        <video id='video' class="video" muted="muted" autoplay="true"  poster="data:image/gif,AAAA">
+                            <source src="https://drive.google.com/uc?id=0ByuvNaTkATl-RzlzNXVTMVd5V00" type="video/mp4">
+                            </source>
+                        </video>
+                        <div class="controls">
+                            <div class="orange-bar">
+                                <div class="orange-juice">
+                                </div>
+                            </div>
+                            <div class="buttons d-flex justify-content-between w-100">
+                                <div>
+                                    <button class="fa fa-pause-circle" id="play-pause"></button>
+                                    <button class='fa fa-redo' id='replay'></button>
+                                </div>
+                                <div>
+                                    <button class='fas fa-expand' id='fullscreen'></button>
+                                </div>                                 
+                            </div>         
                         </div>
                     </div>
-                    <div class="buttons">
-                            <button class="fa fa-pause-circle" id="play-pause"></button>
-                            <button class='fa fa-redo' id='replay'></button>
-                            <button class='fas fa-expand' id='fullscreen'></button>
-                    </div>         
                 </div>
-            </div>
+            </div> 
         </div>
         <script src='/js/media-player.js'></script>
         <script src='/js/forward-video.js'></script>

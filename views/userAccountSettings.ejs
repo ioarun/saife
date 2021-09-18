@@ -133,7 +133,11 @@
                             // })
                             // });
                         });
-                }).then(setSubscribeButton);
+                })
+                .then(setSubscribeButton)
+                .catch(err => {
+                    console.log(err);
+                });
         }
 
 
