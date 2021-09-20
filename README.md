@@ -1,4 +1,4 @@
-<img align="left" width="35" height="35" src="public/assets/saife-logo.png" alt="SAIFE App icon">
+<!-- <img align="left" width="35" height="35" src="public/assets/saife-logo.png" alt="SAIFE App icon"> -->
 
 #  Safety AI For Elderly (SAIFE)
 
