@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 const webpush = require('web-push');
 const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+const request = require('request');
 
 // Create user account if user is not already registered
 const registerUserService = (req, res, errors) => {
@@ -461,8 +462,30 @@ const userFallDetectedService = (req, res) => {
             else{
                 console.log("fall status saved! ");
                 res.status(200);
+                triggerPush(userId);
             }
         });
+}
+
+triggerPush = (userId) =>{
+    console.log(userId);
+    const requestOptions = {
+        url: 'http://localhost:3000/users/sendPush',
+        method: 'POST',
+        json: {"_id": userId}
+    };
+    request(
+        requestOptions,
+        (err, response, body) => {
+            if(err) {
+                console.log("Failed Invoking POST sendPush ", err )
+                res.status(400).send("Failed!");
+            } else {
+                console.log("Successfully called POST sendPush ", body)
+                res.status(200).send(data);
+            }
+        }
+    );
 }
 
 const sendPushService = (req, res) => {
