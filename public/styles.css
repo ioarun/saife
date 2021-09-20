@@ -91,7 +91,7 @@ main {
   }
 
 .status-indicator-good {
-  background-color: #42504d;
+  background-color: green;
 }
 
 .status-indicator-fall {

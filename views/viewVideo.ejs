@@ -1,5 +1,3 @@
-
-
 <div id="videoCapture" class="modal form-round">
     <div class="modal-content border-0 shadow-lg p-2">
         <div>
@@ -8,11 +6,12 @@
                     <div id="c-video" class="c-video shadow-lg border">
                         <div class="share" style="text-align: center;">
                             <div class="buttons">
-                                <button class="buttons fas fa-share-square modal-trigger" id="forward" href="#forwardVideoModal"></button>
+                                <button class="buttons fas fa-share-square modal-trigger" id="forward"
+                                    href="#forwardVideoModal"></button>
                             </div>
                         </div>
-                        <video id='video' class="video" muted="muted" autoplay="true"  poster="data:image/gif,AAAA">
-                            <source src="https://drive.google.com/uc?id=0ByuvNaTkATl-RzlzNXVTMVd5V00" type="video/mp4">
+                        <video id='video' class="video" muted="muted" autoplay="true" poster="data:image/gif,AAAA">
+                            <source id="viewMemberVideoSource" src="" type="video/mp4">
                             </source>
                         </video>
                         <div class="controls">
@@ -27,13 +26,12 @@
                                 </div>
                                 <div>
                                     <button class='fas fa-expand' id='fullscreen'></button>
-                                </div>                                 
-                            </div>         
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </div>
 </div>
-
