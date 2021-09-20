@@ -4,8 +4,9 @@ const Controllers = require('../controllers')
 const { ensureAuthenticated } = require('../config/auth');
 const Services = require('../services')
 const token = Services.token
-
+const passport = require('passport')
 // User Model
+
 const User = require('../models/User')
 
 // Member Model
@@ -48,7 +49,7 @@ router.delete('/myMembers', ensureAuthenticated, (req, res) => {
 })
 
 // Login handle
-router.post('/login', (req, res, next) => {
+router.post('/logine', (req, res, next) => {
     Controllers.projectController.userLogin(req, res, next)
 });
 
@@ -94,5 +95,24 @@ router.get('/viewVideo',(req,res)=>{
     Controllers.projectController.viewVideo(req,res)
     
 })
+// Expert Login
+router.post('/login', (req, res, next) => {
+    passport.authenticate('expert-local', function (err, user, info) {
+        console.log(info)
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/users/login');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/');
+        });
+
+    })(req, res, next);
+});
 
 module.exports = router;
