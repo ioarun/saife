@@ -153,3 +153,10 @@ border-radius: 10px;
   display: none;
 }
 
+.center-modal {
+  display: flex;
+  }
+.center-modal .modal {
+position: relative;
+width: auto;
+}
