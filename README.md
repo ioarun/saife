@@ -1,8 +1,13 @@
-# Safety AI For Elderly (SAIFE)
+<img align="left" width="35" height="35" src="public/assets/saife-logo.png" alt="SAIFE App icon" style="padding-right: 5px;">
+
+#  Safety AI For Elderly (SAIFE)
 
 There is a growing elderly population in the world. According to the 2014-2016 age care assessment conducted by Australian Institute of Health and Welfare 2 in 5 people over the age 65 live alone. Significant falls in elderly who live alone can be devastating and even deadly.
 
-Ensuring safe and healthy environments for our senior citizens is important and challenging. Challenging due to the enormous number of resources we need to allocate to ensure proper care for the elderly population. 
+Ensuring safe and healthy environments for our senior citizens is important and challenging. Challenging due to the enormous number of resources we need to allocate to ensure proper care for the elderly population.
+
+To this end, we introduce 
+**SAIFE** – a system that monitors fall events, sends alerts to caregivers, and allows medical experts to trace the cause of fall.
 
 [![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/ioarun/ioarun/commits/master)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) 
@@ -19,10 +24,6 @@ Ensuring safe and healthy environments for our senior citizens is important and 
 * Progressive Web Apps (PWA)
 * AWS
 
-
-
-To this end, we introduce 
-**SAIFE** – a system that monitors fall events, sends alerts to caregivers, and allows medical experts to trace the cause of fall.
 
 # Clone the repository
 
