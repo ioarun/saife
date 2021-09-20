@@ -5,7 +5,7 @@ const { ensureAuthenticated } = require('../config/auth');
 
 const Expert = require('../models/Expert')
 // Login Page
-router.get('/Login', (req, res, next) => {
+router.get('/Login',ensureAuthenticated, (req, res, next) => {
     let fullname = req.user.firstName + " " + req.user.lastName
 
     Expert.findOne({ _id: req.user._id })
