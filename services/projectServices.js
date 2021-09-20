@@ -1,8 +1,9 @@
+require('dotenv').config()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const User = require('../models/User')
-
+const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
@@ -209,7 +210,7 @@ const deleteMemberService = (req,res) => {
 // Passport service for log in
 const userLoginService = (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
-        console.log(info)
+        // console.log(info)
         if (err) {
             return next(err);
         }
@@ -284,8 +285,6 @@ const updateAccountDetailsService = (req, res) => {
     }
 }
 
-
-
 // Forgot Password handle
 const userFogotPasswordService = (req, res) => {
     const { email } = req.body
@@ -310,7 +309,7 @@ const userFogotPasswordService = (req, res) => {
                     // Export the token
                     exports.token = token;
                     const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>
-                    <a href="http://localhost:3000/users/passwordReset/${token}">Click Here</a>`
+                    <a href="http://localhost:${PORT}/users/passwordReset/${token}">Click Here</a>`
 
 
                     // create reusable transporter object using the default SMTP transport
