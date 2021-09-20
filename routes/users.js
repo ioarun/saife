@@ -72,6 +72,11 @@ router.put('/userAccountSettings', ensureAuthenticated, (req, res) => {
 router.post('/fallDetected', (req, res, next) => {
     Controllers.projectController.fallDetected(req, res)
 })
+
+// Push Route
+router.post('/sendPush', (req, res) => {
+    Controllers.projectController.sendPush(req, res)
+})
 // Reset password handle
 // router.post('/password',(req,res)=>{
 //     Controllers.projectController.resetPassword(req,res)

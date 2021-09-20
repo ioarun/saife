@@ -114,6 +114,11 @@ const fallDetected = (req, res) => {
     Services.projectServices.userFallDetectedService(req, res)  
 }
 
+// Send Push
+const sendPush = (req, res) => {
+    Services.projectServices.sendPushService(req, res)
+}
+
 // View video handle
 const viewVideo = (req, res) => {
     Services.projectServices.viewVideoService(req,res)
@@ -131,6 +136,7 @@ module.exports = {
     userAccountSettings,
     updateAccountDetails,
     fallDetected,
+    sendPush,
     fogotPassword,
     emailPassword,
     resetPassword,
