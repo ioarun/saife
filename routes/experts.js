@@ -6,7 +6,21 @@ const { ensureAuthenticated } = require('../config/auth');
 const Expert = require('../models/Expert')
 // Login Page
 router.get('/Login', (req, res, next) => {
-    res.send('Login')
+    let fullname = req.user.firstName + " " + req.user.lastName
+
+    Expert.findOne({ _id: req.user._id })
+            .then(user => {
+                // Check if push subscription object is undefined (push is not registered)
+                if (user){
+                    res.render('expertRegister', {
+                        title: "Expert Dashboard",
+                        firstName: user.firstName,
+                        lastName:user.lastName,
+                        registration:user.registration,
+                        phone:user.phone
+                    });
+                }  
+            });
 })
 // Register Page 
 router.post('/Register', (req, res, next) => {
