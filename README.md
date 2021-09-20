@@ -4,6 +4,23 @@ There is a growing elderly population in the world. According to the 2014-2016 a
 
 Ensuring safe and healthy environments for our senior citizens is important and challenging. Challenging due to the enormous number of resources we need to allocate to ensure proper care for the elderly population. 
 
+[![Maintenance](https://img.shields.io/badge/maintained-yes-green.svg)](https://github.com/ioarun/ioarun/commits/master)
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) 
+
+# Tech Stack
+
+**Core**
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+
+**Others**
+
+* Passport
+* Progressive Web Apps (PWA)
+* AWS
+
+
+
 To this end, we introduce 
 **SAIFE** – a system that monitors fall events, sends alerts to caregivers, and allows medical experts to trace the cause of fall.
 
@@ -31,4 +48,6 @@ You can shoot your queries to any of the following project collaborators.
 * Arun Kumar (karu@deakin.edu.au)
 * Sodi Adikaram (isodirangalaadi@deakin.edu.au)
 * Gouri Nandan (ggangavaram@deakin.edu.au)
-* Chasham Shergill (cshergill@deakin.edu.au)
+* SAIFE App (official@saife.app)
+
+Follow us on twitter! 
