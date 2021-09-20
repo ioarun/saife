@@ -39,8 +39,13 @@
                                 </p>
                                 <p class="lead mt-2">
                                     <!-- No Account? <a href="/users/register">Register</a> -->
-                                    No Account? <a class="waves-effect waves-light modal-trigger"
+                                    Are you a regular user? <a class="waves-effect waves-light modal-trigger"
                                         href="#registerModal">Register</a>
+                                </p>
+                                <p class="lead mt-2">
+                                    <!-- No Account? <a href="/users/register">Register</a> -->
+                                    Are you an Expert? <a class="waves-effect waves-light modal-trigger"
+                                        href="#expertRegisterModal">Register</a>
                                 </p>
                             </div>
 
@@ -50,8 +55,10 @@
 
         <!-- Register modal -->
         <%- include("register.ejs") %>
+        <!-- Expert Register modal -->
+        <%- include("expertRegisterModal.ejs") %>
 
-            <!-- Modal Structure -->
+            <!-- Modal for password reset-->
             <div id="mail" class="modal">
                 <div class="modal-content">
                     <h4>Reset Your Password</h4>
@@ -85,6 +92,8 @@
         // $("nav>div>ul").toggleClass("hide");
         // $("nav>div>div").toggleClass("hide");
 
+        // Expert Register Modal
+        $('#expertRegisterModal').modal();
         // Modal for reset password
         $('#mail').modal();
 
@@ -96,12 +105,19 @@
         $(".navbar-fixed").toggleClass("hide");
 
         $('#registerModal').modal();
+
+        
         $('select').formSelect();
 
         $(document).ready(() => {
             // Modal initialization 
             $('.email').modal();
             
+            $('#expertRegister-btn').click((event) => {
+                event.preventDefault();
+                expertRegisterSubmit();
+            });
+
             $('#register-btn').click((event) => {
                 event.preventDefault();
                 registerSubmit();
@@ -189,7 +205,49 @@
                 }
             });
         }
+        // Expert register function
+        const expertRegisterSubmit=()=>{
+            let firstName = $('#expertFirstName').val();
+            let lastName = $('#expertLastName').val();
+            let registration = $('#expertRego').val();
+            let phone = $('#expertPhone').val();
+            let email = $('#expert-email-register').val();
+            let password = $('#expert-password-register').val();
+            let password2 = $('#expert-password2').val();
 
+            let expertData = {};
+
+            expertData.firstName = firstName;
+            expertData.lastName = lastName;
+            expertData.registration = registration;
+            expertData.phone = phone;
+            expertData.email = email;
+            expertData.password = password;
+            expertData.password2 = password2;
+
+            $.ajax({
+                url:"/experts/Register",
+                data:expertData,
+                type:"POST",
+                success:(result)=>{
+                    console.log(result);
+                    if (typeof result.errors != 'undefined') {
+                        (result.errors).forEach(element => {
+                            $('#alert_placeholder').append().html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                     // To check if the server response contains any success messages 
+                     else if (typeof result.success != 'undefined') {
+                        console.log((result.success[0].msg));
+                        (result.success).forEach(element => {
+                            $('#alert_placeholder').append().html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+                    }
+                }
+            })
+        }
 
     </script>
 </body>
