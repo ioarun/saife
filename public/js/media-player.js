@@ -1,3 +1,7 @@
+// Launch the video capture
+$('#videoCapture').modal();
+$('select').formSelect();
+
 var video = document.querySelector('.video')
 var juice = document.querySelector('.orange-juice')
 var btnPlayPause = document.getElementById('play-pause')
