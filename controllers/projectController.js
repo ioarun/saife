@@ -126,6 +126,11 @@ const viewVideo = (req, res) => {
 }
 
 
+// updateMemberVideoURL
+const updateMemberVideoURL = (req, res) => {
+    Services.projectServices.updateMemberVideoURLService(req,res)    
+}
+
 module.exports = {
     registerUser,
     registerMember,
@@ -141,5 +146,6 @@ module.exports = {
     fogotPassword,
     emailPassword,
     resetPassword,
-    viewVideo
+    viewVideo,
+    updateMemberVideoURL
 };

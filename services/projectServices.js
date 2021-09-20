@@ -210,6 +210,20 @@ const deleteMemberService = (req,res) => {
         .catch(err => console.log(err))
 }
 
+// updateMemberVideoURL Service
+const updateMemberVideoURLService = (req,res) => {
+    const { userId, memberId, Location } = req.body;
+    Member.findOneAndUpdate({_id: memberId, userID: userId}, {$set: {videoURL: Location}}, {returnOriginal: false})
+        .then(record => {
+            console.log(record);
+            res.status(200).send("Success!");
+        })
+        .catch(err => {
+            res.status(400).send("Failed!");
+            console.log(err)
+        })
+}
+
 // Passport service for log in
 const userLoginService = (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
@@ -543,5 +557,6 @@ module.exports = {
     deleteMemberService,
     userFallDetectedService,
     viewVideoService,
-    sendPushService
+    sendPushService,
+    updateMemberVideoURLService
 }

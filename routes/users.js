@@ -99,5 +99,9 @@ router.get('/viewVideo',(req,res)=>{
     Controllers.projectController.viewVideo(req,res)
     
 })
+//Update Member video URL from Ground Station
+router.put('/updateMemberVideoURL',(req,res)=>{
+    Controllers.projectController.updateMemberVideoURL(req,res)
+});
 
 module.exports = router;
