@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema({
     resetLink:{
         data: String,
         default:''
+    },
+    isExpert:{
+        type:Boolean,
+        default:false
     }
 
 })
