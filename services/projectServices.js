@@ -445,6 +445,24 @@ const userResetPasswordService = (req, res) => {
     }
 }
 
+const userFallDetectedService = (req, res) => {
+    // Object destructuring 
+    const { userId, memberId} = req.body
+
+    Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
+        {status: true}, function(err, data) {
+            if(err){
+                console.log(err);
+                res.status(400);
+            }
+            else{
+                console.log("fall status saved! ");
+                res.status(200);
+            }
+        });
+}
+
+
 // View Video service
 const viewVideoService = (req, res) => {
     res.render('viewVideo', {
@@ -466,6 +484,7 @@ module.exports = {
     userResetPasswordService,
     updateMemberService,
     deleteMemberService,
+    userFallDetectedService,
     viewVideoService
 
 
