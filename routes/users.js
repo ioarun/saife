@@ -70,7 +70,12 @@ router.put('/userAccountSettings', ensureAuthenticated, (req, res) => {
 
 // Fall detected
 router.post('/fallDetected', (req, res, next) => {
-    Controllers.projectController.fallDetected(req, res, next)
+    Controllers.projectController.fallDetected(req, res)
+})
+
+// Push Route
+router.post('/sendPush', (req, res) => {
+    Controllers.projectController.sendPush(req, res)
 })
 // Reset password handle
 // router.post('/password',(req,res)=>{
