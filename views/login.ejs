@@ -1,10 +1,21 @@
 <html>
 
 <head>
+    <link href='/splash.css' rel='stylesheet' />
 </head>
 <body class="body-bg body-bg-login">
     <div class="container login-body-container">
         <div class="row justify-content-center align-items-center h-100">
+            <!-- Splash screen -->
+            <div class="splash">
+                <div class="fade-in">
+                    <img class="d-block mx-auto" src="/assets/saife-logo.png"
+                    style="height: 64px; width: 64px; border-radius: 5px;">
+                    <img class="d-block mx-auto" src="/assets/loading_dots.gif"
+                    style="height: 30px; width: 30px; border-radius: 5px;">
+                    <!-- <h6>Loading...</h6> -->
+                </div> 
+            </div>
             <div class="col-12 col-md-6">
                 <img class="text-center img-fluid d-none d-md-block" src="/assets/bg3-transparent.png">
                 <img class="d-block mx-auto d-md-none" src="/assets/saife-logo.png"
@@ -192,6 +203,7 @@
 
 
     </script>
+    <script src="/js/splash.js"></script>
 </body>
 
 </html>
