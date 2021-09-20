@@ -6,6 +6,10 @@ const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
+const webpush = require('web-push');
+const bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+const request = require('request');
 
 // Create user account if user is not already registered
 const registerUserService = (req, res, errors) => {
@@ -445,13 +449,84 @@ const userResetPasswordService = (req, res) => {
     }
 }
 
+const userFallDetectedService = (req, res) => {
+    // Object destructuring 
+    const { userId, memberId} = req.body
+
+    Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
+        {status: true}, function(err, data) {
+            if(err){
+                console.log(err);
+                res.status(400);
+            }
+            else{
+                console.log("fall status saved! ");
+                res.status(200);
+                triggerPush(userId);
+            }
+        });
+}
+
+triggerPush = (userId) =>{
+    console.log(userId);
+    const requestOptions = {
+        url: 'http://localhost:3000/users/sendPush',
+        method: 'POST',
+        json: {"_id": userId}
+    };
+    request(
+        requestOptions,
+        (err, response, body) => {
+            if(err) {
+                console.log("Failed Invoking POST sendPush ", err )
+                res.status(400).send("Failed!");
+            } else {
+                console.log("Successfully called POST sendPush ", body)
+                res.status(200).send(data);
+            }
+        }
+    );
+}
+
+const sendPushService = (req, res) => {
+    console.log(req.body._id);
+    // Get pushSubscription from the db
+    User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+            .then(user => {
+                // Check if push subscription object is undefined (push is not registered)
+                // console.log(user._id.toString());
+                if (user.pushSubObj){
+                    
+                    // const subscription = req.body;
+                    // Send 200
+                    // res.status(200).json({});
+
+                    // Create payload
+                    const payload = JSON.stringify({title: 'Notification from SAIFE'});
+                    console.log(user.pushSubObj);
+                    console.log("Sending Push...");
+                    // Pass object into sendNotification
+                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
+                    .catch(err => {
+                        console.log(err);
+                        res.status(410).json({statusMessage: "Expired"}); 
+                    });
+                } 
+                else {
+                    console.log("No Push Subscription Object Found!")
+                }  
+            })
+            .catch(err => {
+                console.log(err);
+            });
+}
+
 // View Video service
 const viewVideoService = (req, res) => {
     res.render('viewVideo', {
         title: "View Video"
     })
 }
-
 
 module.exports = {
     registerUserService,
@@ -466,7 +541,7 @@ module.exports = {
     userResetPasswordService,
     updateMemberService,
     deleteMemberService,
-    viewVideoService
-
-
+    userFallDetectedService,
+    viewVideoService,
+    sendPushService
 }

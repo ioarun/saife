@@ -51,42 +51,6 @@ app.post('/subscribe', (req, res) => {
     res.status(201).json({statusMessage: "Subscribed"}); 
 })
 
-// Push Route
-app.post('/sendPush', (req, res) => {
-    console.log(req.body._id);
-    // Get pushSubscription from the db
-    User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
-            .then(user => {
-                // Check if push subscription object is undefined (push is not registered)
-                // console.log(user._id.toString());
-                if (user.pushSubObj){
-                    
-                    // const subscription = req.body;
-                    // Send 200
-                    // res.status(200).json({});
-
-                    // Create payload
-                    const payload = JSON.stringify({title: 'Notification from SAIFE'});
-                    console.log(user.pushSubObj);
-                    console.log("Sending Push...");
-                    // Pass object into sendNotification
-                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
-                    .catch(err => {
-                        console.log(err);
-                        res.status(410).json({statusMessage: "Expired"}); 
-                    });
-                } 
-                else {
-                    console.log("No Push Subscription Object Found!")
-                }  
-            })
-            .catch(err => {
-                console.log(err);
-            });
-        
-    
-})
-
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');

@@ -35,7 +35,8 @@ const registerUser = (req, res) => {
 
     // If there's an error re-render the registraion page
     if (errors.length > 0) { 
-        res.status(400).json({
+        res.status(400)
+        res.json({
             errors,
             firstName,
             lastName,
@@ -111,21 +112,12 @@ const resetPassword =(req,res)=>{
 
 // Fall detected
 const fallDetected = (req, res) => {
-    // Object destructuring 
-    const { userId, memberId} = req.body
+    Services.projectServices.userFallDetectedService(req, res)  
+}
 
-        Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
-            {status: true}, function(err, data) {
-                if(err){
-                    console.log(err);
-                    res.status(400);
-                }
-                else{
-                    console.log("fall status saved! ");
-                    res.status(200);
-                }
-            });
-    
+// Send Push
+const sendPush = (req, res) => {
+    Services.projectServices.sendPushService(req, res)
 }
 
 // View video handle
@@ -145,6 +137,7 @@ module.exports = {
     userAccountSettings,
     updateAccountDetails,
     fallDetected,
+    sendPush,
     fogotPassword,
     emailPassword,
     resetPassword,

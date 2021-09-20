@@ -1,7 +1,3 @@
-.container-video {
-height: calc(100vh - 115px);
-}
-
 .video {
 	width: 100%;
 }
@@ -79,3 +75,4 @@ height: calc(100vh - 115px);
 video.loading {
 	background: black url(/assets/loading30x30.gif) center center no-repeat;
   }
+
