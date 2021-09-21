@@ -144,20 +144,31 @@
                 type: "POST",
                 success: (result) => {
                     console.log(result.success);
-                    // To check if the server response contains error messages
-                    if (typeof result.errors != 'undefined') {
-                        console.log((result.errors[0].msg));
+                     // To check if the server response contains error messages
+                     if (typeof result.errors != 'undefined') {
+                        console.log(result);
                         (result.errors).forEach(element => {
                             $('#alert_placeholder_register').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                         });
 
-                    }
+                    }    
                     // To check if the server response contains any success messages 
-                    else if (typeof result.success != 'undefined') {
+                 if (typeof result.success != 'undefined') {
                         console.log((result.success[0].msg));
                         modalInstance.close();
                         location.reload()
+                    }
+                },
+                error:(result)=>{
+                    // To check if the server response contains error messages
+                    if (typeof result.errors != 'undefined') {
+                        console.log(result);
+                        (result.errors).forEach(element => {
+                            $('#alert_placeholder_register').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                        });
+
                     }
                 }
             });

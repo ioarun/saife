@@ -105,7 +105,7 @@ describe('App', () => {
                 .set('content-type', 'application/json')
                 .send(user2)
                 .end((err, res) => {
-                    console.log(res)
+                    // console.log(res)
                     // res.should.have.status(400) // update success with 200
                     done();
                 })

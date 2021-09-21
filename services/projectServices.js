@@ -232,13 +232,16 @@ const userLoginService = (req, res, next) => {
             return next(err);
         }
         if (!user) {
+            // const errors =[];
+            // errors.push({msg:"Incorrect credentials"})
+            // return res.render('login',{title:"login",errors})
             return res.redirect('/users/login');
         }
         req.logIn(user, function (err) {
             if (err) {
                 return next(err);
-            }
-            return res.redirect('/');
+            }           
+            return res.redirect('/')
         });
 
     })(req, res, next);

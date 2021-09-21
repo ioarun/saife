@@ -262,7 +262,7 @@
                             console.log((result.errors[0].msg));
 
                             (result.errors).forEach(element => {
-                                $('.alert_placeholder').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                     '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                             });
 
