@@ -469,19 +469,16 @@ const userResetPasswordService = (req, res) => {
 const userFallDetectedService = (req, res) => {
     // Object destructuring 
     const { userId, memberId} = req.body
-
-    Member.findByIdAndUpdate(new mongoose.mongo.ObjectId(memberId), 
-        {status: true}, function(err, data) {
-            if(err){
-                console.log(err);
-                res.status(400);
-            }
-            else{
-                console.log("fall status saved! ");
+        
+    Member.findOneAndUpdate({_id: new mongoose.mongo.ObjectId(memberId)}, {$set: {status: true}})
+        .then(record => {
+            if(record){
+                console.log("fall status saved! ", record);
                 res.status(200);
                 triggerPush(userId);
-            }
-        });
+            }    
+        })
+        .catch(err => console.log(err))
 }
 
 triggerPush = (userId) =>{
