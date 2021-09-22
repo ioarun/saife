@@ -1,0 +1,162 @@
+.title {
+  color: black;
+  font-weight: bold;
+  font-family: cursive;
+}
+
+.mainText {
+  color: black;
+}
+
+p {
+  color: black;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.page-footer {
+  background-color: #5b64e0;
+  padding: 15px;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.twitter-logo {
+  max-height: 50px;
+  width: 50px;
+  margin-top: 5px;
+  margin-bottom: -15px;
+  padding: 15%;
+  overflow: hidden;
+}
+
+.navClass {
+  height: 75;
+}
+
+.profile-pic {
+  max-height: 350px;
+  max-width: 350px;
+  clip-path: circle();
+}
+
+.profile-info {
+  font-weight: bold;
+}
+
+.sidenav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 996;
+  will-change: opacity;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  line-height: 200px;
+  border-radius: 50%;
+  /* the magic */
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 auto 40px;
+}
+
+.welcome {
+  font-size: large;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-font-smoothing: antialiased;
+}
+
+.container-center {
+  height: calc(100vh - 115px);
+  }
+
+.status-indicator-good {
+  background-color: green;
+}
+
+.status-indicator-fall {
+  background-color: #e74c3c;
+}
+
+nav>div>ul>li :hover {
+  color: black;
+}
+
+#addMemberModal {
+  border-radius: 20px;
+}
+
+#addMemberModal::-webkit-scrollbar {
+  display: none;
+}
+
+#viewMemberDetailsModal {
+  border-radius: 20px;
+}
+
+#viewMemberDetailsModal::-webkit-scrollbar {
+  display: none;
+}
+
+.form-round {
+border-radius: 10px;
+}
+
+.body-bg {
+  background-color: #e9ebee;
+}
+
+.body-bg-login {
+  background-image: url(/assets/bg2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-body-container{
+  height: calc(100vh - 53px);
+}
+
+.btn-saife {
+  background-color: #5b64e0;
+}
+
+.fixed-action-btn-saife {
+  bottom: 80px;
+}
+#mail {
+  width: 25% !important;
+  height: 60% !important;
+  border-radius: 20px;
+}
+#mail::-webkit-scrollbar {
+  display: none;
+}
+
+.center-modal {
+  display: flex;
+  }
+.center-modal .modal {
+position: relative;
+width: auto;
+}

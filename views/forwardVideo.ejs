@@ -1,0 +1,48 @@
+<div id="forwardVideoModal" class="modal form-round">
+    <div class="modal-content border-0 shadow-none p-2">
+        <div id="alert_placeholder_forward_video"></div>
+            <h5 class="text-center mt-3">
+                <i class="fas">Forward Video</i> 
+            </h2>
+                <%- include('./partials/messages') %>
+                <form>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col m6 s12">
+                       
+                        <!-- Dropdown -->
+                        <!-- <input class="experts-dropdown-trigger" href='#' data-target='dropdown1' type="text" placeholder="Search.." name="search"> -->
+                        <select id=expert-name name="Select expert">
+                            <option value ="expertId">Dr Joe Stephen, St Johns</option>
+                            <option value ="expertId">Dr Joe Stephen, Appolo</option>
+                            <option value ="expertId">Dr Joe Stephen, AIMS</option>
+                            <option value ="expertId">Dr Joe Stephen, JIPMER</option>
+                            <option value ="expertId">Dr Joe Stephen, KNH</option>
+                            <option value ="expertId">Dr Joe Stephen, S Govt</option>
+                            <option value ="expertId">Dr Joe Stephen, Appolo</option>
+                            <option value ="expertId">Dr Joe Stephen, AIMS</option>
+                            <option value ="expertId">Dr Joe Stephen, JIPMER</option>
+                            <option value ="expertId">Dr Joe Stephen, KNH</option>
+                            <option value ="expertId">Dr Joe Stephen, S Govt</option>
+                        </select> 
+                    </div>
+                    
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <div class="col m6 s12">
+                        <textarea id="message-to-expert" class="materialize-textarea"></textarea>
+                    </div>
+                      
+                  </div>
+            
+                <div class="row justify-content-center">
+                    <div class="col-5">
+                        <!-- <i class="fas fa-paper-plane"></i> -->
+                        <div class="d-grid"><button id="forward-video" class="btn btn-saife">Send</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            
+        </div>
+</div>
+
