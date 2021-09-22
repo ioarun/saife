@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 
 // Create Schema
@@ -43,6 +44,10 @@ const ExpertSchema = new mongoose.Schema({
     isExpert:{
         type:Boolean,
         default:true
+    },
+    userID: {
+        type: ObjectId,
+        required: true
     }
 })
 
