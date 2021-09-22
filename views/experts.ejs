@@ -69,22 +69,6 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <select id="gender">
-                                    <option value="" disabled selected>
-                                    </option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <label for="gender">Gender</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="Age" id="age" type="text" class="validate">
-                                <label for="age">Age</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6">
                                 <textarea placeholder="Address" id="address" rows="3"
                                     class="materialize-textarea"></textarea>
                                 <label for="address">Address</label>
@@ -126,9 +110,8 @@
 
                                         $("#viewExpertDetailsFirstName").attr("value", mems[rowID].firstName);
                                         $("#viewExpertDetailsLastName").attr("value", mems[rowID].lastName);
-                                        $("#viewExpertDetailsGender").attr("value", mems[rowID].gender);
-                                        $("#viewExpertDetailsAge").attr("value", mems[rowID].age);
-                                        $("#viewExpertDetailsEmail").attr("value", mems[rowID].emailID);
+                                        $("#viewExpertDetailsEmail").attr("value", mems[rowID].email);
+                                        $("#viewExpertDetailsPhone").attr("value", mems[rowID].phone);
                                         $("#viewExpertDetailsAddress").val(mems[rowID].address);
                                         $("#viewExpertDetailsDescription").val(mems[rowID].description);
                                         $("#viewExpertDetailsExpertID").attr("value", mems[rowID]._id);
@@ -144,12 +127,12 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
-                                <input placeholder="Gender" id="viewExpertDetailsGender" type="text">
-                                <label for="viewExpertDetailsGender">Gender</label>
+                                <input placeholder="Email" id="viewExpertDetailsEmail" type="text">
+                                <label for="viewExpertDetailsEmail">Email</label>
                             </div>
                             <div class="input-field col s6">
-                                <input placeholder="Age" id="viewExpertDetailsAge" type="text">
-                                <label for="viewExpertDetailsAge">Age</label>
+                                <input placeholder="Phone" id="viewExpertDetailsPhone" type="text">
+                                <label for="viewExpertDetailsPhone">Phone</label>
                             </div>
                         </div>
                         <div class="row">
