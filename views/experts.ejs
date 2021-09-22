@@ -17,8 +17,9 @@
                 <thead>
                     <tr>
                         <th class="col text-center" id="#">#</th>
-                        <th class="col text-center" id="Name">Name </th>
-                        <th class="col text-center" id="Status">Status</th>
+                        <th class="col text-center" id="Name">Name</th>
+                        <th class="col text-center" id="Email">Email</th>
+                        <th class="col text-center" id="Phone">Phone</th>
                         <th class="col text-center" id="Details">Details</th>
                     </tr>
                 </thead>
@@ -34,29 +35,14 @@
                                         <span> </span>
                                         <%= expert.lastName %>
                                 </td>
-                                <td class="text-center status">
-                                    <% if(expert.status===true) {%>
-                                        <span id="status">Fallen!</span>
-
-                                        <% } else if(expert.status===false) { %>
-                                            <span id="status">All Good!</span>
-                                            <% } %>
-                                                <% if(expert.status===true ) { %>
-                                                    <span
-                                                        class='d-inline-flex mb-0 circle status-indicator-fall'></span>
-                                                    <% } else if(expert.status===false ) { %>
-                                                        <span
-                                                            class='d-inline-flex mb-0 circle status-indicator-good'></span>
-                                                        <% } %>
+                                <td class="text-center">
+                                    <%= expert.email %>
+                                </td>
+                                <td class="text-center">
+                                    <%= expert.phone %>
                                 </td>
                                 <td class="text-center">
                                     <a class="modal-trigger viewDetails" href="#viewExpertDetailsModal">View Details</a>
-                                </td>
-                                <td class="text-center">
-                                    <% if(expert.status===true) { %>
-                                        <a class='modal-trigger' href='#videoCapture'><i class="small material-icons"
-                                                id="viewExpertVideo">ondemand_video</i></a>
-                                        <% } %>
                                 </td>
                             </tr>
                             <% }) %>
@@ -343,4 +329,5 @@
                     }
                 });
             }
-</body >
+        </script>
+</body>
