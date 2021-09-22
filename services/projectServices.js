@@ -216,8 +216,8 @@ const loadExpertsService = (req, res) => {
     let currUserID = req.user._id;
     Expert.find({userID:currUserID})
         .then(records => {
-            let Experts = records;
-            res.render('members', { title: "Experts", Experts });
+            let experts = records;
+            res.render('experts', { title: "Experts", experts });
         })
         .catch(err => console.log(err))
 }
