@@ -1,1 +1,346 @@
-<h1 class="center">Welcome to Experts Page</h1>
+<head>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href='/media-player.css' rel='stylesheet' />
+</head>
+
+<body class="body-bg">
+    <!-- view video modal -->
+    <div class="center-modal">
+        <%- include("viewVideo.ejs") %>
+    </div>
+
+    <!-- forward video modal -->
+    <%- include("forwardVideo.ejs") %>
+        <div class="container d-flex align-items-center overflow-auto">
+            <table class="table table-striped table-hover m-3">
+                <thead>
+                    <tr>
+                        <th class="col text-center" id="#">#</th>
+                        <th class="col text-center" id="Name">Name </th>
+                        <th class="col text-center" id="Status">Status</th>
+                        <th class="col text-center" id="Details">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (experts.length!=0) { %>
+                        <% experts.forEach((expert, index)=> { %>
+                            <tr id=<%=index %>>
+                                <th class="text-center" scope="row">
+                                    <%= index+1 %>
+                                </th>
+                                <td class="text-center">
+                                    <%= expert.firstName %>
+                                        <span> </span>
+                                        <%= expert.lastName %>
+                                </td>
+                                <td class="text-center status">
+                                    <% if(expert.status===true) {%>
+                                        <span id="status">Fallen!</span>
+
+                                        <% } else if(expert.status===false) { %>
+                                            <span id="status">All Good!</span>
+                                            <% } %>
+                                                <% if(expert.status===true ) { %>
+                                                    <span
+                                                        class='d-inline-flex mb-0 circle status-indicator-fall'></span>
+                                                    <% } else if(expert.status===false ) { %>
+                                                        <span
+                                                            class='d-inline-flex mb-0 circle status-indicator-good'></span>
+                                                        <% } %>
+                                </td>
+                                <td class="text-center">
+                                    <a class="modal-trigger viewDetails" href="#viewExpertDetailsModal">View Details</a>
+                                </td>
+                                <td class="text-center">
+                                    <% if(expert.status===true) { %>
+                                        <a class='modal-trigger' href='#videoCapture'><i class="small material-icons"
+                                                id="viewExpertVideo">ondemand_video</i></a>
+                                        <% } %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                                <% } %>
+                </tbody>
+            </table>
+            <!-- Add Expert Modal Structure -->
+            <div id="addExpertModal" class="modal addExpertModal">
+                <div class="modal-content">
+                    <h4>Add Expert</h4>
+                </div>
+                <div class="row modal-content">
+                    <div class="alert_placeholder"></div>
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="FirstName" id="firstName" type="text" class="validate">
+                                <label for="firstName">FirstName</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="LastName" id="lastName" type="text" class="validate">
+                                <label for="lastName">LastName</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <select id="gender">
+                                    <option value="" disabled selected>
+                                    </option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <label for="gender">Gender</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="Age" id="age" type="text" class="validate">
+                                <label for="age">Age</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea placeholder="Address" id="address" rows="3"
+                                    class="materialize-textarea"></textarea>
+                                <label for="address">Address</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea placeholder="Description" id="description" rows="3"
+                                    class="materialize-textarea"></textarea>
+                                <label for="description">Description</label>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="input-field col s12 center-align ">
+                                <a class="waves-effect waves-light btn " id="addExpert">Add</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- View Expert Details Modal Structure -->
+            <div id="viewExpertDetailsModal" class="modal viewExpertDetailsModal">
+                <div class="modal-content">
+                    <h4>Expert Details</h4>
+                </div>
+                <div class="row modal-content">
+                    <div class="alert_placeholder"></div>
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <script>
+                                    $('.viewDetails').click(function () {
+                                        event.preventDefault();
+                                        var rowID = event.target.parentNode.parentNode.id;
+                                        var mems = '<%- JSON.stringify(experts) %>';
+                                        mems = JSON.parse(mems);
+
+                                        var data = $("tr[id=" + rowID + " ]")[0].cells;
+
+                                        $("#viewExpertDetailsFirstName").attr("value", mems[rowID].firstName);
+                                        $("#viewExpertDetailsLastName").attr("value", mems[rowID].lastName);
+                                        $("#viewExpertDetailsGender").attr("value", mems[rowID].gender);
+                                        $("#viewExpertDetailsAge").attr("value", mems[rowID].age);
+                                        $("#viewExpertDetailsEmail").attr("value", mems[rowID].emailID);
+                                        $("#viewExpertDetailsAddress").val(mems[rowID].address);
+                                        $("#viewExpertDetailsDescription").val(mems[rowID].description);
+                                        $("#viewExpertDetailsExpertID").attr("value", mems[rowID]._id);
+                                    });
+                                </script>
+                                <input placeholder="FirstName" id="viewExpertDetailsFirstName" type="text">
+                                <label for="viewExpertDetailsFirstName">FirstName</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="LastName" id="viewExpertDetailsLastName" type="text">
+                                <label for="viewExpertDetailsLastName">LastName</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Gender" id="viewExpertDetailsGender" type="text">
+                                <label for="viewExpertDetailsGender">Gender</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input placeholder="Age" id="viewExpertDetailsAge" type="text">
+                                <label for="viewExpertDetailsAge">Age</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea placeholder="Address" id="viewExpertDetailsAddress" rows="3"
+                                    class="materialize-textarea"></textarea>
+                                <label for="viewExpertDetailsAddress">Address</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea placeholder="Description" id="viewExpertDetailsDescription" rows="3"
+                                    class="materialize-textarea"></textarea>
+                                <label for="viewExpertDetailsDescription">Description</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input placeholder="Expert ID" id="viewExpertDetailsExpertID" type="text" disabled>
+                                <label for="viewExpertDetailsExpertID">ID</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6 right-align">
+                                <a class="waves-effect waves-light btn" id="updateExpertDetails">Update</a>
+                            </div>
+                            <div class="input-field col s6">
+                                <a class="waves-effect waves-light btn" id="deleteExpert">Delete</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!---->
+        <div class="fixed-action-btn fixed-action-btn-saife ">
+            <a class="btn-floating btn-large waves-effect waves-light red  modal-trigger" href="#addExpertModal">
+                <i class="material-icons btn-saife">add</i>
+            </a>
+        </div>
+
+        <script>
+            // Initialize Modals
+            $('#addExpertModal').modal();
+            $('#viewExpertDetailsModal').modal();
+            $('select').formSelect();
+
+            $(document).ready(() => {
+
+                //Initializing OnClick Events on Document Load
+                $('#addExpert').click(() => {
+                    addExpertSubmit();
+                });
+
+                $('#updateExpertDetails').click(() => {
+                    updateExpertDetailsSubmit();
+                });
+
+                $('#deleteExpert').click(() => {
+                    deleteExpert();
+                });
+
+                $("#addExpert").on('hide', () => {
+                    location.reload()
+                })
+            })
+
+            // Add Expert Details
+            const addExpertSubmit = () => {
+                let firstName = $('#firstName').val();
+                let lastName = $('#lastName').val();
+                let gender = $('#gender').val();
+                let age = $('#age').val();
+                let address = $('#address').val();
+                let description = $('#description').val();
+
+                let expertData = {};
+                expertData.firstName = firstName;
+                expertData.lastName = lastName;
+                expertData.gender = gender;
+                expertData.age = age;
+                expertData.address = address;
+                expertData.description = description;
+
+                let modalInstance = M.Modal.getInstance($("#addExpertModal"));
+
+                //Ajax call Add Expert route
+                $.ajax({
+                    url: "/users/myExperts",
+                    data: expertData,
+                    type: "POST",
+                    success: (result) => {
+                        // To check if the server response contains error messages
+                        if (typeof result.errors != 'undefined') {
+                            console.log((result.errors[0].msg));
+
+                            (result.errors).forEach(element => {
+                                $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                            });
+
+                        }
+                        // To check if the server response contains any success messages 
+                        else if (typeof result.success != 'undefined') {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+            // Update Expert Details
+            const updateExpertDetailsSubmit = () => {
+
+                //Getting Expert Details from the form
+                let expertData = {};
+                expertData.firstName = $('#viewExpertDetailsFirstName').val();
+                expertData.lastName = $('#viewExpertDetailsLastName').val();
+                expertData.gender = $('#viewExpertDetailsGender').val();
+                expertData.age = $('#viewExpertDetailsAge').val();
+                expertData.address = $('#viewExpertDetailsAddress').val();
+                expertData.description = $('#viewExpertDetailsDescription').val();
+                expertData.id = $('#viewExpertDetailsExpertID').val();
+
+                let modalInstance = M.Modal.getInstance($("#viewExpertDetailsModal"));
+
+                //Ajax call Update Expert route
+                $.ajax({
+                    url: "/users/myExperts",
+                    data: expertData,
+                    type: "PUT",
+                    success: (result) => {
+                        console.log("RESULT: ", result);
+                        location.reload();
+                    },
+                    error: (result) => {
+                        let errorBody = result.responseJSON;
+                        if (typeof errorBody.errors != 'undefined') {
+                            (errorBody.errors).forEach(element => {
+                                $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                            });
+                        }
+                    }
+                });
+            }
+
+            // Delete Expert
+            const deleteExpert = () => {
+                let expertData = {};
+                expertData.id = $('#viewExpertDetailsExpertID').val();
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this Expert!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        swal("Expert deleted successfully!", {
+                            icon: "success",
+                        });
+                        let modalInstance = M.Modal.getInstance($("#viewExpertDetailsModal"));
+                        modalInstance.close();
+
+                        //Ajax call Delete Expert route
+                        $.ajax({
+                            url: "/users/myExperts",
+                            data: expertData,
+                            type: "DELETE",
+                            success: (result) => {
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        swal("Expert not deleted!");
+                    }
+                });
+            }
+</body >
