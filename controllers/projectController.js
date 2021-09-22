@@ -75,6 +75,11 @@ const deleteMember = (req,res) => {
 }
 
 
+// Experts page
+const loadExperts = (req, res) => {
+    Services.projectServices.loadExpertsService(req,res)
+}
+
 // Login handle
 const userLogin = (req, res, next) => {
     Services.projectServices.userLoginService(req,res,next)
@@ -148,5 +153,6 @@ module.exports = {
     emailPassword,
     resetPassword,
     viewVideo,
-    updateMemberVideoURL
+    updateMemberVideoURL,
+    loadExperts
 };

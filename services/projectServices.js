@@ -4,6 +4,7 @@ const _ = require('lodash')
 const User = require('../models/User')
 const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
+const Expert = require('../models/Expert')
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
 const webpush = require('web-push');
@@ -206,6 +207,17 @@ const deleteMemberService = (req,res) => {
     Member.deleteOne({_id: id, userID: currUserID},)
         .then(records => {
             res.json({success: "Deleted Member!"});
+        })
+        .catch(err => console.log(err))
+}
+
+// Service for Experts page
+const loadExpertsService = (req, res) => {
+    let currUserID = req.user._id;
+    Expert.find({userID:currUserID})
+        .then(records => {
+            let Experts = records;
+            res.render('members', { title: "Experts", Experts });
         })
         .catch(err => console.log(err))
 }
@@ -558,5 +570,6 @@ module.exports = {
     userFallDetectedService,
     viewVideoService,
     sendPushService,
-    updateMemberVideoURLService
+    updateMemberVideoURLService,
+    loadExpertsService
 }
