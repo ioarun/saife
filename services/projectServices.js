@@ -212,17 +212,6 @@ const deleteMemberService = (req,res) => {
         .catch(err => console.log(err))
 }
 
-// Service for Get userExperts
-const loadUserExpertsService = (req, res) => {
-    let currUserID = req.user._id;
-    userExpert.find({userID:currUserID})
-        .then(records => {
-            let experts = records;
-            res.render('experts', { title: "Experts", experts });
-        })
-        .catch(err => console.log(err))
-}
-
 // Service for Add userExperts
 const addUserExpertService = (req, res) => {
     let currUserID = req.user._id;
@@ -302,6 +291,17 @@ const addUserExpertService = (req, res) => {
                     })
             }
         }).catch(err => console.log(err))
+}
+
+// Service for Get userExperts
+const loadUserExpertsService = (req, res) => {
+    let currUserID = req.user._id;
+    userExpert.find({userID:currUserID})
+        .then(records => {
+            let experts = records;
+            res.render('experts', { title: "Experts", experts });
+        })
+        .catch(err => console.log(err))
 }
 
 // updateMemberVideoURL Service
