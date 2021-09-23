@@ -218,7 +218,6 @@ const loadUserExpertsService = (req, res) => {
     userExpert.find({userID:currUserID})
         .then(records => {
             let experts = records;
-            console.log("Number of User Experts Returned from DB: ", experts.length);
             res.render('experts', { title: "Experts", experts });
         })
         .catch(err => console.log(err))
@@ -232,12 +231,12 @@ const addUserExpertService = (req, res) => {
             let experts = records;
 
             // Object destructuring 
-            const { firstName, lastName, gender, address, age, description } = req.body;
+            const { firstName, lastName, email, phone, address, description } = req.body;
             //console.log(req.body)
             let errors = [];
 
             // Check for required fields
-            if (!firstName || !lastName || !email || !phone || !address || !address) {
+            if (!firstName || !lastName || !email || !phone || !address) {
                 errors.push({ msg: "Please fill in all the fields" })
             }
 
@@ -257,8 +256,8 @@ const addUserExpertService = (req, res) => {
             } else {
                 // When the validation passed
                 userExpert.findOne({ email: email, user: currUserID })
-                    .then(userExpert => {
-                        if (userExpert) {
+                    .then(expert => {
+                        if (expert) {
                             // if there's a user rerender the register form
                             errors.push({ msg: 'name is already registered' })
                             res.json({
@@ -283,7 +282,7 @@ const addUserExpertService = (req, res) => {
                                 userID: currUserID
                             });
                             newuserExpert.save()
-                                .then(userExpert => {
+                                .then(expert => {
                                     let success = [];
                                     success.push({ msg: 'Registered' })
                                     if (success.length > 0) {

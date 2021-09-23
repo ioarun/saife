@@ -54,7 +54,7 @@ router.get('/myExperts', ensureAuthenticated, (req, res) => {
 
 // Add userExpert
 router.post('/myExperts', ensureAuthenticated, (req, res) => {
-    Controllers.projectController.addUserExperts(req, res)
+    Controllers.projectController.addUserExpert(req, res)
 });
 // Login handle
 router.post('/login', (req, res, next) => {
