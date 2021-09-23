@@ -4,7 +4,8 @@ const _ = require('lodash')
 const User = require('../models/User')
 const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
-const Expert = require('../models/Expert')
+const Expert = require('../models/Expert');
+const userExpert = require('../models/userExpert');
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
 const webpush = require('web-push');
@@ -212,12 +213,12 @@ const deleteMemberService = (req,res) => {
 }
 
 // Service for Experts page
-const loadExpertsService = (req, res) => {
+const loadUserExpertsService = (req, res) => {
     let currUserID = req.user._id;
-    Expert.find({userID:currUserID})
+    userExpert.find({userID:currUserID})
         .then(records => {
             let experts = records;
-            console.log(experts);
+            console.log("Number of User Experts Returned from DB: ", experts.length);
             res.render('experts', { title: "Experts", experts });
         })
         .catch(err => console.log(err))
@@ -572,5 +573,5 @@ module.exports = {
     viewVideoService,
     sendPushService,
     updateMemberVideoURLService,
-    loadExpertsService
+    loadUserExpertsService
 }

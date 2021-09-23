@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId;
 
 
 // Create Schema
-const ExpertSchema = new mongoose.Schema({
+const userExpertSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -44,10 +44,14 @@ const ExpertSchema = new mongoose.Schema({
     isExpert:{
         type:Boolean,
         default:true
+    },
+    userID: {
+        type: ObjectId,
+        required: true
     }
 })
 
 
-const Expert = mongoose.model('Expert',ExpertSchema)
+const userExpert = mongoose.model('userExpert',userExpertSchema)
 
-module.exports = Expert
+module.exports = userExpert

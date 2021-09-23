@@ -49,7 +49,7 @@ router.delete('/myMembers', ensureAuthenticated, (req, res) => {
 
 // MyExperts Page
 router.get('/myExperts', ensureAuthenticated, (req, res) => {
-    Controllers.projectController.loadExperts(req, res)
+    Controllers.projectController.loadUserExperts(req, res)
 });
 
 // Login handle
