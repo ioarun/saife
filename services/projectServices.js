@@ -212,7 +212,7 @@ const deleteMemberService = (req,res) => {
         .catch(err => console.log(err))
 }
 
-// Service for Experts page
+// Service for Get userExperts
 const loadUserExpertsService = (req, res) => {
     let currUserID = req.user._id;
     userExpert.find({userID:currUserID})
@@ -222,6 +222,87 @@ const loadUserExpertsService = (req, res) => {
             res.render('experts', { title: "Experts", experts });
         })
         .catch(err => console.log(err))
+}
+
+// Service for Add userExperts
+const addUserExpertService = (req, res) => {
+    let currUserID = req.user._id;
+     userExpert.find({userID:currUserID})
+        .then(records => {
+            let experts = records;
+
+            // Object destructuring 
+            const { firstName, lastName, gender, address, age, description } = req.body;
+            //console.log(req.body)
+            let errors = [];
+
+            // Check for required fields
+            if (!firstName || !lastName || !email || !phone || !address || !address) {
+                errors.push({ msg: "Please fill in all the fields" })
+            }
+
+            // If there's an error re render the registraion page
+            if (errors.length > 0) {
+                res.json({
+                    errors,
+                    experts,
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    address,
+                    description,
+                    title: "userExpert Register"
+                })
+            } else {
+                // When the validation passed
+                userExpert.findOne({ email: email, user: currUserID })
+                    .then(userExpert => {
+                        if (userExpert) {
+                            // if there's a user rerender the register form
+                            errors.push({ msg: 'name is already registered' })
+                            res.json({
+                                errors,
+                                experts,
+                                firstName,
+                                lastName,
+                                email,
+                                phone,
+                                address,
+                                description,
+                                title: "userExpert Register"
+                            });
+                        } else {
+                            const newuserExpert = new userExpert({
+                                firstName,
+                                lastName,
+                                email,
+                                phone,
+                                address,
+                                description,
+                                userID: currUserID
+                            });
+                            newuserExpert.save()
+                                .then(userExpert => {
+                                    let success = [];
+                                    success.push({ msg: 'Registered' })
+                                    if (success.length > 0) {
+                                        res.json({
+                                            firstName,
+                                            lastName,
+                                            email,
+                                            phone,
+                                            address,
+                                            description,
+                                            success
+                                        })
+                                    }
+                                })
+                                .catch(err => console.log(err))
+                        }
+                    })
+            }
+        }).catch(err => console.log(err))
 }
 
 // updateMemberVideoURL Service
@@ -573,5 +654,6 @@ module.exports = {
     viewVideoService,
     sendPushService,
     updateMemberVideoURLService,
-    loadUserExpertsService
+    loadUserExpertsService,
+    addUserExpertService
 }

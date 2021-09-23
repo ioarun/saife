@@ -13,10 +13,6 @@ const userExpertSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    registration: {
-        type: Number,
-        required: true
-    },
     email: {
         type: String,
         required: true
@@ -25,25 +21,17 @@ const userExpertSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    password: {
+    address: {
         type: String,
         required: true
     },
-    pushSubObj: {
-        type: Object,
-        required: false
+    description: {
+        type: String,
+        required: true
     },
     date: {
         type: String,
         default: Date.now
-    },
-    resetLink:{
-        data: String,
-        default:''
-    },
-    isExpert:{
-        type:Boolean,
-        default:true
     },
     userID: {
         type: ObjectId,
