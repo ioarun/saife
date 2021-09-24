@@ -56,6 +56,12 @@ router.get('/myExperts', ensureAuthenticated, (req, res) => {
 router.post('/myExperts', ensureAuthenticated, (req, res) => {
     Controllers.projectController.addUserExpert(req, res)
 });
+
+// Delete userExpert
+router.delete('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.deleteUserExpert(req, res)
+});
+
 // Login handle
 router.post('/login', (req, res, next) => {
     Controllers.projectController.userLogin(req, res, next)

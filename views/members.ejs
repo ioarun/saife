@@ -323,9 +323,6 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
-                        swal("Member deleted successfully!", {
-                            icon: "success",
-                        });
                         let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
                         modalInstance.close();
 
@@ -335,7 +332,11 @@
                             data: memberData,
                             type: "DELETE",
                             success: (result) => {
-                                location.reload();
+                                swal("Member deleted successfully!", {
+                                    icon: "success",
+                                    buttons: false
+                                });
+                                setTimeout(() => location.reload(), 500);
                             }
                         });
                     } else {

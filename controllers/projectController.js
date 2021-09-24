@@ -80,10 +80,16 @@ const loadUserExperts = (req, res) => {
     Services.projectServices.loadUserExpertsService(req,res)
 }
 
-// Experts page
+// Add userExpert
 const addUserExpert = (req, res) => {
     Services.projectServices.addUserExpertService(req,res)
 }
+
+// Delete userExpert
+const deleteUserExpert = (req, res) => {
+    Services.projectServices.deleteUserExpertService(req,res)
+}
+
 // Login handle
 const userLogin = (req, res, next) => {
     Services.projectServices.userLoginService(req,res,next)
@@ -159,5 +165,6 @@ module.exports = {
     viewVideo,
     updateMemberVideoURL,
     loadUserExperts,
-    addUserExpert
+    addUserExpert,
+    deleteUserExpert
 };

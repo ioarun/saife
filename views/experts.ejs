@@ -292,9 +292,6 @@
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
-                    swal("Expert deleted successfully!", {
-                        icon: "success",
-                    });
                     let modalInstance = M.Modal.getInstance($("#viewExpertDetailsModal"));
                     modalInstance.close();
 
@@ -304,7 +301,11 @@
                         data: expertData,
                         type: "DELETE",
                         success: (result) => {
-                            location.reload();
+                            swal("Expert deleted successfully!", {
+                                icon: "success",
+                                buttons: false
+                            });
+                            setTimeout(() => location.reload(), 500);
                         }
                     });
                 } else {
