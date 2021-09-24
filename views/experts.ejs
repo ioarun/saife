@@ -251,8 +251,8 @@
             let expertData = {};
             expertData.firstName = $('#viewExpertDetailsFirstName').val();
             expertData.lastName = $('#viewExpertDetailsLastName').val();
-            expertData.gender = $('#viewExpertDetailsGender').val();
-            expertData.age = $('#viewExpertDetailsAge').val();
+            expertData.email = $('#viewExpertDetailsEmail').val();
+            expertData.phone = $('#viewExpertDetailsPhone').val();
             expertData.address = $('#viewExpertDetailsAddress').val();
             expertData.description = $('#viewExpertDetailsDescription').val();
             expertData.id = $('#viewExpertDetailsExpertID').val();
@@ -265,8 +265,11 @@
                 data: expertData,
                 type: "PUT",
                 success: (result) => {
-                    console.log("RESULT: ", result);
-                    location.reload();
+                    swal("Expert Details Updated Successfully!", {
+                        icon: "success",
+                        buttons: false
+                    });
+                    setTimeout(() => location.reload(), 500);
                 },
                 error: (result) => {
                     let errorBody = result.responseJSON;

@@ -57,6 +57,11 @@ router.post('/myExperts', ensureAuthenticated, (req, res) => {
     Controllers.projectController.addUserExpert(req, res)
 });
 
+// Update userExpert
+router.put('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.updateUserExpert(req, res)
+});
+
 // Delete userExpert
 router.delete('/myExperts', ensureAuthenticated, (req, res) => {
     Controllers.projectController.deleteUserExpert(req, res)

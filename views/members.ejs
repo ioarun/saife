@@ -296,8 +296,11 @@
                     data: memberData,
                     type: "PUT",
                     success: (result) => {
-                        console.log("RESULT: ", result);
-                        location.reload();
+                        swal("Member Details Updated Successfully!", {
+                            icon: "success",
+                            buttons: false
+                        });
+                        setTimeout(() => location.reload(), 500);
                     },
                     error: (result) => {
                         let errorBody = result.responseJSON;

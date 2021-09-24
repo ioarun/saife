@@ -304,12 +304,46 @@ const loadUserExpertsService = (req, res) => {
         .catch(err => console.log(err))
 }
 
+// Service for updating userExpert
+const updateUserExpertService = (req, res) => {
+    let currUserID = req.user._id;
+    
+    // Object destructuring 
+    const { firstName, lastName, email, phone, address, description, id} = req.body;
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !email || !phone || !address ) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+    // If there's an error re render the registraion page
+    if (errors.length > 0) {
+        res.status(400);
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            email,
+            phone,
+            address,
+            description
+        })
+    } else {
+        userExpert.findOneAndUpdate({_id: id, userID: currUserID}, {$set: {firstName, lastName, email, phone, address, description}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated userExpert Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
 // Service for Delete userExpert
 const deleteUserExpertService = (req, res) => {
     let currUserID = req.user._id;
     let id = req.body.id;
 
-    userExpert.deleteOne({_id: id, userID: currUserID},)
+    userExpert.deleteOne({_id: id, userID: currUserID})
         .then(records => {
             res.json({success: "Deleted userExpert!"});
         })
@@ -667,5 +701,6 @@ module.exports = {
     updateMemberVideoURLService,
     loadUserExpertsService,
     addUserExpertService,
+    updateUserExpertService,
     deleteUserExpertService
 }
