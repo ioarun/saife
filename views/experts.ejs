@@ -105,8 +105,6 @@
                             <script>
                                 $('.viewDetails').click(function (event) {
                                     event.preventDefault();
-                                    var clientGameState = '<%-experts %>';
-                                    console.log(clientGameState);
                                     var rowID = event.target.parentNode.parentNode.id;
                                     let allExperts = JSON.parse(("<%=JSON.stringify(experts) %>").replaceAll('&#34;', '\"').replaceAll('&#39;', '\''));
 
