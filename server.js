@@ -141,7 +141,7 @@ app.use(express.static(path.join(__dirname, 'views')))
 
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
-app.use('/experts',require('./routes/experts.js'));
+// app.use('/experts',require('./routes/experts.js'));
 
 // app.use('/myMembers', require('./routes/members.js'));
 
