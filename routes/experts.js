@@ -4,8 +4,8 @@ const bcrypt = require('bcryptjs');
 const { ensureAuthenticated } = require('../config/auth');
 
 const Expert = require('../models/Expert')
-// Login Page
-router.get('/Login',ensureAuthenticated, (req, res, next) => {
+// Expert Login Page
+router.get('experts/Login',ensureAuthenticated, (req, res, next) => {
     let fullname = req.user.firstName + " " + req.user.lastName
 
     Expert.findOne({ _id: req.user._id })
@@ -22,8 +22,8 @@ router.get('/Login',ensureAuthenticated, (req, res, next) => {
                 }  
             });
 })
-// Register Page 
-router.post('/Register', (req, res, next) => {
+// Expert Register Page 
+router.post('experts/Register', (req, res, next) => {
     const { firstName, lastName, registration, email, phone, password, password2 } = req.body;
     const errors = [];
 
