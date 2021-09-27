@@ -1,5 +1,26 @@
-You are here at Expert register
+<p>You are here at Expert register</p>   
 <p><%= firstName %></p>
 <p><%= lastName %></p>
 <p><%= registration %></p>
 <p><%= phone %></p>
+<script>
+    
+
+// Change navbar options on expert login
+const isExpert = "<%=isExpert %>";
+if(isExpert==="true"){
+    $("a[href='/']").attr('href', '/users/experts/Login')
+    $('#myExperts').hide();
+}
+// Highlight navigation for current page
+var pathName = document.location.pathname;
+console.log(pathName)
+switch (pathName) {
+    case "/users/experts/Login":
+        $('#homePage').addClass("active")
+        break;
+    default:
+        break;
+}
+
+</script>
