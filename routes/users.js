@@ -138,7 +138,7 @@ router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
                 }  
             });
 })
-// Expert Register Page 
+// Expert register Page 
 router.post('/experts/Register', (req, res, next) => {
     const { firstName, lastName, registration, email, phone, password, password2 } = req.body;
     const errors = [];
@@ -229,5 +229,12 @@ router.post('/experts/Register', (req, res, next) => {
 
 
 })
-
+// Expert member page
+router.get('/experts/myMembers',(req,res)=>{
+    res.render('expertsMember',{title:"My Members",isExpert:req.user.isExpert})
+})
+// Experts account settings page
+router.get('/experts/expertsAccountSettings',(req,res)=>{
+    res.render('expertsAccountSettings',{title:"Account Settings",isExpert:req.user.isExpert})
+})
 module.exports = router;
