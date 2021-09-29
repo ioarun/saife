@@ -2,7 +2,8 @@ const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const User = require('../models/User')
-const PORT = process.env.PORT|| 3000
+const PORT = process.env.PORT
+const ROOT_URL = process.env.ROOT_URL;
 const Member = require('../models/Member')
 const Expert = require('../models/Expert');
 const userExpert = require('../models/userExpert');
@@ -471,7 +472,7 @@ const userFogotPasswordService = (req, res) => {
                     // Export the token
                     exports.token = token;
                     const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>
-                    <a href="http://localhost:${PORT}/users/passwordReset/${token}">Click Here</a>`
+                    <a href="${ROOT_URL}/users/passwordReset/${token}">Click Here</a>`
 
 
                     // create reusable transporter object using the default SMTP transport
@@ -624,7 +625,7 @@ const userFallDetectedService = (req, res) => {
 triggerPush = (userId) =>{
     console.log(userId);
     const requestOptions = {
-        url: 'http://localhost:3000/users/sendPush',
+        url: ROOT_URL+'/users/sendPush',
         method: 'POST',
         json: {"_id": userId}
     };
