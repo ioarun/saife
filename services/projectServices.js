@@ -210,7 +210,6 @@ const deleteMemberService = (req,res) => {
 // Passport service for log in
 const userLoginService = (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
-        // console.log(info)
         if (err) {
             return next(err);
         }
