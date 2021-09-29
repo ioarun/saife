@@ -4,6 +4,8 @@ const _ = require('lodash')
 const User = require('../models/User')
 const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
+const Expert = require('../models/Expert');
+const userExpert = require('../models/userExpert');
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
 const webpush = require('web-push');
@@ -206,6 +208,144 @@ const deleteMemberService = (req,res) => {
     Member.deleteOne({_id: id, userID: currUserID},)
         .then(records => {
             res.json({success: "Deleted Member!"});
+        })
+        .catch(err => console.log(err))
+}
+
+// Service for Add userExperts
+const addUserExpertService = (req, res) => {
+    let currUserID = req.user._id;
+     userExpert.find({userID:currUserID})
+        .then(records => {
+            let experts = records;
+
+            // Object destructuring 
+            const { firstName, lastName, email, phone, address, description } = req.body;
+            //console.log(req.body)
+            let errors = [];
+
+            // Check for required fields
+            if (!firstName || !lastName || !email || !phone || !address) {
+                errors.push({ msg: "Please fill in all the fields" })
+            }
+
+            // If there's an error re render the registraion page
+            if (errors.length > 0) {
+                res.json({
+                    errors,
+                    experts,
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    address,
+                    description,
+                    title: "userExpert Register"
+                })
+            } else {
+                // When the validation passed
+                userExpert.findOne({ email: email, user: currUserID })
+                    .then(expert => {
+                        if (expert) {
+                            // if there's a user rerender the register form
+                            errors.push({ msg: 'name is already registered' })
+                            res.json({
+                                errors,
+                                experts,
+                                firstName,
+                                lastName,
+                                email,
+                                phone,
+                                address,
+                                description,
+                                title: "userExpert Register"
+                            });
+                        } else {
+                            const newuserExpert = new userExpert({
+                                firstName,
+                                lastName,
+                                email,
+                                phone,
+                                address,
+                                description,
+                                userID: currUserID
+                            });
+                            newuserExpert.save()
+                                .then(expert => {
+                                    let success = [];
+                                    success.push({ msg: 'Registered' })
+                                    if (success.length > 0) {
+                                        res.json({
+                                            firstName,
+                                            lastName,
+                                            email,
+                                            phone,
+                                            address,
+                                            description,
+                                            success
+                                        })
+                                    }
+                                })
+                                .catch(err => console.log(err))
+                        }
+                    })
+            }
+        }).catch(err => console.log(err))
+}
+
+// Service for Get userExperts
+const loadUserExpertsService = (req, res) => {
+    let currUserID = req.user._id;
+    userExpert.find({userID:currUserID})
+        .then(records => {
+            let experts = records;
+            res.render('experts', { title: "Experts", experts });
+        })
+        .catch(err => console.log(err))
+}
+
+// Service for updating userExpert
+const updateUserExpertService = (req, res) => {
+    let currUserID = req.user._id;
+    
+    // Object destructuring 
+    const { firstName, lastName, email, phone, address, description, id} = req.body;
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !email || !phone || !address ) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+    // If there's an error re render the registraion page
+    if (errors.length > 0) {
+        res.status(400);
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            email,
+            phone,
+            address,
+            description
+        })
+    } else {
+        userExpert.findOneAndUpdate({_id: id, userID: currUserID}, {$set: {firstName, lastName, email, phone, address, description}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated userExpert Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
+// Service for Delete userExpert
+const deleteUserExpertService = (req, res) => {
+    let currUserID = req.user._id;
+    let id = req.body.id;
+
+    userExpert.deleteOne({_id: id, userID: currUserID})
+        .then(records => {
+            res.json({success: "Deleted userExpert!"});
         })
         .catch(err => console.log(err))
 }
@@ -558,5 +698,9 @@ module.exports = {
     userFallDetectedService,
     viewVideoService,
     sendPushService,
-    updateMemberVideoURLService
+    updateMemberVideoURLService,
+    loadUserExpertsService,
+    addUserExpertService,
+    updateUserExpertService,
+    deleteUserExpertService
 }

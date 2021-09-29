@@ -47,6 +47,26 @@ router.delete('/myMembers', ensureAuthenticated, (req, res) => {
     Controllers.projectController.deleteMember(req, res)
 })
 
+// Get userExperts
+router.get('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.loadUserExperts(req, res)
+});
+
+// Add userExpert
+router.post('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.addUserExpert(req, res)
+});
+
+// Update userExpert
+router.put('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.updateUserExpert(req, res)
+});
+
+// Delete userExpert
+router.delete('/myExperts', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.deleteUserExpert(req, res)
+});
+
 // Login handle
 router.post('/login', (req, res, next) => {
     Controllers.projectController.userLogin(req, res, next)

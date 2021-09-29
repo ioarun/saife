@@ -296,8 +296,11 @@
                     data: memberData,
                     type: "PUT",
                     success: (result) => {
-                        console.log("RESULT: ", result);
-                        location.reload();
+                        swal("Member Details Updated Successfully!", {
+                            icon: "success",
+                            buttons: false
+                        });
+                        setTimeout(() => location.reload(), 500);
                     },
                     error: (result) => {
                         let errorBody = result.responseJSON;
@@ -323,9 +326,6 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
-                        swal("Member deleted successfully!", {
-                            icon: "success",
-                        });
                         let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
                         modalInstance.close();
 
@@ -335,7 +335,11 @@
                             data: memberData,
                             type: "DELETE",
                             success: (result) => {
-                                location.reload();
+                                swal("Member deleted successfully!", {
+                                    icon: "success",
+                                    buttons: false
+                                });
+                                setTimeout(() => location.reload(), 500);
                             }
                         });
                     } else {
