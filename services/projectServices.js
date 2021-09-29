@@ -368,21 +368,20 @@ const updateMemberVideoURLService = (req,res) => {
 // Passport service for log in
 const userLoginService = (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
-        // console.log(info)
+        console.log(info)
         if (err) {
             return next(err);
         }
         if (!user) {
-            // const errors =[];
-            // errors.push({msg:"Incorrect credentials"})
-            // return res.render('login',{title:"login",errors})
             return res.redirect('/users/login');
         }
         req.logIn(user, function (err) {
             if (err) {
                 return next(err);
-            }           
-            return res.redirect('/')
+            }
+            console.log(req.user)
+            console.log(res.body)
+            return res.redirect('/');
         });
 
     })(req, res, next);

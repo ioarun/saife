@@ -18,6 +18,7 @@ const { ensureAuthenticated } = require('../config/auth');
 //     res.render("layout", {title: "MAIN"});
 // })
 router.get('/', ensureAuthenticated, (req, res) => {
+    console.log("I'm in '/")
     let fullname = req.user.firstName + " " + req.user.lastName
     // res.render('dashboard', { title: "Dashboard", name: fullname })
    
