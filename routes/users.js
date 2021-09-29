@@ -52,7 +52,7 @@ router.delete('/myMembers', ensureAuthenticated, (req, res) => {
 })
 
 // Login handle
-router.post('/logine', (req, res, next) => {
+router.post('/login', (req, res, next) => {
     Controllers.projectController.userLogin(req, res, next)
 });
 
