@@ -379,7 +379,6 @@ const userLoginService = (req, res, next) => {
             if (err) {
                 return next(err);
             }
-            console.log(req.user)
             return res.redirect('/');
         });
 
