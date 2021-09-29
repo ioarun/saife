@@ -380,7 +380,6 @@ const userLoginService = (req, res, next) => {
                 return next(err);
             }
             console.log(req.user)
-            console.log(res.body)
             return res.redirect('/');
         });
 
