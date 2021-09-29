@@ -73,7 +73,7 @@ module.exports = function (passport) {
             Expert.findById(obj._id, (err, user) => {
                 done(err, user);
             });
-        }else if(obj.role === true){
+        }else if(obj.role === false){
             User.findById(obj._id, (err, user) => {
                 done(err, user);
             });
