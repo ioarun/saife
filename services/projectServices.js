@@ -1,3 +1,4 @@
+require('dotenv').config()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
@@ -367,7 +368,7 @@ const updateMemberVideoURLService = (req,res) => {
 // Passport service for log in
 const userLoginService = (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
-        console.log(info)
+        // console.log(info)
         if (err) {
             return next(err);
         }
@@ -444,8 +445,6 @@ const updateAccountDetailsService = (req, res) => {
             .catch(err => console.log(err))
     }
 }
-
-
 
 // Forgot Password handle
 const userFogotPasswordService = (req, res) => {

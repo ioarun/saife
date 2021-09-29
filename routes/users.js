@@ -4,6 +4,10 @@ const Controllers = require('../controllers')
 const { ensureAuthenticated } = require('../config/auth');
 const Services = require('../services')
 const token = Services.token
+const passport = require('passport')
+
+// Expert Model
+const Expert = require('../models/Expert')
 
 // User Model
 const User = require('../models/User')
@@ -68,7 +72,7 @@ router.delete('/myExperts', ensureAuthenticated, (req, res) => {
 });
 
 // Login handle
-router.post('/login', (req, res, next) => {
+router.post('/logine', (req, res, next) => {
     Controllers.projectController.userLogin(req, res, next)
 });
 
@@ -123,5 +127,143 @@ router.get('/viewVideo',(req,res)=>{
 router.put('/updateMemberVideoURL',(req,res)=>{
     Controllers.projectController.updateMemberVideoURL(req,res)
 });
+// Expert Login
+router.post('/login', (req, res, next) => {
+    passport.authenticate('expert-local', function (err, user, info) {
+        console.log(info)
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.redirect('/users/login');
+        }
+        req.logIn(user, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return res.redirect('/users/experts/Login');
+        });
 
+    })(req, res, next);
+});
+
+// Expert Login Page
+router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
+    let fullname = req.user.firstName + " " + req.user.lastName
+    console.log(req.user.isExpert)
+    const isExpert = req.user.isExpert
+    Expert.findOne({ _id: req.user._id })
+            .then(user => {
+                // Check if push subscription object is undefined (push is not registered)
+                if (user){
+                    res.render('expertRegister', {
+                        isExpert,
+                        title: "Expert Dashboard",
+                        firstName: user.firstName,
+                        lastName:user.lastName,
+                        registration:user.registration,
+                        phone:user.phone
+                    });
+                }  
+            });
+})
+// Expert register Page 
+router.post('/experts/Register', (req, res, next) => {
+    const { firstName, lastName, registration, email, phone, password, password2 } = req.body;
+    const errors = [];
+
+    // Check if the fields are empty
+    if (!firstName || !lastName || !registration || !email || !password) {
+        errors.push({ msg: "Please fill all the fields" })
+    }
+    if (registration.length < 6) {
+        errors.push({ msg: "Registration number is too short" })
+    }
+    if (password.length < 6) {
+        errors.push({ msg: "password is too short" })
+    }
+    if (password !== password2) {
+        errors.push({ msg: "passwords do not match" })
+    }
+    if (errors.length > 0) {
+        res.json({
+            errors,
+            firstName,
+            lastName,
+            registration,
+            email,
+            phone,
+            password,
+            password2,
+            title: "Expert register"
+        })
+    } else {
+        Expert.findOne({ email: email })
+            .then(expert => {
+                if (expert) {
+                    errors.push({ msg: "Email is already registered" })
+                    res.status(400)
+                    res.render('expertRegisterModal', {
+                        errors,
+                        firstName,
+                        lastName,
+                        registration,
+                        email,
+                        phone,
+                        password,
+                        password2,
+                        title: "Expert Register"
+                    })
+                } else{
+                    const newExpert = new Expert({
+                        firstName,
+                        lastName,
+                        registration,
+                        email,
+                        phone,
+                        password
+                    })
+
+                     // Hash Password
+                bcrypt.genSalt(10, (err, salt) =>
+                bcrypt.hash(newExpert.password, salt, (err, hash) => {
+                    if (err) {
+                        throw err
+                    }
+                    // Set password to hashed
+                    newExpert.password = hash
+                    // Save user
+                    newExpert.save()
+                        .then(user => {
+                            let success = [];
+                            success.push({ msg: 'Registered' })
+                            // req.flash('success_msg', 'You are now registered and can log in')
+                            // res.redirect('/users/login')
+                            res.json({
+                                firstName,
+                                lastName,
+                                email,
+                                registration,
+                                phone,
+                                password,
+                                password2,
+                                success
+                            })
+                        })
+                        .catch(err => console.log(err))
+                }))
+                }
+            })
+    }
+
+
+})
+// Expert member page
+router.get('/experts/myMembers',(req,res)=>{
+    res.render('expertsMember',{title:"My Members",isExpert:req.user.isExpert})
+})
+// Experts account settings page
+router.get('/experts/expertsAccountSettings',(req,res)=>{
+    res.render('expertsAccountSettings',{title:"Account Settings",isExpert:req.user.isExpert})
+})
 module.exports = router;
