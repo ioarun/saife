@@ -1,3 +1,4 @@
+require('dotenv').config()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
