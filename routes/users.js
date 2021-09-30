@@ -128,24 +128,25 @@ router.put('/updateMemberVideoURL',(req,res)=>{
     Controllers.projectController.updateMemberVideoURL(req,res)
 });
 // Expert Login
-router.post('/login', (req, res, next) => {
-    passport.authenticate('expert-local', function (err, user, info) {
-        console.log(info)
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.redirect('/users/login');
-        }
-        req.logIn(user, function (err) {
-            if (err) {
-                return next(err);
-            }
-            return res.redirect('/users/experts/Login');
-        });
+// router.post('/login', (req, res, next) => {
+//     console.log("I'm here")
+//     passport.authenticate('expert-local', function (err, user, info) {
+//         console.log(user)
+//         if (err) {
+//             return next(err);
+//         }
+//         if (!user) {
+//             return res.redirect('/users/login');
+//         }
+//         req.logIn(user, function (err) {
+//             if (err) {
+//                 return next(err);
+//             }
+//             return res.redirect('/users/experts/Login');
+//         });
 
-    })(req, res, next);
-});
+//     })(req, res, next);
+// });
 
 // Expert Login Page
 router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
