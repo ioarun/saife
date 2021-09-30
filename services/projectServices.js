@@ -159,11 +159,23 @@ const registerMemberService = (req, res) => {
 }
 
 // Service for Expert Members page
-const loadExpertMembersService = (req, res) => {
+const loadExpertMembersService = async (req, res) => {
     let currUserEmail = req.user.email;
-    ExpertMember.find({email:currUserEmail})
-        .then(records => {
-            let members = records;
+    await ExpertMember.find({email:currUserEmail})
+        .then(async (records) => {
+            console.log("Records", records);
+            let members = [];
+            for(let i=0; i<records.length; i++) {
+                await Member.find({_id: records[i].memberID})
+                .then(record => {
+                    console.log("Record", record);
+                    members.push(record[0]);
+                    console.log("LOOP Mem: ", members);
+                }) 
+                .catch(err => console.log(err))
+            }
+            console.log("members", members);
+
             // res.render('members', { title: "Members", members });
             res.render('expertsMember',{title:"My Members",members, isExpert:req.user.isExpert})
         })
