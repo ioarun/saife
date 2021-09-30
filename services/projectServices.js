@@ -160,8 +160,8 @@ const registerMemberService = (req, res) => {
 
 // Service for Expert Members page
 const loadExpertMembersService = (req, res) => {
-    let currUserID = req.user._id;
-    ExpertMember.find({userID:currUserID})
+    let currUserEmail = req.user.email;
+    ExpertMember.find({email:currUserEmail})
         .then(records => {
             let members = records;
             // res.render('members', { title: "Members", members });
@@ -785,12 +785,11 @@ const resetStatusService = (req, res) => {
 
 // Forward Member to Expert Service
 const forwardCaseService = (req, res) => {
-    console.log(req.body);
     // Object destructuring 
-    const { expertId, memberId } = req.body;
+    const { expertEmail, memberId } = req.body;
         
     const newMember = new ExpertMember({
-        expertID: expertId,
+        email: expertEmail,
         memberID: memberId
     });
     newMember.save()
@@ -799,7 +798,7 @@ const forwardCaseService = (req, res) => {
             success.push({ msg: 'Forwarded' })
             if (success.length > 0) {
                 res.json({
-                    expertId,
+                    expertEmail,
                     memberId, 
                     message: "Success!"
                 })

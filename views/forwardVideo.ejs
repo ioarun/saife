@@ -10,7 +10,7 @@
                         <div class="col m6 s12">
                             <!-- Dropdown -->
                             <!-- <input class="experts-dropdown-trigger" href='#' data-target='dropdown1' type="text" placeholder="Search.." name="search"> -->
-                            <select id=expert-name name="Select expert">
+                            <select id="expert-email" name="Select expert">
                                 <!-- <option value="expertId">Dr Joe Stephen, St Johns</option>
                                 <option value="expertId">Dr Joe Stephen, Appolo</option>
                                 <option value="expertId">Dr Joe Stephen, AIMS</option>
@@ -37,9 +37,6 @@
                             </div>
                         </div>
                     </div>
-                    <span class="userExperts hide">
-                        <%= experts %>
-                    </span>
                 </form>
     </div>
 </div>
@@ -48,6 +45,6 @@
     userExpertsList = JSON.parse(userExperts);
 
     for (let i = 0; i < userExpertsList.length; i++) {
-        $("#expert-name").append(`<option value="${userExpertsList[i]._id}">${userExpertsList[i].firstName + " " + userExpertsList[i].lastName}</option>`);
+        $("#expert-email").append(`<option value="${userExpertsList[i].email}">${userExpertsList[i].firstName + " " + userExpertsList[i].lastName}</option>`);
     }
 </script>

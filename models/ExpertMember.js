@@ -4,8 +4,8 @@ const ObjectId = Schema.Types.ObjectId;
 
 // Creating schema for user Expert Members for experts/myMembers Page
 const expertMemberSchema = new mongoose.Schema({
-    expertID: {
-        type: ObjectId,
+    email: {
+        type: String,
         required: true
     },
     memberID: {
