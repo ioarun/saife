@@ -266,4 +266,9 @@ router.get('/experts/myMembers',(req,res)=>{
 router.get('/experts/expertsAccountSettings',(req,res)=>{
     res.render('expertsAccountSettings',{title:"Account Settings",isExpert:req.user.isExpert})
 })
+//Reset Member Fall Status
+router.put('/resetStatus',(req,res)=>{
+    Controllers.projectController.resetStatus(req,res)
+});
+
 module.exports = router;

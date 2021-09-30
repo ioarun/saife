@@ -677,6 +677,19 @@ const viewVideoService = (req, res) => {
     })
 }
 
+// Reset Member Fall Status Service
+const resetStatusService = (req, res) => {
+    // Object destructuring 
+    const { memberId } = req.body;
+        
+    Member.findOneAndUpdate({_id: new mongoose.mongo.ObjectId(memberId)}, {$set: {status: false}})
+        .then(record => {
+            if(record){
+                res.status(200).send("fall status reset success!");
+            }    
+        })
+        .catch(err => console.log(err))
+}
 module.exports = {
     registerUserService,
     registerMemberService,
@@ -697,5 +710,6 @@ module.exports = {
     loadUserExpertsService,
     addUserExpertService,
     updateUserExpertService,
-    deleteUserExpertService
+    deleteUserExpertService,
+    resetStatusService
 }

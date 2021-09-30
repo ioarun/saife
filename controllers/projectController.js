@@ -146,10 +146,14 @@ const viewVideo = (req, res) => {
     Services.projectServices.viewVideoService(req,res)
 }
 
-
 // updateMemberVideoURL
 const updateMemberVideoURL = (req, res) => {
     Services.projectServices.updateMemberVideoURLService(req,res)    
+}
+
+// resetStatus
+const resetStatus = (req, res) => {
+    Services.projectServices.resetStatusService(req,res)    
 }
 
 module.exports = {
@@ -172,5 +176,6 @@ module.exports = {
     loadUserExperts,
     addUserExpert,
     updateUserExpert,
-    deleteUserExpert
+    deleteUserExpert,
+    resetStatus
 };
