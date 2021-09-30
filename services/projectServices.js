@@ -173,10 +173,21 @@ const loadExpertMembersService = (req, res) => {
 // Service for Members page
 const loadMembersService = (req, res) => {
     let currUserID = req.user._id;
+    
     Member.find({userID:currUserID})
         .then(records => {
             let members = records;
-            res.render('members', { title: "Members", members });
+            userExpert.find({userID:currUserID})
+            .then(records => {
+                let experts = records;
+                res.render('members', { title: "Members", members, experts });
+            })
+            .catch(err => {
+                console.log(err);
+                let experts = [];
+                res.render('members', { title: "Members", members, experts });
+            })
+            // res.render('members', { title: "Members", members });
         })
         .catch(err => console.log(err))
 }
