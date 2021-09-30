@@ -74,6 +74,10 @@ const deleteMember = (req,res) => {
     Services.projectServices.deleteMemberService(req,res)
 }
 
+// Expert Member page
+const loadExpertMembers = (req, res) => {
+    Services.projectServices.loadExpertMembersService(req,res)
+}
 
 // Get userExperts
 const loadUserExperts = (req, res) => {
@@ -115,7 +119,15 @@ const updateAccountDetails = (req, res) => {
     Services.projectServices.updateAccountDetailsService(req,res)
 }
 
+// Experts account Settings Page
+const expertsAccountSettings = (req, res) => {
+    Services.projectServices.expertsAccountSettingsService(req,res)
+}
 
+// UpdateExpert's Account Details
+const updateExpertsAccountDetails = (req, res) => {
+    Services.projectServices.updateExpertsAccountDetailsService(req,res)
+}
 // Fogot password handle
 const fogotPassword = (req,res)=>{
     Services.projectServices.userFogotPasswordService(req,res)
@@ -162,10 +174,13 @@ module.exports = {
     loadMembers,
     updateMember,
     deleteMember,
+    loadExpertMembers,
     userLogin,
     userLogout,
     userAccountSettings,
     updateAccountDetails,
+    expertsAccountSettings,
+    updateExpertsAccountDetails,
     fallDetected,
     sendPush,
     fogotPassword,

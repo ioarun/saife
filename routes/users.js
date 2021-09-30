@@ -259,16 +259,22 @@ router.post('/experts/Register', (req, res, next) => {
 
 
 })
-// Expert member page
-router.get('/experts/myMembers',(req,res)=>{
-    res.render('expertsMember',{title:"My Members",isExpert:req.user.isExpert})
+// Expert members page
+router.get('/experts/myMembers', ensureAuthenticated,(req,res)=>{
+    Controllers.projectController.loadExpertMembers(req, res);
 })
 // Experts account settings page
-router.get('/experts/expertsAccountSettings',(req,res)=>{
-    res.render('expertsAccountSettings',{title:"Account Settings",isExpert:req.user.isExpert})
+router.get('/experts/expertsAccountSettings', ensureAuthenticated,(req,res)=>{
+    Controllers.projectController.expertsAccountSettings(req, res);
 })
+
+// update account settings for Experts
+router.put('/experts/expertsAccountSettings', ensureAuthenticated, (req, res) => {
+    Controllers.projectController.updateExpertsAccountDetails(req, res);
+})
+
 //Reset Member Fall Status
-router.put('/resetStatus',(req,res)=>{
+router.put('/resetStatus', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.resetStatus(req,res)
 });
 

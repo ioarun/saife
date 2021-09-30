@@ -7,6 +7,7 @@ const PORT = process.env.PORT|| 3000
 const Member = require('../models/Member')
 const Expert = require('../models/Expert');
 const userExpert = require('../models/userExpert');
+const ExpertMember = require('../models/ExpertMember');
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
 const webpush = require('web-push');
@@ -155,6 +156,18 @@ const registerMemberService = (req, res) => {
                     })
             }
         }).catch(err => console.log(err))
+}
+
+// Service for Expert Members page
+const loadExpertMembersService = (req, res) => {
+    let currUserID = req.user._id;
+    ExpertMember.find({userID:currUserID})
+        .then(records => {
+            let members = records;
+            // res.render('members', { title: "Members", members });
+            res.render('expertsMember',{title:"My Members",members, isExpert:req.user.isExpert})
+        })
+        .catch(err => console.log(err))
 }
 
 // Service for Members page
@@ -459,6 +472,57 @@ const updateAccountDetailsService = (req, res) => {
     }
 }
 
+// Expert Account Settings service
+const expertsAccountSettingsService = (req, res) => {
+    res.render('expertsAccountSettings', {
+        title: "Account Settings",
+        id: req.user._id.toString(),
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        phone: req.user.phone,
+        isExpert:req.user.isExpert
+    })
+}
+
+// Update Expert's Account details service
+const updateExpertsAccountDetailsService = (req, res) => {
+    let currUserID = req.user._id;
+    // Object destructuring 
+    const { firstName, lastName, phone } = req.body
+    let errors = [];
+
+    // Check for required fields
+    if (!firstName || !lastName || !phone ) {
+        errors.push({ msg: "Please fill in all the fields" })
+    }
+
+    // Phone number lenth
+    if (isNaN(phone) || phone.length != 10) {
+        errors.push({ msg: 'Phone number is incorrect ' })
+    }
+
+    // If there's an error re-render the registraion page
+    if (errors.length > 0) {         
+        res.status(400)
+        res.json({
+            'statusMessage': "Fail",
+            errors,
+            firstName,
+            lastName,
+            phone
+        })
+
+    } else {
+        Expert.findOneAndUpdate({_id: currUserID}, {$set: {firstName, lastName, phone}})
+            .then(records => {
+                res.status(200);
+                res.json({success: "Updated Account Details!"});
+            })
+            .catch(err => console.log(err))
+    }
+}
+
 // Forgot Password handle
 const userFogotPasswordService = (req, res) => {
     const { email } = req.body
@@ -715,6 +779,8 @@ module.exports = {
     userLogoutService,
     userAccountSettingsService,
     updateAccountDetailsService,
+    expertsAccountSettingsService,
+    updateExpertsAccountDetailsService,
     userFogotPasswordService,
     userEmailPasswordService,
     userResetPasswordService,
@@ -728,5 +794,6 @@ module.exports = {
     addUserExpertService,
     updateUserExpertService,
     deleteUserExpertService,
-    resetStatusService
+    resetStatusService,
+    loadExpertMembersService
 }
