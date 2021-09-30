@@ -151,7 +151,7 @@ router.put('/updateMemberVideoURL',(req,res)=>{
 // Expert Login Page
 router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
     let fullname = req.user.firstName + " " + req.user.lastName
-    console.log(req.user.isExpert)
+    // console.log(req.user.isExpert)
     const isExpert = req.user.isExpert
     Expert.findOne({ _id: req.user._id })
             .then(user => {

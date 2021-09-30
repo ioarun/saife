@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
-// Create Schema
+// Creating schema for user Expert Members for experts/myMembers Page
 const expertMemberSchema = new mongoose.Schema({
     firstName: {
         type: String,
