@@ -15,19 +15,19 @@ $('#forward-video').click(() => {
                         " Video link : " + videoLink +
                         " Message : " + message;
     
-    // //Ajax call Forward to Expert
-    // $.ajax({
-    //     url: "/users/myMembers",
-    //     data: memberData,
-    //     type: "DELETE",
-    //     success: (result) => {
-    //         swal("Member deleted successfully!", {
-    //             icon: "success",
-    //             buttons: false
-    //         });
-    //         setTimeout(() => location.reload(), 500);
-    //     }
-    // });
+    //Ajax call Forward to Expert
+    $.ajax({
+        url: "/users/forwardCase",
+        data: {expertId, memberId},
+        type: "POST",
+        success: (result) => {
+            swal("Forward Success!", {
+                icon: "success",
+                buttons: false
+            });
+            setTimeout(() => location.reload(), 500);
+        }
+    });
 
     let modalInstance = M.Modal.getInstance($("#forwardVideoModal"));
     modalInstance.close();

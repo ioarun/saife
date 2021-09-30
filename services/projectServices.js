@@ -785,12 +785,13 @@ const resetStatusService = (req, res) => {
 
 // Forward Member to Expert Service
 const forwardCaseService = (req, res) => {
+    console.log(req.body);
     // Object destructuring 
     const { expertId, memberId } = req.body;
         
     const newMember = new ExpertMember({
-        expertId,
-        memberId
+        expertID: expertId,
+        memberID: memberId
     });
     newMember.save()
         .then(member => {
