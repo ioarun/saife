@@ -168,6 +168,11 @@ const resetStatus = (req, res) => {
     Services.projectServices.resetStatusService(req,res)    
 }
 
+// forwardCase to Expert
+const forwardCase = (req, res) => {
+    Services.projectServices.forwardCaseService(req,res)    
+}
+
 module.exports = {
     registerUser,
     registerMember,
@@ -192,5 +197,6 @@ module.exports = {
     addUserExpert,
     updateUserExpert,
     deleteUserExpert,
-    resetStatus
+    resetStatus,
+    forwardCase
 };

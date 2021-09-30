@@ -782,6 +782,31 @@ const resetStatusService = (req, res) => {
         })
         .catch(err => console.log(err))
 }
+
+// Forward Member to Expert Service
+const forwardCaseService = (req, res) => {
+    // Object destructuring 
+    const { expertId, memberId } = req.body;
+        
+    const newMember = new ExpertMember({
+        expertId,
+        memberId
+    });
+    newMember.save()
+        .then(member => {
+            let success = [];
+            success.push({ msg: 'Forwarded' })
+            if (success.length > 0) {
+                res.json({
+                    expertId,
+                    memberId, 
+                    message: "Success!"
+                })
+            }
+        })
+        .catch(err => console.log(err))
+}
+
 module.exports = {
     registerUserService,
     registerMemberService,
@@ -806,5 +831,6 @@ module.exports = {
     updateUserExpertService,
     deleteUserExpertService,
     resetStatusService,
-    loadExpertMembersService
+    loadExpertMembersService,
+    forwardCaseService
 }

@@ -45,8 +45,8 @@
 </div>
 <script>
     var userExperts = `<%- JSON.stringify(experts) %>`;
-
     userExpertsList = JSON.parse(userExperts);
+
     for (let i = 0; i < userExpertsList.length; i++) {
         $("#expert-name").append(`<option value="${userExpertsList[i]._id}">${userExpertsList[i].firstName + " " + userExpertsList[i].lastName}</option>`);
     }

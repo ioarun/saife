@@ -259,10 +259,12 @@ router.post('/experts/Register', (req, res, next) => {
 
 
 })
+
 // Expert members page
 router.get('/experts/myMembers', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.loadExpertMembers(req, res);
 })
+
 // Experts account settings page
 router.get('/experts/expertsAccountSettings', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.expertsAccountSettings(req, res);
@@ -277,5 +279,10 @@ router.put('/experts/expertsAccountSettings', ensureAuthenticated, (req, res) =>
 router.put('/resetStatus', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.resetStatus(req,res)
 });
+
+// Forward MemberID to Expert
+router.post('/forwardCase', ensureAuthenticated,(req,res)=>{
+    Controllers.projectController.forwardCase(req, res);
+})
 
 module.exports = router;
