@@ -3,6 +3,7 @@
 <head>
     <link href='/splash.css' rel='stylesheet' />
 </head>
+
 <body class="body-bg body-bg-login">
     <div class="container login-body-container">
         <div class="row justify-content-center align-items-center h-100">
@@ -65,36 +66,36 @@
 
         <!-- Register modal -->
         <%- include("register.ejs") %>
-        <!-- Expert Register modal -->
-        <%- include("expertRegisterModal.ejs") %>
+            <!-- Expert Register modal -->
+            <%- include("expertRegisterModal.ejs") %>
 
-            <!-- Modal for password reset-->
-            <div id="mail" class="modal">
-                <div class="modal-content">
-                    <h4>Reset Your Password</h4>
-                    <p>To reset your password, enter your email below and submit. An email will be sent to you with
-                        instructions
-                        about how to complete the process</p>
-                </div>
-                <div class="row modal-content">
-                    <div id="alert_placeholder"></div>
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <label class="form-label" for="email">Email</label>
-                                <input type="email" id="rEmail" name="email" class="form-control"
-                                    placeholder="Enter Email" />
+                <!-- Modal for password reset-->
+                <div id="mail" class="modal">
+                    <div class="modal-content">
+                        <h4>Reset Your Password</h4>
+                        <p>To reset your password, enter your email below and submit. An email will be sent to you with
+                            instructions
+                            about how to complete the process</p>
+                    </div>
+                    <div class="row modal-content">
+                        <div id="alert_placeholder"></div>
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" id="rEmail" name="email" class="form-control"
+                                        placeholder="Enter Email" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s6 center-align">
-                                <a class="waves-effect waves-light btn" id="reset">Reset Password</a>
+                            <div class="row">
+                                <div class="input-field col s6 center-align">
+                                    <a class="waves-effect waves-light btn" id="reset">Reset Password</a>
+                                </div>
                             </div>
-                        </div>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
     </div>
 
@@ -116,13 +117,13 @@
 
         $('#registerModal').modal();
 
-        
+
         $('select').formSelect();
 
         $(document).ready(() => {
             // Modal initialization 
             $('.email').modal();
-            
+
             $('#expertRegister-btn').click((event) => {
                 event.preventDefault();
                 expertRegisterSubmit();
@@ -159,27 +160,27 @@
                 data: userData,
                 type: "POST",
                 success: (result) => {
-                    console.log(result.success);
-                     // To check if the server response contains error messages
-                     if (typeof result.errors != 'undefined') {
-                        console.log(result);
+                    //console.log(result.success);
+                    // To check if the server response contains error messages
+                    if (typeof result.errors != 'undefined') {
+                        //console.log(result);
                         (result.errors).forEach(element => {
                             $('#alert_placeholder_register').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                         });
 
-                    }    
+                    }
                     // To check if the server response contains any success messages 
-                 if (typeof result.success != 'undefined') {
-                        console.log((result.success[0].msg));
+                    if (typeof result.success != 'undefined') {
+                        //console.log((result.success[0].msg));
                         modalInstance.close();
                         location.reload()
                     }
                 },
-                error:(result)=>{
+                error: (result) => {
                     // To check if the server response contains error messages
                     if (typeof result.errors != 'undefined') {
-                        console.log(result);
+                        //console.log(result);
                         (result.errors).forEach(element => {
                             $('#alert_placeholder_register').append('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
@@ -207,9 +208,9 @@
                 data: emailData,
                 type: "PUT",
                 success: (result) => {
-                    console.log(result)
+                    //console.log(result)
                     if (typeof result.errors != 'undefined') {
-                        console.log((result.errors[0].msg));
+                        //console.log((result.errors[0].msg));
                         (result.errors).forEach(element => {
                             $('#alert_placeholder').append().html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
@@ -217,7 +218,7 @@
                     }
                     // To check if the server response contains any success messages 
                     else if (typeof result.success != 'undefined') {
-                        console.log((result.success[0].msg));
+                        //console.log((result.success[0].msg));
                         (result.success).forEach(element => {
                             $('#alert_placeholder').append().html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
@@ -227,7 +228,7 @@
             });
         }
         // Expert register function
-        const expertRegisterSubmit=()=>{
+        const expertRegisterSubmit = () => {
             let firstName = $('#expertFirstName').val();
             let lastName = $('#expertLastName').val();
             let registration = $('#expertRego').val();
@@ -247,20 +248,20 @@
             expertData.password2 = password2;
 
             $.ajax({
-                url:"/experts/Register",
-                data:expertData,
-                type:"POST",
-                success:(result)=>{
-                    console.log(result);
+                url: "/experts/Register",
+                data: expertData,
+                type: "POST",
+                success: (result) => {
+                    //console.log(result);
                     if (typeof result.errors != 'undefined') {
                         (result.errors).forEach(element => {
                             $('#alert_placeholder').append().html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                         });
                     }
-                     // To check if the server response contains any success messages 
-                     else if (typeof result.success != 'undefined') {
-                        console.log((result.success[0].msg));
+                    // To check if the server response contains any success messages 
+                    else if (typeof result.success != 'undefined') {
+                        //console.log((result.success[0].msg));
                         (result.success).forEach(element => {
                             $('#alert_placeholder').append().html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + element.msg +
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')

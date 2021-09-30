@@ -163,18 +163,14 @@ const loadExpertMembersService = async (req, res) => {
     let currUserEmail = req.user.email;
     await ExpertMember.find({email:currUserEmail})
         .then(async (records) => {
-            console.log("Records", records);
             let members = [];
             for(let i=0; i<records.length; i++) {
                 await Member.find({_id: records[i].memberID})
                 .then(record => {
-                    console.log("Record", record);
                     members.push(record[0]);
-                    console.log("LOOP Mem: ", members);
                 }) 
                 .catch(err => console.log(err))
             }
-            console.log("members", members);
 
             // res.render('members', { title: "Members", members });
             res.render('expertsMember',{title:"My Members",members, isExpert:req.user.isExpert})
@@ -392,7 +388,7 @@ const updateMemberVideoURLService = (req,res) => {
     const { userId, memberId, Location } = req.body;
     Member.findOneAndUpdate({_id: memberId, userID: userId}, {$set: {videoURL: Location}}, {returnOriginal: false})
         .then(record => {
-            console.log(record);
+            // console.log(record);
             res.status(200).send("Success!");
         })
         .catch(err => {
@@ -410,7 +406,7 @@ const userLoginService = (req, res, next) => {
         }
         if (!user) {             
                 passport.authenticate('expert-local', function (err, user, info) {
-                    console.log(user)
+                    // console.log(user)
                     if (err) {
                         return next(err);
                     }

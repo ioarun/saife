@@ -6,8 +6,10 @@
                     <div id="c-video" class="c-video shadow-lg border">
                         <div class="share" style="text-align: center;">
                             <div class="buttons">
-                                <button class="buttons fas fa-share-square modal-trigger" id="forward"
-                                    href="#forwardVideoModal"></button>
+                                <% if(typeof isExpert=='undefined' || !isExpert) { %>
+                                    <button class="buttons fas fa-share-square modal-trigger" id="forward"
+                                        href="#forwardVideoModal"></button>
+                                    <% } %>
                             </div>
                         </div>
                         <video id='video' class="video" muted="muted" autoplay="true" poster="data:image/gif,AAAA">
@@ -23,7 +25,9 @@
                                 <div>
                                     <button class="fa fa-pause-circle" id="play-pause"></button>
                                     <button class='fa fa-redo' id='replay'></button>
-                                    <button class='fa fa-check-circle' id='resetStatus'></button>
+                                    <% if(typeof isExpert=='undefined' || !isExpert) { %>
+                                        <button class='fa fa-check-circle' id='resetStatus'></button>
+                                        <% } %>
                                 </div>
                                 <div>
                                     <button class='fas fa-expand' id='fullscreen'></button>

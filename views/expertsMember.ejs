@@ -63,6 +63,20 @@
             </tbody>
         </table>
     </div>
+    <script>
+        var isExpert = `<%- isExpert %>`;
+        var currentSelectedrowID;
+        //Load Member Video
+        $('.viewMemberVideo').click(function (event) {
+            event.preventDefault();
+            currentSelectedrowID = event.target.parentNode.parentNode.parentNode.id;
+            var mems = '<%- JSON.stringify(members) %>';
+            mems = JSON.parse(mems);
+
+            $('#viewMemberVideoSource').attr('src', mems[currentSelectedrowID].videoURL);
+            $('#video')[0].load();
+        });
+    </script>
     <script src='/js/media-player.js'></script>
     <script src='/js/forward-video.js'></script>
 </body>
