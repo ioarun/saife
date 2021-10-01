@@ -806,24 +806,35 @@ const forwardCaseService = (req, res) => {
     // Object destructuring 
     const { expertEmail, memberId, message } = req.body;
         
-    const newMember = new ExpertMember({
-        email: expertEmail,
-        message: message,
-        memberID: memberId
-    });
-    newMember.save()
-        .then(member => {
-            let success = [];
-            success.push({ msg: 'Forwarded' })
-            if (success.length > 0) {
-                res.json({
-                    expertEmail,
-                    memberId, 
-                    message: "Success!"
-                })
-            }
+    ExpertMember.findOneAndUpdate({ email: expertEmail, memberID: memberId},
+        {$set: {
+            email: expertEmail,
+            message: message,
+            memberID: memberId
+        }},
+        {upsert:true, returnNewDocument: true})
+    .then(record => {
+        // if(!record){
+        //     const newMember = new ExpertMember({
+        //         email: expertEmail,
+        //         message: message,
+        //         memberID: memberId
+        //     });
+        //     newMember.save()
+        //     .then(member => {
+                let success = [];
+                success.push({ msg: 'Forwarded' })
+                if (success.length > 0) {
+                    res.json({
+                        expertEmail,
+                        memberId, 
+                        message: "Success!"
+                    })
+                }
+            // })
+            // .catch(err => console.log(err))
         })
-        .catch(err => console.log(err))
+    .catch(err => console.log(err));
 }
 
 module.exports = {
