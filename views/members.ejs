@@ -345,7 +345,11 @@
                             }
                         });
                     } else {
-                        swal("Member not deleted!");
+                        swal("Member not deleted!", {
+                            icon: "info",
+                            buttons: false,
+                            timer: 700
+                        });
                     }
                 });
             }

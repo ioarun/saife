@@ -265,6 +265,11 @@ router.get('/experts/myMembers', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.loadExpertMembers(req, res);
 })
 
+// Delete Expert Member
+router.delete('/experts/myMembers', ensureAuthenticated,(req,res)=>{
+    Controllers.projectController.deleteExpertMember(req, res);
+})
+
 // Experts account settings page
 router.get('/experts/expertsAccountSettings', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.expertsAccountSettings(req, res);

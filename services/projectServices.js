@@ -200,6 +200,16 @@ const loadMembersService = (req, res) => {
         .catch(err => console.log(err))
 }
 
+// Delete Expert Member
+const deleteExpertMemberService = (req,res) => {
+    let memberID = req.body.id;
+    ExpertMember.deleteOne({memberID},)
+        .then(records => {
+            res.json({success: "Deleted Member!"});
+        })
+        .catch(err => console.log(err))
+}
+
 // Update Member Details
 const updateMemberService = (req,res) => {
     let currUserID = req.user._id;
@@ -836,6 +846,7 @@ module.exports = {
     sendPushService,
     updateMemberVideoURLService,
     loadUserExpertsService,
+    deleteExpertMemberService,
     addUserExpertService,
     updateUserExpertService,
     deleteUserExpertService,

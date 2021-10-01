@@ -78,7 +78,6 @@
                                     var rowID = event.target.parentNode.parentNode.id;
                                     var mems = '<%- JSON.stringify(members) %>';
                                     mems = JSON.parse(mems);
-                                    console.log(mems[rowID]);
 
                                     $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
                                     $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
@@ -182,7 +181,7 @@
 
                     //Ajax call Delete Member route
                     $.ajax({
-                        url: "/users/myMembers",
+                        url: "/users/experts/myMembers",
                         data: memberData,
                         type: "DELETE",
                         success: (result) => {
@@ -194,7 +193,11 @@
                         }
                     });
                 } else {
-                    swal("Member not deleted!");
+                    swal("Member not deleted!", {
+                        icon: "info",
+                        buttons: false,
+                        timer: 700
+                    });
                 }
             });
         });

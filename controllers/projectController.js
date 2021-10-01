@@ -79,6 +79,11 @@ const loadExpertMembers = (req, res) => {
     Services.projectServices.loadExpertMembersService(req,res)
 }
 
+// Delete Expert Member
+const deleteExpertMember = (req, res) => {
+    Services.projectServices.deleteExpertMemberService(req,res)
+}
+
 // Get userExperts
 const loadUserExperts = (req, res) => {
     Services.projectServices.loadUserExpertsService(req,res)
@@ -180,6 +185,7 @@ module.exports = {
     updateMember,
     deleteMember,
     loadExpertMembers,
+    deleteExpertMember,
     userLogin,
     userLogout,
     userAccountSettings,
