@@ -167,12 +167,12 @@ const loadExpertMembersService = async (req, res) => {
             for(let i=0; i<records.length; i++) {
                 await Member.find({_id: records[i].memberID})
                 .then(record => {
-                    members.push(record[0]);
+                    let member = JSON.parse(JSON.stringify(record[0]));
+                    member.message = records[i].message;
+                    members.push(member);
                 }) 
                 .catch(err => console.log(err))
             }
-
-            // res.render('members', { title: "Members", members });
             res.render('expertsMember',{title:"My Members",members, isExpert:req.user.isExpert})
         })
         .catch(err => console.log(err))
@@ -794,10 +794,11 @@ const resetStatusService = (req, res) => {
 // Forward Member to Expert Service
 const forwardCaseService = (req, res) => {
     // Object destructuring 
-    const { expertEmail, memberId } = req.body;
+    const { expertEmail, memberId, message } = req.body;
         
     const newMember = new ExpertMember({
         email: expertEmail,
+        message: message,
         memberID: memberId
     });
     newMember.save()

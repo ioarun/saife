@@ -8,6 +8,10 @@ const expertMemberSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    message: {
+        type: String,
+        required: false
+    },
     memberID: {
         type: ObjectId,
         required: true

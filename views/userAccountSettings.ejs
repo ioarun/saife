@@ -13,28 +13,29 @@
                 <form>
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" class="form-control" placeholder="<%= typeof firstname != 'undefined' ? firstname : '' %>"
+                        <input type="text" id="firstName" name="firstName" class="form-control"
+                            placeholder="<%= typeof firstname != 'undefined' ? firstname : '' %>"
                             value="<%= typeof firstName != 'undefined' ? firstName : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter Last Name"
+                        <input type="text" id="lastName" name="lastName" class="form-control"
+                            placeholder="Enter Last Name"
                             value="<%= typeof lastName != 'undefined' ? lastName : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
-                            value="<%= typeof email != 'undefined' ? email : '' %>" disabled/>
+                            value="<%= typeof email != 'undefined' ? email : '' %>" disabled />
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="1234536783" 
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="1234536783"
                             value="<%= typeof phone != 'undefined' ? phone : '' %>" />
                     </div>
                     <div class="form-group">
                         <label for="userId">User ID</label>
-                        <input type="text" id="userId" name="userId" class="form-control"
-                            placeholder="User ID"
+                        <input type="text" id="userId" name="userId" class="form-control" placeholder="User ID"
                             value="<%= typeof id != 'undefined' ? id : '' %>" disabled />
                     </div>
                     <div class="form-group">
@@ -42,10 +43,10 @@
                         <!-- Switch -->
                         <div class="switch">
                             <label>
-                            Off
-                            <input id="subscriptionButton" type="checkbox">
-                            <span class="lever"></span>
-                            On
+                                Off
+                                <input id="subscriptionButton" type="checkbox">
+                                <span class="lever"></span>
+                                On
                             </label>
                         </div>
                     </div>
@@ -54,171 +55,170 @@
                         <a class="waves-effect waves-light btn" id="updateAccountDetails">Update</a>
                     </div>
                 </form>
+            </div>
         </div>
-    </div>
-    <script>
-        isPushSupported();
+        <script>
+            isPushSupported();
 
-        const userId = '<%= id %>';
+            const userId = '<%= id %>';
 
-        var subscriptionButton = document.getElementById('subscriptionButton');
+            var subscriptionButton = document.getElementById('subscriptionButton');
 
-        function setSubscribeButton() {
-            subscriptionButton.onclick = subscribe;
-            subscriptionButton.checked = false;
-        }
+            function setSubscribeButton() {
+                subscriptionButton.onclick = subscribe;
+                subscriptionButton.checked = false;
+            }
 
-        function setUnsubscribeButton() {
-            subscriptionButton.onclick = unsubscribe;
-            subscriptionButton.checked = true;
-        }
-        navigator.serviceWorker.register('/worker.js');
-        navigator.serviceWorker.ready
-            .then(function (registration) {
-                console.log('service worker registered');
-                subscriptionButton.removeAttribute('disabled');
-
-                return registration.pushManager.getSubscription();
-            }).then(function (subscription) {
-                if (subscription) {
-                    console.log('Already subscribed', subscription.endpoint);
-                    setUnsubscribeButton();
-                } else {
-                    setSubscribeButton();
-                }
-            });
-
-        function subscribe() {
-            navigator.serviceWorker.ready
-                .then(async function (registration) {
-                    const publicVapidKey = "BOHjA_8rowVAwIEwllMoc5ha_NJEYepUvXAyArv4886enG1hzvIxGSn-v3Lr3koyDlvYxmU1M8HKgbvcHhTc95Y";
-
-                    const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
-
-                    return registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: convertedVapidKey
-                    });
-                }).then(function (subscription) {
-                    console.log('Subscribed', subscription.endpoint);
-                    return fetch("/subscribe", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            id: userId,
-                            pushSubObj: JSON.stringify(subscription)
-                        }),
-                        headers: {
-                            "content-type": "application/json"
-                        }
-                    });
-                    console.log("Subscription Object sent to server successfully...");
-                }).then(setUnsubscribeButton);
-        }
-
-        function unsubscribe() {
+            function setUnsubscribeButton() {
+                subscriptionButton.onclick = unsubscribe;
+                subscriptionButton.checked = true;
+            }
+            navigator.serviceWorker.register('/worker.js');
             navigator.serviceWorker.ready
                 .then(function (registration) {
+                    console.log('service worker registered');
+                    subscriptionButton.removeAttribute('disabled');
+
                     return registration.pushManager.getSubscription();
                 }).then(function (subscription) {
-                    return subscription.unsubscribe()
-                        .then(function () {
-                            console.log('Unsubscribed', subscription.endpoint);
-                            // return fetch('unregister', {
-                            // method: 'post',
-                            // headers: {
-                            //     'Content-type': 'application/json'
-                            // },
-                            // body: JSON.stringify({
-                            //     subscription: subscription
-                            // })
-                            // });
-                        });
-                })
-                .then(setSubscribeButton)
-                .catch(err => {
-                    console.log(err);
+                    if (subscription) {
+                        console.log('Already subscribed', subscription.endpoint);
+                        setUnsubscribeButton();
+                    } else {
+                        setSubscribeButton();
+                    }
                 });
-        }
 
+            function subscribe() {
+                navigator.serviceWorker.ready
+                    .then(async function (registration) {
+                        const publicVapidKey = "BOHjA_8rowVAwIEwllMoc5ha_NJEYepUvXAyArv4886enG1hzvIxGSn-v3Lr3koyDlvYxmU1M8HKgbvcHhTc95Y";
 
+                        const convertedVapidKey = urlBase64ToUint8Array(publicVapidKey);
 
-        function urlBase64ToUint8Array(base64String) {
-            const padding = "=".repeat((4 - base64String.length % 4) % 4);
-            const base64 = (base64String + padding)
-                .replace(/\-/g, "+")
-                .replace(/_/g, "/");
-
-            const rawData = window.atob(base64);
-            const outputArray = new Uint8Array(rawData.length);
-
-            for (let i = 0; i < rawData.length; ++i) {
-                outputArray[i] = rawData.charCodeAt(i);
-            }
-            return outputArray;
-        }
-
-        //To check `push notification` is supported or not
-        function isPushSupported() {
-            //To check `push notification` permission is denied by user
-            if (Notification.permission === 'denied') {
-                //   alert('User has blocked push notification.');
-                Swal.fire(
-                    'Alert',
-                    'You have blocked the push notification.',
-                    'warning'
-                )
-                return;
+                        return registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: convertedVapidKey
+                        });
+                    }).then(function (subscription) {
+                        console.log('Subscribed', subscription.endpoint);
+                        return fetch("/subscribe", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                id: userId,
+                                pushSubObj: JSON.stringify(subscription)
+                            }),
+                            headers: {
+                                "content-type": "application/json"
+                            }
+                        });
+                        console.log("Subscription Object sent to server successfully...");
+                    }).then(setUnsubscribeButton);
             }
 
-            //Check `push notification` is supported or not
-            if (!('PushManager' in window)) {
-                //   alert('Sorry, Push notification isn\'t supported in your browser.');
-                Swal.fire(
-                    'Alert',
-                    'Sorry, Push notification isn\'t supported in your browser.',
-                    'warning'
-                )
-                return;
+            function unsubscribe() {
+                navigator.serviceWorker.ready
+                    .then(function (registration) {
+                        return registration.pushManager.getSubscription();
+                    }).then(function (subscription) {
+                        return subscription.unsubscribe()
+                            .then(function () {
+                                console.log('Unsubscribed', subscription.endpoint);
+                                // return fetch('unregister', {
+                                // method: 'post',
+                                // headers: {
+                                //     'Content-type': 'application/json'
+                                // },
+                                // body: JSON.stringify({
+                                //     subscription: subscription
+                                // })
+                                // });
+                            });
+                    })
+                    .then(setSubscribeButton)
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
 
-        }
 
-        $('#updateAccountDetails').click(() => {
+
+            function urlBase64ToUint8Array(base64String) {
+                const padding = "=".repeat((4 - base64String.length % 4) % 4);
+                const base64 = (base64String + padding)
+                    .replace(/\-/g, "+")
+                    .replace(/_/g, "/");
+
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            }
+
+            //To check `push notification` is supported or not
+            function isPushSupported() {
+                //To check `push notification` permission is denied by user
+                if (Notification.permission === 'denied') {
+                    //   alert('User has blocked push notification.');
+                    Swal.fire(
+                        'Alert',
+                        'You have blocked the push notification.',
+                        'warning'
+                    )
+                    return;
+                }
+
+                //Check `push notification` is supported or not
+                if (!('PushManager' in window)) {
+                    //   alert('Sorry, Push notification isn\'t supported in your browser.');
+                    Swal.fire(
+                        'Alert',
+                        'Sorry, Push notification isn\'t supported in your browser.',
+                        'warning'
+                    )
+                    return;
+                }
+
+            }
+
+            $('#updateAccountDetails').click(() => {
                 updateAccountDetailsSubmit();
             });
 
-        // Update Account Details
-        const updateAccountDetailsSubmit = () => {
+            // Update Account Details
+            const updateAccountDetailsSubmit = () => {
 
-            //Getting Account Details from the form
-            let accountData = {};
-            accountData.firstName = $('#firstName').val();
-            accountData.lastName = $('#lastName').val();
-            accountData.phone = $('#phone').val();
+                //Getting Account Details from the form
+                let accountData = {};
+                accountData.firstName = $('#firstName').val();
+                accountData.lastName = $('#lastName').val();
+                accountData.phone = $('#phone').val();
 
-            //Ajax call Update Account Details route
-            $.ajax({
-                url: "/users/userAccountSettings",
-                data: accountData,
-                type: "PUT",
-                success: (result) => {
-                    console.log("RESULT: ", result);
-                    $('.alert_placeholder').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + result.success +
-                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
-                },
-                error: (result) => {
-                    let errorBody = result.responseJSON;
-                    if (typeof errorBody.errors != 'undefined') {
-                        (errorBody.errors).forEach(element => {
-                            $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
-                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
-                        });
+                //Ajax call Update Account Details route
+                $.ajax({
+                    url: "/users/userAccountSettings",
+                    data: accountData,
+                    type: "PUT",
+                    success: (result) => {
+                        $('.alert_placeholder').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + result.success +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                    },
+                    error: (result) => {
+                        let errorBody = result.responseJSON;
+                        if (typeof errorBody.errors != 'undefined') {
+                            (errorBody.errors).forEach(element => {
+                                $('.alert_placeholder').html('<div class="alert alert-warning alert-dismissible fade show" role="alert">' + element.msg +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
+                            });
+                        }
                     }
-                }
-            });
+                });
             }
 
-    </script>
+        </script>
 </body>
 
 </html>

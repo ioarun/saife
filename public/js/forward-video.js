@@ -17,7 +17,7 @@ $('#forward-video').click((event) => {
     //Ajax call Forward to Expert
     $.ajax({
         url: "/users/forwardCase",
-        data: {expertEmail, memberId},
+        data: {expertEmail, memberId, message},
         type: "POST",
         success: (result) => {
             swal("Forward Success!", {
