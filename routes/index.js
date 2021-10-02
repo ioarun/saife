@@ -20,10 +20,11 @@ const { ensureAuthenticated } = require('../config/auth');
 router.get('/', ensureAuthenticated, (req, res) => {
     let fullname = req.user.firstName + " " + req.user.lastName
     // res.render('dashboard', { title: "Dashboard", name: fullname })
-   
+    
     User.findOne({ _id: req.user._id })
             .then(user => {
                 // Check if push subscription object is undefined (push is not registered)
+                console.log(user.pushSubObj)
                 if (!user.pushSubObj){
                     res.render('dashboard', {title: "Dashboard", name: fullname, id: user._id.toString()});
                 } 

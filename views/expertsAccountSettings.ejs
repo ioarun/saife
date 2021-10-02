@@ -61,6 +61,7 @@
             isPushSupported();
 
             const userId = '<%= id %>';
+            const isExpert = '<%= isExpert %>';
 
             var subscriptionButton = document.getElementById('subscriptionButton');
 
@@ -106,6 +107,7 @@
                             method: "POST",
                             body: JSON.stringify({
                                 id: userId,
+                                isExpert:isExpert,
                                 pushSubObj: JSON.stringify(subscription)
                             }),
                             headers: {

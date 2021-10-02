@@ -37,9 +37,10 @@ app.post('/subscribe', (req, res) => {
     // res.status(201).json({});
     // console.log(JSON.stringify(subscription));
     // Save the subscription object in the database
-
-    if(req.body.isExpert===true){
-        expertId = new mongoose.mongo.ObjectId(subscription.id);
+    console.log(req.body)
+    if(req.body.isExpert==='true'){
+        
+        expertId = new mongoose.mongo.ObjectId(subscription.id); 
         Expert.findByIdAndUpdate(expertId,
             { pushSubObj: subscription.pushSubObj }, function (err, data) {
                 if (err) {
@@ -48,7 +49,7 @@ app.post('/subscribe', (req, res) => {
                 else {
                     // res.send(data);
                     // console.log("pushSubObj updated! id : ", userId);
-    
+                    console.log("Im expert")
                 }
             });
     }else{
