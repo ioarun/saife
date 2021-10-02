@@ -814,14 +814,6 @@ const forwardCaseService = (req, res) => {
         }},
         {upsert:true, returnNewDocument: true})
     .then(record => {
-        // if(!record){
-        //     const newMember = new ExpertMember({
-        //         email: expertEmail,
-        //         message: message,
-        //         memberID: memberId
-        //     });
-        //     newMember.save()
-        //     .then(member => {
                 let success = [];
                 success.push({ msg: 'Forwarded' })
                 if (success.length > 0) {
@@ -831,8 +823,6 @@ const forwardCaseService = (req, res) => {
                         message: "Success!"
                     })
                 }
-            // })
-            // .catch(err => console.log(err))
         })
     .catch(err => console.log(err));
 }
