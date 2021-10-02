@@ -5,6 +5,7 @@ const { ensureAuthenticated } = require('../config/auth');
 const Services = require('../services')
 const token = Services.token
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 
 // Expert Model
 const Expert = require('../models/Expert')
