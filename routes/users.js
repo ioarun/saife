@@ -128,26 +128,6 @@ router.get('/viewVideo',(req,res)=>{
 router.put('/updateMemberVideoURL',(req,res)=>{
     Controllers.projectController.updateMemberVideoURL(req,res)
 });
-// Expert Login
-// router.post('/login', (req, res, next) => {
-//     console.log("I'm here")
-//     passport.authenticate('expert-local', function (err, user, info) {
-//         console.log(user)
-//         if (err) {
-//             return next(err);
-//         }
-//         if (!user) {
-//             return res.redirect('/users/login');
-//         }
-//         req.logIn(user, function (err) {
-//             if (err) {
-//                 return next(err);
-//             }
-//             return res.redirect('/users/experts/Login');
-//         });
-
-//     })(req, res, next);
-// });
 
 // Expert Login Page
 router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
@@ -157,7 +137,7 @@ router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
     Expert.findOne({ _id: req.user._id })
             .then(user => {
                 // Check if push subscription object is undefined (push is not registered)
-                if (user){
+                if (user.pushSubObj){
                     res.render('expertRegister', {
                         isExpert,
                         title: "Expert Dashboard",
@@ -165,6 +145,16 @@ router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
                         lastName:user.lastName,
                         registration:user.registration,
                         phone:user.phone
+                    });
+                }else{
+                    res.render('expertRegister', {
+                        id: user._id.toString(),
+                        isExpert,
+                        title: "Expert Dashboard",
+                        firstName: user.firstName,
+                        lastName:user.lastName,
+                        registration:user.registration,
+                        phone:user.phone,
                     });
                 }  
             });
