@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs')
 const Controllers = require('../controllers')
 const { ensureAuthenticated } = require('../config/auth');
 const Services = require('../services')
@@ -140,6 +141,7 @@ router.get('/experts/Login',ensureAuthenticated, (req, res, next) => {
 })
 // Expert register Page 
 router.post('/experts/Register', (req, res, next) => {
+    console.log("I'm here")
     const { firstName, lastName, registration, email, phone, password, password2 } = req.body;
     const errors = [];
 
