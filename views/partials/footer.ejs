@@ -16,8 +16,8 @@
 </script>
 <script>
     
-
-    // Change navbar options on expert login
+    $(document).ready(function () {
+        // Change navbar options on expert login
     var getExpert = "<%= isExpert%>"
     if(getExpert==="true"){
         $("a[href='/']").attr('href', '/users/experts/Login')
@@ -41,6 +41,8 @@
         default:
             break;
     }
+    });
+    
     
     </script>
 
