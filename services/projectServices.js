@@ -15,6 +15,7 @@ const bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 const request = require('request');
 
+
 // Create user account if user is not already registered
 const registerUserService = (req, res, errors) => {
     const { firstName, lastName, email, phone, password, password2 } = req.body
@@ -748,36 +749,47 @@ triggerPush = (userId) =>{
 }
 
 const sendPushService = (req, res) => {
-    console.log(req.body._id);
+    
+    
     // Get pushSubscription from the db
-    User.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
-            .then(user => {
-                // Check if push subscription object is undefined (push is not registered)
-                // console.log(user._id.toString());
-                if (user.pushSubObj){
-                    
-                    // const subscription = req.body;
-                    // Send 200
-                    // res.status(200).json({});
+    if(req.body.isExpert ===true){
+        const { expertId, memberId, videoLink,message,isExpert } = req.body;
+        var currentUser= Expert;
+        var payload = JSON.stringify({title: 'Notification from SAIFE',expertId, memberId, videoLink,message,isExpert});
+    }else{
+        var currentUser =User;
+        var payload = JSON.stringify({title: 'Notification from SAIFE'});
+    }
+        currentUser.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+        .then(user => {
+            // Check if push subscription object is undefined (push is not registered)
+            // console.log(user._id.toString());
+            if (user.pushSubObj){
+                
+                // const subscription = req.body;
+                // Send 200
+                res.status(200).json({});
 
-                    // Create payload
-                    const payload = JSON.stringify({title: 'Notification from SAIFE'});
-                    console.log(user.pushSubObj);
-                    console.log("Sending Push...");
-                    // Pass object into sendNotification
-                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
-                    .catch(err => {
-                        console.log(err);
-                        res.status(410).json({statusMessage: "Expired"}); 
-                    });
-                } 
-                else {
-                    console.log("No Push Subscription Object Found!")
-                }  
-            })
-            .catch(err => {
-                console.log(err);
-            });
+                // Create payload
+                
+                console.log(user.pushSubObj);
+                console.log("Sending Push...");
+                // Pass object into sendNotification
+                webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
+                .catch(err => {
+                    console.log(err);
+                    res.status(410).json({statusMessage: "Expired"}); 
+                });
+            } 
+            else {
+                console.log("No Push Subscription Object Found!")
+            }  
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    
+
 }
 
 // View Video service
@@ -803,28 +815,31 @@ const resetStatusService = (req, res) => {
 
 // Forward Member to Expert Service
 const forwardCaseService = (req, res) => {
+    const isExpert = true;
+    req.body.isExpert =isExpert;
     // Object destructuring 
-    const { expertEmail, memberId, message } = req.body;
+    // const { expertId, memberId, videoLink,message } = req.body;
+    sendPushService(req,res)
         
-    ExpertMember.findOneAndUpdate({ email: expertEmail, memberID: memberId},
-        {$set: {
-            email: expertEmail,
-            message: message,
-            memberID: memberId
-        }},
-        {upsert:true, returnNewDocument: true})
-    .then(record => {
-                let success = [];
-                success.push({ msg: 'Forwarded' })
-                if (success.length > 0) {
-                    res.json({
-                        expertEmail,
-                        memberId, 
-                        message: "Success!"
-                    })
-                }
-        })
-    .catch(err => console.log(err));
+    // ExpertMember.findOneAndUpdate({ email: expertEmail, memberID: memberId},
+    //     {$set: {
+    //         email: expertEmail,
+    //         message: message,
+    //         memberID: memberId
+    //     }},
+    //     {upsert:true, returnNewDocument: true})
+    // .then(record => {
+    //             let success = [];
+    //             success.push({ msg: 'Forwarded' })
+    //             if (success.length > 0) {
+    //                 res.json({
+    //                     expertEmail,
+    //                     memberId, 
+    //                     message: "Success!"
+    //                 })
+    //             }
+    //     })
+    // .catch(err => console.log(err));
 }
 
 module.exports = {
