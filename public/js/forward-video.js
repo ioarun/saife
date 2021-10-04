@@ -5,7 +5,8 @@ $('select').formSelect();
 $('#forward-video').click((event) => {
     event.preventDefault();
     // Get the video link, expert details and the message to be sent
-    let expertId = $('#expertId').val();
+    let _id = $('#expertId').val();
+    console.log("andy tester id: ",_id)
     let memberId = members[currentSelectedrowID]._id;
     let source = document.getElementsByTagName('source')
     let videoLink = source[0].src;
@@ -17,7 +18,7 @@ $('#forward-video').click((event) => {
     //Ajax call Forward to Expert
     $.ajax({
         url: "/users/forwardCase",
-        data: {expertId, memberId, videoLink, message},
+        data: {_id, memberId, videoLink, message},
         type: "POST",
         success: (result) => {
             swal("Forward Success!", {
