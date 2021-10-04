@@ -5,46 +5,6 @@ const mongoose = require('mongoose')
 
 //members array
 var members = [
-    {
-        firstName: "Gouri Nandan",
-        lastName: "Gangavaram!",
-        memberID: "G - ID",
-        gender: "M",
-        address: "G Test Address",
-        description: "G Test Description",
-        status: "Fallen!",
-        age:33
-    },
-    {
-        firstName: "Arun",
-        lastName: "A!",
-        memberID: "A - ID",
-        gender: "M",
-        address: "A Test Address",
-        description: "A Test Description",
-        status: "All Good!",
-        age:32
-    },
-    {
-        firstName: "Sodi",
-        lastName: "S!",
-        memberID: "S - ID",
-        gender: "M",
-        address: "S Test Address",
-        description: "S Test Description",
-        status: "Fallen!",
-        age:31
-    },
-    {
-        firstName: "Chasham",
-        lastName: "C!",
-        memberID: "C - ID",
-        gender: "F",
-        address: "C Test Address",
-        description: "C Test Description",
-        status: "All Good!",
-        age:34
-    }
 ];
 
 // Get Members

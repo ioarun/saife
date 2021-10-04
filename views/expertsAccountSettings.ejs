@@ -61,6 +61,7 @@
             isPushSupported();
 
             const userId = '<%= id %>';
+            const isExpert = '<%= isExpert %>';
 
             var subscriptionButton = document.getElementById('subscriptionButton');
 
@@ -106,6 +107,7 @@
                             method: "POST",
                             body: JSON.stringify({
                                 id: userId,
+                                isExpert:isExpert,
                                 pushSubObj: JSON.stringify(subscription)
                             }),
                             headers: {
@@ -199,10 +201,11 @@
 
                 //Ajax call Update Account Details route
                 $.ajax({
-                    url: "/users/userAccountSettings",
+                    url: "/users/experts/expertsAccountSettings",
                     data: accountData,
                     type: "PUT",
                     success: (result) => {
+                        console.log("RESULT: ", result);
                         $('.alert_placeholder').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' + result.success +
                             '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' + '</div>')
                     },

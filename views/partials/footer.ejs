@@ -7,11 +7,42 @@
                 src="/assets/git-logo.svg" style="height: 20px; padding-right: 15px;" alt="Git Logo"></i>/saife</a> -->
     </div>
 </footer>
-    
+<% var isExpert; %>
 <script>
     $(document).ready(function () {
         $('.sidenav').sidenav();
     });
+    
 </script>
-
+<script>
+    
+    $(document).ready(function () {
+        // Change navbar options on expert login
+    var getExpert = "<%= isExpert%>"
+    if(getExpert==="true"){
+        $("a[href='/']").attr('href', '/users/experts/Login')
+        $("a[href='/users/myMembers']").attr('href', '/users/experts/myMembers')
+        $("a[href='/users/userAccountSettings']").attr('href', '/users/experts/expertsAccountSettings')
+        $('#myExperts').hide();
+    }
+    // Highlight navigation for current page
+    var pathName = document.location.pathname;
+    console.log(pathName)
+    switch (pathName) {
+        case "/users/experts/Login":
+            $('#homePage').addClass("active")
+            break;
+        case "/users/experts/myMembers":
+            $('#myMembers').addClass("active")
+            break;
+        case "/users/experts/expertsAccountSettings":
+            $('#userAccountSettings').addClass("active")
+            break;
+        default:
+            break;
+    }
+    });
+    
+    
+    </script>
 

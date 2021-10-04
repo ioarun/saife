@@ -1,13 +1,20 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
+
 
 // Create Schema
-const UserSchema = new mongoose.Schema({
+const ExpertSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true
     },
     lastName: {
         type: String,
+        required: true
+    },
+    registration: {
+        type: Number,
         required: true
     },
     email: {
@@ -36,12 +43,11 @@ const UserSchema = new mongoose.Schema({
     },
     isExpert:{
         type:Boolean,
-        default:false
+        default:true
     }
-
 })
 
 
-const User = mongoose.model('User', UserSchema)
+const Expert = mongoose.model('Expert',ExpertSchema)
 
-module.exports = User
+module.exports = Expert

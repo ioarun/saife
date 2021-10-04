@@ -19,26 +19,60 @@ self.addEventListener('fetch', e => {
 
 self.addEventListener("push", e => {
   const data = e.data.json();
+  console.log(data)
   console.log("Push Recieved...");
   self.registration.showNotification(data.title, {
     body: "Member Fallen!",
     actions: [
       {
-          action: "/users/myMembers",
+          action: "/users/experts/myMembers",
           title: "Go to the app"
       }
   ],
-    icon: "/assets/saife-logo.png"
+    icon: "/assets/saife-logo.png",
+    data:JSON.stringify(data)        
   });
 });
 
 self.addEventListener("notificationclick", e => {
-  const uri = e.action;
+  
   const notification = e.notification;
-  console.log(`${self.location.origin}${e.action}`)
+
+  const data = JSON.parse(e.notification.data);
+
+  const expertId = data._id
+  const memberId= data.memberId
+  const videoLink= data.videoLink
+  const message= data.message
+ 
+  if(expertId){
+    e.waitUntil(
+      fetch('users/saveVideoLink',{
+        method:"POST",
+        body:JSON.stringify({
+          expertId:expertId,
+          memberId:memberId,
+          videoLink:videoLink,
+          message:message
+        }),
+        headers: {
+          "content-type": "application/json"
+      }
+      })
+      .then(function (data) {                        
+        console.log('Request success: ', data);
+      })
+      .catch(function (error) {                      
+        console.log('Request failure: ', error);
+      })
+    )
+  }
+
+
+  console.log(`${self.location.origin}${e.notification.actions[0].action}`)
   notification.close();
   
-  clients.openWindow(`${self.location.origin}${e.action}`);
+  clients.openWindow(`${self.location.origin}${e.notification.actions[0].action}`);
 });
 
 self.addEventListener('pushsubscriptionchange', function(event) {

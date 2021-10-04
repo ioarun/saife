@@ -74,6 +74,35 @@ const deleteMember = (req,res) => {
     Services.projectServices.deleteMemberService(req,res)
 }
 
+// Expert Member page
+const loadExpertMembers = (req, res) => {
+    Services.projectServices.loadExpertMembersService(req,res)
+}
+
+// Delete Expert Member
+const deleteExpertMember = (req, res) => {
+    Services.projectServices.deleteExpertMemberService(req,res)
+}
+
+// Get userExperts
+const loadUserExperts = (req, res) => {
+    Services.projectServices.loadUserExpertsService(req,res)
+}
+
+// Add userExpert
+const addUserExpert = (req, res) => {
+    Services.projectServices.addUserExpertService(req,res)
+}
+
+// Update userExpert
+const updateUserExpert = (req, res) => {
+    Services.projectServices.updateUserExpertService(req,res)
+}
+
+// Delete userExpert
+const deleteUserExpert = (req, res) => {
+    Services.projectServices.deleteUserExpertService(req,res)
+}
 
 // Login handle
 const userLogin = (req, res, next) => {
@@ -95,7 +124,15 @@ const updateAccountDetails = (req, res) => {
     Services.projectServices.updateAccountDetailsService(req,res)
 }
 
+// Experts account Settings Page
+const expertsAccountSettings = (req, res) => {
+    Services.projectServices.expertsAccountSettingsService(req,res)
+}
 
+// UpdateExpert's Account Details
+const updateExpertsAccountDetails = (req, res) => {
+    Services.projectServices.updateExpertsAccountDetailsService(req,res)
+}
 // Fogot password handle
 const fogotPassword = (req,res)=>{
     Services.projectServices.userFogotPasswordService(req,res)
@@ -126,10 +163,19 @@ const viewVideo = (req, res) => {
     Services.projectServices.viewVideoService(req,res)
 }
 
-
 // updateMemberVideoURL
 const updateMemberVideoURL = (req, res) => {
     Services.projectServices.updateMemberVideoURLService(req,res)    
+}
+
+// resetStatus
+const resetStatus = (req, res) => {
+    Services.projectServices.resetStatusService(req,res)    
+}
+
+// forwardCase to Expert
+const forwardCase = (req, res) => {
+    Services.projectServices.forwardCaseService(req,res)    
 }
 
 module.exports = {
@@ -138,15 +184,25 @@ module.exports = {
     loadMembers,
     updateMember,
     deleteMember,
+    loadExpertMembers,
+    deleteExpertMember,
     userLogin,
     userLogout,
     userAccountSettings,
     updateAccountDetails,
+    expertsAccountSettings,
+    updateExpertsAccountDetails,
     fallDetected,
     sendPush,
     fogotPassword,
     emailPassword,
     resetPassword,
     viewVideo,
-    updateMemberVideoURL
+    updateMemberVideoURL,
+    loadUserExperts,
+    addUserExpert,
+    updateUserExpert,
+    deleteUserExpert,
+    resetStatus,
+    forwardCase
 };

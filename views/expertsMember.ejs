@@ -1,0 +1,207 @@
+<head>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href='/media-player.css' rel='stylesheet' />
+</head>
+
+<body class="body-bg">
+    <!-- view video modal -->
+    <div class="center-modal">
+        <%- include("viewVideo.ejs") %>
+    </div>
+
+    <div class="container d-flex align-items-center overflow-auto">
+        <table class="table table-striped table-hover m-3">
+            <thead>
+                <tr>
+                    <th class="col text-center" id="#">#</th>
+                    <th class="col text-center" id="Name">Name </th>
+                    <th class="col text-center" id="Status">Status</th>
+                    <th class="col text-center" id="Details">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (members.length!=0) { %>
+                    <% members.forEach((member, index)=> { %>
+                        <tr id=<%=index %>>
+                            <th class="text-center" scope="row">
+                                <%= index+1 %>
+                            </th>
+                            <td class="text-center">
+                                <%= member.firstName %>
+                                    <span> </span>
+                                    <%= member.lastName %>
+                            </td>
+                            <td class="text-center status">
+                                <% if(member.status===true) {%>
+                                    <span id="status">Fallen!</span>
+
+                                    <% } else if(member.status===false) { %>
+                                        <span id="status">All Good!</span>
+                                        <% } %>
+                                            <% if(member.status===true ) { %>
+                                                <span class='d-inline-flex mb-0 circle status-indicator-fall'></span>
+                                                <% } else if(member.status===false ) { %>
+                                                    <span
+                                                        class='d-inline-flex mb-0 circle status-indicator-good'></span>
+                                                    <% } %>
+                            </td>
+                            <td class="text-center">
+                                <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View
+                                    Details</a>
+                            </td>
+                            <td class="text-center">
+                                <% if(member.status===true) { %>
+                                    <a class='modal-trigger' href='#videoCapture'><i
+                                            class="small material-icons viewMemberVideo"
+                                            id="viewMemberVideo">ondemand_video</i></a>
+                                    <% } %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } %>
+            </tbody>
+        </table>
+        <!-- View Member Details Modal Structure -->
+        <div id="viewMemberDetailsModal" class="modal viewMemberDetailsModal">
+            <div class="modal-content">
+                <h4>Member Details</h4>
+            </div>
+            <div class="row modal-content">
+                <div class="alert_placeholder"></div>
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <script>
+                                $('.viewDetails').click(function () {
+                                    event.preventDefault();
+                                    var rowID = event.target.parentNode.parentNode.id;
+                                    var mems = '<%- JSON.stringify(members) %>';
+                                    mems = JSON.parse(mems);
+
+                                    $("#viewMemberDetailsFirstName").attr("value", mems[rowID].firstName);
+                                    $("#viewMemberDetailsLastName").attr("value", mems[rowID].lastName);
+                                    $("#viewMemberDetailsGender").attr("value", mems[rowID].gender);
+                                    $("#viewMemberDetailsAge").attr("value", mems[rowID].age);
+                                    $("#viewMemberDetailsEmail").attr("value", mems[rowID].emailID);
+                                    $("#viewMemberDetailsAddress").val(mems[rowID].address);
+                                    $("#viewMemberDetailsDescription").val(mems[rowID].description);
+                                    $("#viewMemberDetailsForwardDescription").val(mems[rowID].message);
+                                    $("#viewMemberDetailsMemberID").attr("value", mems[rowID]._id);
+                                });
+                            </script>
+                            <input placeholder="FirstName" id="viewMemberDetailsFirstName" type="text">
+                            <label for="viewMemberDetailsFirstName">FirstName</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input placeholder="LastName" id="viewMemberDetailsLastName" type="text">
+                            <label for="viewMemberDetailsLastName">LastName</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="Gender" id="viewMemberDetailsGender" type="text">
+                            <label for="viewMemberDetailsGender">Gender</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input placeholder="Age" id="viewMemberDetailsAge" type="text">
+                            <label for="viewMemberDetailsAge">Age</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea placeholder="Address" id="viewMemberDetailsAddress" rows="3"
+                                class="materialize-textarea"></textarea>
+                            <label for="viewMemberDetailsAddress">Address</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea placeholder="Description" id="viewMemberDetailsDescription" rows="3"
+                                class="materialize-textarea"></textarea>
+                            <label for="viewMemberDetailsDescription">Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea placeholder="ForwardDescription" id="viewMemberDetailsForwardDescription" rows="3"
+                                class="materialize-textarea"></textarea>
+                            <label for="viewMemberDetailsForwardDescription">Forward Case Details</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input placeholder="Member ID" id="viewMemberDetailsMemberID" type="text" disabled>
+                            <label for="viewMemberDetailsMemberID">ID</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <a class="waves-effect waves-light btn" id="deleteMember">Delete</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Variable Declaration
+        var isExpert = `<%- isExpert %>`;
+        var currentSelectedrowID;
+
+        // Modal Initialization
+        $('#viewMemberDetailsModal').modal();
+
+        //Load Member Video
+        $('.viewMemberVideo').click(function (event) {
+            event.preventDefault();
+            currentSelectedrowID = event.target.parentNode.parentNode.parentNode.id;
+            var mems = '<%- JSON.stringify(members) %>';
+            mems = JSON.parse(mems);
+
+            $('#viewMemberVideoSource').attr('src', mems[currentSelectedrowID].videoURL);
+            $('#video')[0].load();
+        });
+
+        // Delete Member
+        $('#deleteMember').click(function (event) {
+            event.preventDefault();
+            let memberData = {};
+            memberData.id = $('#viewMemberDetailsMemberID').val();
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this Member!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
+                    modalInstance.close();
+
+                    //Ajax call Delete Member route
+                    $.ajax({
+                        url: "/users/experts/myMembers",
+                        data: memberData,
+                        type: "DELETE",
+                        success: (result) => {
+                            swal("Member deleted successfully!", {
+                                icon: "success",
+                                buttons: false
+                            });
+                            setTimeout(() => location.reload(), 500);
+                        }
+                    });
+                } else {
+                    swal("Member not deleted!", {
+                        icon: "info",
+                        buttons: false,
+                        timer: 700
+                    });
+                }
+            });
+        });
+    </script>
+    <script src='/js/media-player.js'></script>
+    <script src='/js/forward-video.js'></script>
+</body>

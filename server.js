@@ -10,7 +10,8 @@ const bodyParser = require('body-parser');
 const path = require("path");
 const mongo = require('./dbconnect')
 var mongoose = require('mongoose');
-
+// Expert Model
+const Expert = require('./models/Expert')
 // User Model
 const User = require('./models/User')
 
@@ -29,26 +30,44 @@ webpush.setVapidDetails('mailto:push@saife.com', publicVapidKey, privateVapidKey
 // Subscribe Route
 app.post('/subscribe', (req, res) => {
     console.log(res.statusCode);
-    
+
     // Get pushSubscription object from client
     const subscription = req.body;
     // Send 201 - resource created
     // res.status(201).json({});
     // console.log(JSON.stringify(subscription));
     // Save the subscription object in the database
-    userId = new mongoose.mongo.ObjectId(subscription.id);
-    User.findByIdAndUpdate(userId, 
-        {pushSubObj: subscription.pushSubObj}, function(err, data) {
-            if(err){
-                console.log(err);
-            }
-            else{
-                // res.send(data);
-                // console.log("pushSubObj updated! id : ", userId);
-                
-            }
-        });
-    res.status(201).json({statusMessage: "Subscribed"}); 
+    console.log(req.body)
+    if(req.body.isExpert==='true'){
+        
+        expertId = new mongoose.mongo.ObjectId(subscription.id); 
+        Expert.findByIdAndUpdate(expertId,
+            { pushSubObj: subscription.pushSubObj }, function (err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    // res.send(data);
+                    // console.log("pushSubObj updated! id : ", userId);
+                    console.log("Im expert")
+                }
+            });
+    }else{
+        userId = new mongoose.mongo.ObjectId(subscription.id);
+        User.findByIdAndUpdate(userId,
+            { pushSubObj: subscription.pushSubObj }, function (err, data) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    // res.send(data);
+                    // console.log("pushSubObj updated! id : ", userId);
+    
+                }
+            });
+    }
+
+    res.status(201).json({ statusMessage: "Subscribed" });
 })
 
 // EJS
@@ -87,10 +106,10 @@ app.use(passport.session());
 app.use(flash())
 
 // Global Vars
-app.use((req,res,next)=>{
-    res.locals.success_msg =req.flash('success_msg');
-    res.locals.error_msg =req.flash('error_msg');
-    res.locals.error =req.flash('error');
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
     next()
 })
 
@@ -102,17 +121,20 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'views')))
 
 // Routes
+
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+// app.use('/experts',require('./routes/experts.js'));
+
 // app.use('/myMembers', require('./routes/members.js'));
 
 
 // https://stackoverflow.com/questions/56308581/uncaught-error-listen-eaddrinuse-address-already-in-use-3000-when-mocha-uni
-if(!module.parent){
+if (!module.parent) {
     app.listen(PORT, () =>
-      console.log(`server listening on port ${PORT}!`),
+        console.log(`server listening on port ${PORT}!`),
     );
-  }
+}
 
 // app.listen(PORT,console.log(`server started on port ${PORT}`));
 

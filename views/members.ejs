@@ -50,11 +50,13 @@
                                                         <% } %>
                                 </td>
                                 <td class="text-center">
-                                    <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View Details</a>
+                                    <a class="modal-trigger viewDetails" href="#viewMemberDetailsModal">View
+                                        Details</a>
                                 </td>
                                 <td class="text-center">
                                     <% if(member.status===true) { %>
-                                        <a class='modal-trigger' href='#videoCapture'><i class="small material-icons"
+                                        <a class='modal-trigger' href='#videoCapture'><i
+                                                class="small material-icons viewMemberVideo"
                                                 id="viewMemberVideo">ondemand_video</i></a>
                                         <% } %>
                                 </td>
@@ -296,8 +298,11 @@
                     data: memberData,
                     type: "PUT",
                     success: (result) => {
-                        console.log("RESULT: ", result);
-                        location.reload();
+                        swal("Member Details Updated Successfully!", {
+                            icon: "success",
+                            buttons: false
+                        });
+                        setTimeout(() => location.reload(), 500);
                     },
                     error: (result) => {
                         let errorBody = result.responseJSON;
@@ -323,9 +328,6 @@
                     dangerMode: true,
                 }).then((willDelete) => {
                     if (willDelete) {
-                        swal("Member deleted successfully!", {
-                            icon: "success",
-                        });
                         let modalInstance = M.Modal.getInstance($("#viewMemberDetailsModal"));
                         modalInstance.close();
 
@@ -335,27 +337,37 @@
                             data: memberData,
                             type: "DELETE",
                             success: (result) => {
-                                location.reload();
+                                swal("Member deleted successfully!", {
+                                    icon: "success",
+                                    buttons: false
+                                });
+                                setTimeout(() => location.reload(), 500);
                             }
                         });
                     } else {
-                        swal("Member not deleted!");
+                        swal("Member not deleted!", {
+                            icon: "info",
+                            buttons: false,
+                            timer: 700
+                        });
                     }
                 });
             }
 
+            var currentSelectedrowID;
             //Load Member Video
-            $('#viewMemberVideo').click(function (event) {
+            $('.viewMemberVideo').click(function (event) {
                 event.preventDefault();
-                var rowID = event.target.parentNode.parentNode.parentNode.id;
+                currentSelectedrowID = event.target.parentNode.parentNode.parentNode.id;
                 var mems = '<%- JSON.stringify(members) %>';
                 mems = JSON.parse(mems);
 
-                $('#viewMemberVideoSource').attr('src', mems[rowID].videoURL);
+                $('#viewMemberVideoSource').attr('src', mems[currentSelectedrowID].videoURL);
                 $('#video')[0].load();
             });
 
             var members = '<%- JSON.stringify(members) %>';
+            members = JSON.parse(members);
         </script>
         <script src='/js/media-player.js'></script>
         <script src='/js/forward-video.js'></script>

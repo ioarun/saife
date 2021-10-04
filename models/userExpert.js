@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
+
 
 // Create Schema
-const UserSchema = new mongoose.Schema({
+const userExpertSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true
@@ -18,30 +21,25 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    password: {
+    address: {
         type: String,
         required: true
     },
-    pushSubObj: {
-        type: Object,
-        required: false
+    description: {
+        type: String,
+        required: true
     },
     date: {
         type: String,
         default: Date.now
     },
-    resetLink:{
-        data: String,
-        default:''
-    },
-    isExpert:{
-        type:Boolean,
-        default:false
+    userID: {
+        type: ObjectId,
+        required: true
     }
-
 })
 
 
-const User = mongoose.model('User', UserSchema)
+const userExpert = mongoose.model('userExpert',userExpertSchema)
 
-module.exports = User
+module.exports = userExpert
