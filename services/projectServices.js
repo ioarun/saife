@@ -722,32 +722,33 @@ const userFallDetectedService = (req, res) => {
             if (record) {
                 console.log("fall status saved! ", record);
                 res.status(200);
-                triggerPush(userId);
+                sendPushService(req, res);
             }
         })
         .catch(err => console.log(err))
 }
 
-triggerPush = (userId) => {
-    console.log(userId);
-    const requestOptions = {
-        url: 'http://localhost:3000/users/sendPush',
-        method: 'POST',
-        json: { "_id": userId }
-    };
-    request(
-        requestOptions,
-        (err, res, body) => {
-            if (err) {
-                console.log("Failed Invoking POST sendPush ", err)
-                res.status(400).send("Failed!");
-            } else {
-                console.log("Successfully called POST sendPush ", body)
-                res.status(200).send(data);
-            }
-        }
-    );
-}
+// triggerPush = (req, res) => {
+//     const { userId, memberId } = req.body
+//     console.log(userId);
+//     const requestOptions = {
+//         url: 'http://localhost:3000/users/sendPush',
+//         method: 'POST',
+//         json: { "_id": userId }
+//     };
+//     request(
+//         requestOptions,
+//         (err, response, body) => {
+//             if (err) {
+//                 console.log("Failed Invoking POST sendPush ", err)
+//                 res.status(400).send("Failed!");
+//             } else {
+//                 console.log("Successfully called POST sendPush ", body)
+//                 res.status(200).send(data);
+//             }
+//         }
+//     );
+// }
 
 const sendPushService = async (req, res) => {
     // Get pushSubscription from the db
@@ -764,7 +765,8 @@ const sendPushService = async (req, res) => {
     } else {
         var currentUser = User;
         var payload = JSON.stringify({ title: 'Notification from SAIFE' });
-        var _id = req.body._id;
+        const { userId, memberId } = req.body
+        var _id = userId;
     }
     console.log("Current Id",_id)
     currentUser.findOne({ _id: new mongoose.mongo.ObjectId(_id) })
