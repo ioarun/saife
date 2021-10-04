@@ -753,17 +753,14 @@ const sendPushService = async (req, res) => {
     // Get pushSubscription from the db
     if (req.body.isExpert === true) {
         var { email, memberId, videoLink, message, isExpert } = req.body;
-        console.log(email)
         var _id;
         await Expert.findOne({ email: email })
             .then(expert => {              
-                console.log(expert)
                 _id = expert._id
             })
 
         var currentUser = Expert;
         var payload = JSON.stringify({ title: 'Notification from SAIFE', _id, memberId, videoLink, message, isExpert });
-        console.log(_id)
     } else {
         var currentUser = User;
         var payload = JSON.stringify({ title: 'Notification from SAIFE' });
@@ -819,7 +816,6 @@ const resetStatusService = (req, res) => {
 const forwardCaseService = (req, res) => {
     const isExpert = true;
     req.body.isExpert = isExpert;
-    console.log(req.body)
     sendPushService(req, res)
 
 }
