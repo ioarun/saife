@@ -6,6 +6,8 @@ const Services = require('../services')
 const token = Services.token
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+// ExpertMember Model
+const ExpertMember = require('../models/ExpertMember') 
 
 // Expert Model
 const Expert = require('../models/Expert')
@@ -281,4 +283,30 @@ router.post('/forwardCase', ensureAuthenticated,(req,res)=>{
     Controllers.projectController.forwardCase(req, res);
 })
 
+// Save videolink in db link
+router.post('/saveVideoLink',ensureAuthenticated,(req,res)=>{
+
+        const {expertId,memberId,videoLink,message}= req.body
+             
+        ExpertMember.findOneAndUpdate({ expertId: expertId, memberId: memberId},
+        {$set: {
+            videoLink:videoLink,
+            message: message,
+            memberId: memberId,
+            expertId: expertId      
+        }},
+        {upsert:true, returnNewDocument: true})
+    .then(record => {
+                let success = [];
+                success.push({ msg: 'Forwarded' })
+                if (success.length > 0) {
+                    res.json({
+                   
+                        memberId, 
+                        message: "Success!"
+                    })
+                }
+        })
+    .catch(err => console.log(err));
+})
 module.exports = router;
