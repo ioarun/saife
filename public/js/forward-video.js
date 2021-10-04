@@ -5,7 +5,7 @@ $('select').formSelect();
 $('#forward-video').click((event) => {
     event.preventDefault();
     // Get the video link, expert details and the message to be sent
-    let _id = $('#expertId').val();
+    let _id = '61512d12b9facf3e7e694075';
     console.log("andy tester id: ",_id)
     let memberId = members[currentSelectedrowID]._id;
     let source = document.getElementsByTagName('source')
