@@ -160,13 +160,14 @@ const registerMemberService = (req, res) => {
 }
 
 // Service for Expert Members page
-const loadExpertMembersService = async (req, res) => {
-    let currUserEmail = req.user.email;
-    await ExpertMember.find({email:currUserEmail})
+const loadExpertMembersService =  async (req, res) => {
+    let expertId = req.user._id;
+
+    await ExpertMember.find({expertId:expertId})
         .then(async (records) => {
             let members = [];
             for(let i=0; i<records.length; i++) {
-                await Member.find({_id: records[i].memberID})
+                await Member.find({_id: records[i].memberId})
                 .then(record => {
                     let member = JSON.parse(JSON.stringify(record[0]));
                     member.message = records[i].message;
@@ -754,6 +755,7 @@ const sendPushService = (req, res) => {
         var { _id, memberId, videoLink,message,isExpert } = req.body;
         var currentUser= Expert;
         var payload = JSON.stringify({title: 'Notification from SAIFE',_id, memberId, videoLink,message,isExpert});
+        console.log(_id)
     }else{
         var currentUser =User;
         var payload = JSON.stringify({title: 'Notification from SAIFE'});
