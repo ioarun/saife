@@ -25,7 +25,7 @@ self.addEventListener("push", e => {
     body: "Member Fallen!",
     actions: [
       {
-          action: "/users/myMembers",
+          action: "/users/experts/myMembers",
           title: "Go to the app"
       }
   ],
@@ -39,7 +39,7 @@ self.addEventListener("notificationclick", e => {
   const notification = e.notification;
 
   const data = JSON.parse(e.notification.data);
-  
+
   const expertId = data._id
   const memberId= data.memberId
   const videoLink= data.videoLink
