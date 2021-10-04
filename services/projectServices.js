@@ -764,7 +764,7 @@ const sendPushService = async (req, res) => {
     } else {
         var currentUser = User;
         var payload = JSON.stringify({ title: 'Notification from SAIFE' });
-        var _id = req.body_id;
+        var _id = req.body._id;
     }
     console.log("Current Id",_id)
     currentUser.findOne({ _id: new mongoose.mongo.ObjectId(_id) })
