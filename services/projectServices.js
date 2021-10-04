@@ -748,31 +748,22 @@ triggerPush = (userId) =>{
     );
 }
 
-const sendPushService = (req, res) => {
-    
-    
+const sendPushService = (req, res) => {        
     // Get pushSubscription from the db
     if(req.body.isExpert ===true){
-        const { expertId, memberId, videoLink,message,isExpert } = req.body;
+        var { _id, memberId, videoLink,message,isExpert } = req.body;
         var currentUser= Expert;
-        var payload = JSON.stringify({title: 'Notification from SAIFE',expertId, memberId, videoLink,message,isExpert});
+        var payload = JSON.stringify({title: 'Notification from SAIFE',_id, memberId, videoLink,message,isExpert});
     }else{
         var currentUser =User;
         var payload = JSON.stringify({title: 'Notification from SAIFE'});
     }
-        currentUser.findOne({ _id: new mongoose.mongo.ObjectId(req.body._id) })
+    
+    currentUser.findOne({ _id: new mongoose.mongo.ObjectId('61512d12b9facf3e7e694075') })
         .then(user => {
-            // Check if push subscription object is undefined (push is not registered)
-            // console.log(user._id.toString());
-            if (user.pushSubObj){
-                
-                // const subscription = req.body;
-                // Send 200
-                res.status(200).json({});
 
-                // Create payload
-                
-                console.log(user.pushSubObj);
+            if (user.pushSubObj){
+                res.status(200).json({});
                 console.log("Sending Push...");
                 // Pass object into sendNotification
                 webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
@@ -817,29 +808,9 @@ const resetStatusService = (req, res) => {
 const forwardCaseService = (req, res) => {
     const isExpert = true;
     req.body.isExpert =isExpert;
-    // Object destructuring 
-    // const { expertId, memberId, videoLink,message } = req.body;
+    
     sendPushService(req,res)
         
-    // ExpertMember.findOneAndUpdate({ email: expertEmail, memberID: memberId},
-    //     {$set: {
-    //         email: expertEmail,
-    //         message: message,
-    //         memberID: memberId
-    //     }},
-    //     {upsert:true, returnNewDocument: true})
-    // .then(record => {
-    //             let success = [];
-    //             success.push({ msg: 'Forwarded' })
-    //             if (success.length > 0) {
-    //                 res.json({
-    //                     expertEmail,
-    //                     memberId, 
-    //                     message: "Success!"
-    //                 })
-    //             }
-    //     })
-    // .catch(err => console.log(err));
 }
 
 module.exports = {
