@@ -737,7 +737,7 @@ triggerPush = (userId) => {
     };
     request(
         requestOptions,
-        (err, response, body) => {
+        (err, res, body) => {
             if (err) {
                 console.log("Failed Invoking POST sendPush ", err)
                 res.status(400).send("Failed!");
