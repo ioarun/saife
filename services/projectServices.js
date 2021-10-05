@@ -751,44 +751,49 @@ const userFallDetectedService = (req, res) => {
 // }
 
 const sendPushService = async (req, res) => {
-    // Get pushSubscription from the db
-    if (req.body.isExpert === true) {
-        var { email, memberId, videoLink, message, isExpert } = req.body;
-        var _id;
-        await Expert.findOne({ email: email })
-            .then(expert => {              
-                _id = expert._id
+    try {
+        // Get pushSubscription from the db
+        if (req.body.isExpert === true) {
+            var { email, memberId, videoLink, message, isExpert } = req.body;
+            var _id;
+            await Expert.findOne({ email: email })
+                .then(expert => {              
+                    _id = expert._id
+                })
+
+            var currentUser = Expert;
+            var payload = JSON.stringify({ title: 'Notification from SAIFE', _id, memberId, videoLink, message, isExpert });
+        } else {
+            var currentUser = User;
+            var payload = JSON.stringify({ title: 'Notification from SAIFE' });
+            const { userId, memberId } = req.body
+            var _id = userId;
+        }
+        console.log("Current Id",_id)
+        currentUser.findOne({ _id: new mongoose.mongo.ObjectId(_id) })
+            .then(user => {
+
+                if (user.pushSubObj) {
+                    res.status(200).json({});
+                    console.log("Sending Push...");
+                    // Pass object into sendNotification
+                    webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
+                        .catch(err => {
+                            console.log(err);
+                            res.status(410).json({ statusMessage: "Expired" });
+                        });
+                }
+                else {
+                    console.log("No Push Subscription Object Found!")
+                }
             })
-
-        var currentUser = Expert;
-        var payload = JSON.stringify({ title: 'Notification from SAIFE', _id, memberId, videoLink, message, isExpert });
-    } else {
-        var currentUser = User;
-        var payload = JSON.stringify({ title: 'Notification from SAIFE' });
-        const { userId, memberId } = req.body
-        var _id = userId;
-    }
-    console.log("Current Id",_id)
-    currentUser.findOne({ _id: new mongoose.mongo.ObjectId(_id) })
-        .then(user => {
-
-            if (user.pushSubObj) {
-                res.status(200).json({});
-                console.log("Sending Push...");
-                // Pass object into sendNotification
-                webpush.sendNotification(JSON.parse(user.pushSubObj), payload)
-                    .catch(err => {
-                        console.log(err);
-                        res.status(410).json({ statusMessage: "Expired" });
-                    });
-            }
-            else {
-                console.log("No Push Subscription Object Found!")
-            }
-        })
-        .catch(err => {
+            .catch(err => {
+                console.log(err);
+            });
+        }
+        catch(err) {
             console.log(err);
-        });
+        }
 
 
 }
