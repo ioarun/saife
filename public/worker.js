@@ -22,7 +22,7 @@ self.addEventListener("push", e => {
   console.log("inside push", data)
   console.log("Push Recieved...");
   var action;
-  if (data.expertId){
+  if (data._id){
     action = "/users/experts/myMembers"
   }
   else {
