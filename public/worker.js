@@ -19,13 +19,20 @@ self.addEventListener('fetch', e => {
 
 self.addEventListener("push", e => {
   const data = e.data.json();
-  console.log(data)
+  console.log("inside push", data)
   console.log("Push Recieved...");
+  var action;
+  if (data.isExpert){
+    action = "/users/myMembers"
+  }
+  else {
+    action = "/users/experts/myMembers"
+  }
   self.registration.showNotification(data.title, {
     body: "Member Fallen!",
     actions: [
       {
-          action: "/users/experts/myMembers",
+          action: action,
           title: "Go to the app"
       }
   ],
@@ -38,12 +45,15 @@ self.addEventListener("notificationclick", e => {
   
   const notification = e.notification;
 
+  console.log("inside notificationclick", notification.data)
+
   const data = JSON.parse(e.notification.data);
 
   const expertId = data._id
   const memberId= data.memberId
   const videoLink= data.videoLink
   const message= data.message
+  const isExpert = data.isExpert
  
   if(expertId){
     e.waitUntil(
@@ -67,8 +77,6 @@ self.addEventListener("notificationclick", e => {
       })
     )
   }
-
-
   console.log(`${self.location.origin}${e.notification.actions[0].action}`)
   notification.close();
   
