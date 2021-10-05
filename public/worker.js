@@ -22,7 +22,7 @@ self.addEventListener("push", e => {
   console.log("inside push", data)
   console.log("Push Recieved...");
   var action;
-  if (data.isExpert){
+  if (data.expertId){
     action = "/users/experts/myMembers"
   }
   else {
@@ -55,7 +55,7 @@ self.addEventListener("notificationclick", e => {
   const message= data.message
   const isExpert = data.isExpert
  
-  if(isExpert){
+  if(expertId){
     e.waitUntil(
       fetch('users/saveVideoLink',{
         method:"POST",
@@ -78,15 +78,15 @@ self.addEventListener("notificationclick", e => {
     )
   }
 
-  console.log(`${self.location.origin}${e.action}`)
-  notification.close();
-  
-  clients.openWindow(`${self.location.origin}${e.action}`);
-
-  // console.log(`${self.location.origin}${e.notification.actions[0].action}`)
+  // console.log(`${self.location.origin}${e.action}`)
   // notification.close();
   
-  // clients.openWindow(`${self.location.origin}${e.notification.actions[0].action}`);
+  // clients.openWindow(`${self.location.origin}${e.action}`);
+
+  console.log(`${self.location.origin}${e.notification.actions[0].action}`)
+  notification.close();
+  
+  clients.openWindow(`${self.location.origin}${e.notification.actions[0].action}`);
 });
 
 self.addEventListener('pushsubscriptionchange', function(event) {
