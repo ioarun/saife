@@ -4,7 +4,7 @@
   "description": "Safety AI For Elderly (SAIFE)",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "npx nodemon server.js",
     "test": "mocha --reporter spec"
   },
   "repository": {
