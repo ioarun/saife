@@ -42,7 +42,7 @@
 </div>
 <script>
     $('#resetStatus').click((event) => {
-        let memberList = JSON.parse(members);
+        let memberList = members;
         let memberId = { memberId: memberList[currentSelectedrowID]._id };
 
         //Ajax call to reset Member Fall Status
