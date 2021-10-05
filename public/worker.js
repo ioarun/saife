@@ -22,7 +22,7 @@ self.addEventListener("push", e => {
   console.log("inside push", data)
   console.log("Push Recieved...");
   var action;
-  if (data._id){
+  if (data.isExpert){
     action = "/users/experts/myMembers"
   }
   else {
@@ -76,6 +76,15 @@ self.addEventListener("notificationclick", e => {
         console.log('Request failure: ', error);
       })
     )
+    console.log(`${self.location.origin}${e.notification.actions[0].action}`)
+    notification.close();
+    
+    clients.openWindow("https://www.saife.app/users/experts/myMembers");
+  }else{
+    console.log(`${self.location.origin}${e.notification.actions[0].action}`)
+    notification.close();
+    
+    clients.openWindow("https://www.saife.app/users/myMembers");
   }
 
   // console.log(`${self.location.origin}${e.action}`)
@@ -83,10 +92,11 @@ self.addEventListener("notificationclick", e => {
   
   // clients.openWindow(`${self.location.origin}${e.action}`);
 
-  console.log(`${self.location.origin}${e.notification.actions[0].action}`)
-  notification.close();
+  // console.log(`${self.location.origin}${e.notification.actions[0].action}`)
+  // notification.close();
   
-  clients.openWindow(`${self.location.origin}${e.notification.actions[0].action}`);
+  // clients.openWindow(`${self.location.origin}${e.notification.actions[0].action}`);
+  
 });
 
 self.addEventListener('pushsubscriptionchange', function(event) {
