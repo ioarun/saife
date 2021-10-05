@@ -23,10 +23,10 @@ self.addEventListener("push", e => {
   console.log("Push Recieved...");
   var action;
   if (data.isExpert){
-    action = "/users/myMembers"
+    action = "/users/experts/myMembers"
   }
   else {
-    action = "/users/experts/myMembers"
+    action = "/users/myMembers"
   }
   self.registration.showNotification(data.title, {
     body: "Member Fallen!",
