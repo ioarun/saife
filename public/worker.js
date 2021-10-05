@@ -18,7 +18,7 @@ self.addEventListener('fetch', e => {
 })
 
 self.addEventListener("push", e => {
-  const data = e.data.json();
+  var data = e.data.json();
   console.log("inside push", data)
   console.log("Push Recieved...");
   var action;
