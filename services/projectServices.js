@@ -765,7 +765,7 @@ const sendPushService = async (req, res) => {
             var payload = JSON.stringify({ title: 'Notification from SAIFE', _id, memberId, videoLink, message, isExpert });
         } else {
             var currentUser = User;
-            var payload = JSON.stringify({ title: 'Notification from SAIFE' });
+            var payload = JSON.stringify({ title: 'Notification from SAIFE'});
             const { userId, memberId } = req.body
             var _id = userId;
         }
