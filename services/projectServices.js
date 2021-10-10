@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const User = require('../models/User')
 const PORT = process.env.PORT || 3000
+const ROOT_URL = process.env.ROOT_URL || "http://localhost:3000"
 const Member = require('../models/Member')
 const Expert = require('../models/Expert');
 const userExpert = require('../models/userExpert');
@@ -578,7 +579,7 @@ const userFogotPasswordService = (req, res) => {
                     // Export the token
                     exports.token = token;
                     const output = `<p> Hello ${member.firstName} ${member.lastName} please click the link bellow to reset password</p>
-                    <a href="http://localhost:${PORT}/users/passwordReset/${token}">Click Here</a>`
+                    <a href="${ROOT_URL}/users/passwordReset/${token}">Click Here</a>`
 
 
                     // create reusable transporter object using the default SMTP transport
@@ -598,7 +599,7 @@ const userFogotPasswordService = (req, res) => {
                     // send mail with defined transport object
                     let mailOptions = {
                         from: '"SAIFE App" <official@saife.app>', // sender address
-                        to: "izuru775@gmail.com", // list of receivers
+                        to: member.email, // list of receivers
                         subject: "SAIFE App password reset", // Subject line
                         text: "Hello world?", // plain text body
                         html: output, // html body

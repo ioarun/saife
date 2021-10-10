@@ -31,13 +31,6 @@ To this end, we introduce
 **SAIFE** – a system that monitors fall events, sends alerts to caregivers, and allows medical experts to trace the cause of fall.
 
 
-
-# Tech Stack
-
-**Core**
-
-
-
 **Others**
 
 * Passport
