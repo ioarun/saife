@@ -31,12 +31,20 @@ To this end, we introduce
 **SAIFE** – a system that monitors fall events, sends alerts to caregivers, and allows medical experts to trace the cause of fall.
 
 
-**Others**
+**Also built using**
 
 * Passport
 * Progressive Web Apps (PWA)
 * AWS
 
+**Few screenshots**
+
+![Image](public/assets/screenshots/1.png)
+![Image](public/assets/screenshots/2.png)
+![Image](public/assets/screenshots/3.png)
+![Image](public/assets/screenshots/4.png)
+![Image](public/assets/screenshots/5.png)
+![Image](public/assets/screenshots/6.png)
 
 # Clone the repository
 
