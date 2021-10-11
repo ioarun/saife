@@ -589,7 +589,7 @@ const userFogotPasswordService = (req, res) => {
                         secure: true, // true for 465, false for other ports
                         auth: {
                             user: 'official@saife.app', // generated ethereal user
-                            pass: 'official123', // generated ethereal password
+                            pass: 'Official123!', // generated ethereal password
                         },
                         tls: {
                             rejectUnauthorized: false

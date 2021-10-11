@@ -38,13 +38,14 @@ To this end, we introduce
 * AWS
 
 **Few screenshots**
-
-![Image](public/assets/screenshots/1.png)
-![Image](public/assets/screenshots/2.png)
-![Image](public/assets/screenshots/3.png)
-![Image](public/assets/screenshots/4.png)
-![Image](public/assets/screenshots/5.png)
-![Image](public/assets/screenshots/6.png)
+<p align="center">
+<img src="public/assets/screenshots/1.png">
+<img src="public/assets/screenshots/2.png">
+<img src="public/assets/screenshots/3.png">
+<img src="public/assets/screenshots/4.png">
+<img src="public/assets/screenshots/5.png">
+<img src="public/assets/screenshots/6.png">
+</p>
 
 # Clone the repository
 
